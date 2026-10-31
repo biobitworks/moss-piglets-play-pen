@@ -6,7 +6,7 @@
 
 This project connects the two. It brings the fly connectome's tools, workflows and community model to Tardimap, so that **anyone can step in and help finish the tardigrade connectome**, and it gives people a place to practice and compare against the fly while they do.
 
-> **Status:** idea and requirements stage. There is no application code yet. See [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals, the proposed next step, and the open questions.
+> **Status:** MVP web app on mock data (Next.js, deployed on Vercel). See [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals and open questions, and [`docs/DEPLOY.md`](docs/DEPLOY.md) for hosting.
 
 ## Why tardigrades, why now
 
@@ -55,7 +55,18 @@ In parallel, the Play Pen can be built against public fly data: the training tas
 
 ## Getting started
 
-There is nothing to run yet. Once the stack is chosen, this section will cover installation, configuring data-access tokens (kept in environment variables and never committed), and running the Play Pen locally.
+The MVP is a Next.js app with five pages: progress dashboard, training, task board, roadmap and contributors. Tardimap data isn't public yet, so it runs on a mock tardigrade dataset behind an adapter (`src/lib/data/`).
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build, the same one Vercel runs
+```
+
+- **Swap the data source:** write an adapter that returns a `Dataset` (see `src/lib/data/types.ts`), register it in `src/lib/data/index.ts`, and set `PLAYPEN_DATA_SOURCE` to its id.
+- **JSON endpoints:** `/api/progress` and `/api/tasks`.
+- **Per-browser state:** the contributor handle, passed training and claimed tasks live in `localStorage` for now.
+- **Deploying:** see [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Contributing
 
