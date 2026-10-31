@@ -52,6 +52,7 @@ In parallel, the Play Pen can be built against public fly data: the training tas
 - Data portals: [FlyWire Codex](https://codex.flywire.ai/) (FAFB, BANC) and [neuPrint](https://neuprint.janelia.org/) (hemibrain, MANC, MaleCNS)
 - Infrastructure: [CAVEclient](https://github.com/seung-lab/CAVEclient) and [Neuroglancer](https://github.com/google/neuroglancer)
 - Analysis: [navis](https://github.com/navis-org/navis), [fafbseg-py](https://github.com/navis-org/fafbseg-py), the [natverse](https://natverse.org/), [cocoa](https://github.com/flyconnectome/cocoa), [coconat](https://natverse.org/coconat/) and [Coda](https://coda.science/). More are listed at https://flyconnecto.me/tools/.
+- **Which of these we'd adopt for Tardimap, and in what order:** [`docs/TECH_STACK.md`](docs/TECH_STACK.md).
 
 ## Getting started
 
