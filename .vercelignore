@@ -1,0 +1,9 @@
+node_modules
+.next
+.venv*
+packages/python/build
+**/__pycache__
+e2e-screenshots
+start.log
+.playpen-server.log
+data/kg/runtime.json
