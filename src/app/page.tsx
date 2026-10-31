@@ -22,6 +22,7 @@ export default async function Home() {
           <Link href="/train" className="btn">Start training</Link>
           <Link href="/tasks" className="btn secondary">Browse tasks</Link>
           <Link href="/roadmap" className="btn secondary">See the roadmap</Link>
+          <Link href="/demo" className="btn secondary">Watch the 60-second demo</Link>
         </div>
       </section>
 
