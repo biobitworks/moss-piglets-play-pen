@@ -234,3 +234,8 @@ npm-debug.log*
 
 # Knowledge graph runtime overlay (local only)
 data/kg/runtime.json
+
+# Fetched datasets (npm run data:fetch). C. elegans is small and committed.
+data/datasets/*/
+!data/datasets/celegans-hermaphrodite/
+e2e-screenshots/
