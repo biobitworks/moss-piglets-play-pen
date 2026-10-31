@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:34:00.001Z",
+ "syncedAt": "2026-10-31T21:34:00.347Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -227,6 +227,13 @@
    "isMerge": true,
    "subject": "Merge pull request #5 from biobitworks/claude/project-thread-qho8m6",
    "pr": 5
+  },
+  {
+   "sha": "252a7c29dea10e1d261e0ee3a8f6b72a1aa23990",
+   "at": "2026-10-31T21:34:00.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T12: chat backend switch between frontier (Claude), local (Ollama or any OpenAI-compatible server) and search only"
   }
  ]
 }
