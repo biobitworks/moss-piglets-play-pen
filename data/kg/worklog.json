@@ -159,6 +159,16 @@
    "commitAt": "2026-10-31T21:45:47.000Z",
    "subject": "T22: dataset browser, REST endpoints and agent tools over the starter datasets",
    "summary": "/datasets pages, /api/datasets REST, ds_list/ds_summary/ds_search_neurons/ds_neuron tools over MCP and chat; dataset nodes in the graph"
+  },
+  {
+   "kind": "task",
+   "task": "T23",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.480Z",
+   "commit": "0f74a1469ad257af8cbe59e1308be9dbb9e41f91",
+   "commitAt": "2026-10-31T21:45:48.000Z",
+   "subject": "T23: keep graph search fast and relevant at 20k+ nodes",
+   "summary": "sparse inverted index, incremental graph and index updates, O(1) dedupe, coalesced disk writes, capped boards, no hash collisions; reads at 20k nodes ~10x faster"
   }
  ]
 }
