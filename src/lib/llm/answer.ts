@@ -1,4 +1,4 @@
-import { graph, status, worklog } from "@/lib/kg/graph";
+import { graph, status } from "@/lib/kg/graph";
 import type { KGNode } from "@/lib/kg/types";
 import { search } from "@/lib/kg/vector";
 
@@ -91,9 +91,19 @@ function tools(q: string): string[] {
 }
 
 function timeline(): string[] {
-  const entries = worklog().filter((e) => e.kind === "task");
+  // Task nodes carry completion from both the worklog and "Tnn:" commits, so read them rather than the worklog alone.
+  const done = [...graph().nodes.values()]
+    .filter((n) => n.type === "task" && typeof n.props?.completedAt === "string")
+    .sort((a, b) => String(a.props!.completedAt).localeCompare(String(b.props!.completedAt)));
   const lines = ["Proof of work (task, when, commit):"];
-  lines.push(...(entries.length ? entries.slice(-12).map((e) => `- ${code(`fcg:task/${e.task}`)} ${e.status} at ${e.at.slice(11, 16)} UTC, commit \`${e.commit.slice(0, 7)}\`${e.summary ? `: ${e.summary}` : ""}`) : ["- No worklog entries yet."]));
+  lines.push(
+    ...(done.length
+      ? done.map((n) => {
+          const p = n.props!;
+          return `- ${code(n.id)} ${n.status} at ${String(p.completedAt).slice(11, 16)} UTC${p.commit ? `, commit \`${String(p.commit).slice(0, 7)}\`` : ""}${p.summary ? `: ${p.summary}` : ""}`;
+        })
+      : ["- No completed tasks yet."]),
+  );
   return lines;
 }
 
