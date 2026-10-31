@@ -97,7 +97,10 @@ fi
 URL="http://localhost:$PORT"
 if [ "$HOST" = "0.0.0.0" ]; then
   IP=$( (ipconfig getifaddr en0 || hostname -I | awk '{print $1}') 2>/dev/null || true)
-  [ -n "$IP" ] && URL="$URL (and http://$IP:$PORT on your network)"
+  if [ -n "$IP" ]; then
+    URL="$URL (and http://$IP:$PORT on your network)"
+    export PLAYPEN_DEV_ORIGINS="${PLAYPEN_DEV_ORIGINS:+$PLAYPEN_DEV_ORIGINS,}$IP,$(hostname)"
+  fi
 fi
 if [ "$MODE" = "prod" ]; then
   say "Building"
