@@ -169,6 +169,16 @@
    "commitAt": "2026-10-31T21:45:48.000Z",
    "subject": "T23: keep graph search fast and relevant at 20k+ nodes",
    "summary": "sparse inverted index, incremental graph and index updates, O(1) dedupe, coalesced disk writes, capped boards, no hash collisions; reads at 20k nodes ~10x faster"
+  },
+  {
+   "kind": "task",
+   "task": "T24",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.889Z",
+   "commit": "16fd3a8de8d400c06b4f9983692201f141abedf7",
+   "commitAt": "2026-10-31T21:45:48.000Z",
+   "subject": "T24: stress test report, starter datasets and CoDA notes, headless browser check",
+   "summary": "docs/STRESS_TEST.md and docs/DATASETS.md; scripts/e2e.cjs headless browser walk-through passes 9/9"
   }
  ]
 }
