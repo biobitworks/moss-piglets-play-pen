@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { status } from "@/lib/kg/graph";
 import { runTool, TOOLS } from "@/lib/kg/tools";
 import { search } from "@/lib/kg/vector";
+import { flush, sync } from "@/lib/kg/graph";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
   const last = history.at(-1);
   if (!last || last.role !== "user") return Response.json({ error: "send { messages: [{ role: 'user', content }] }" }, { status: 400 });
 
+  await sync();
   const hits = retrieve(last.content);
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return Response.json({ reply: offlineAnswer(last.content), retrieved: hits.map((h) => h.id), toolCalls: [], model: null });
@@ -87,6 +89,7 @@ export async function POST(req: Request) {
       messages.push({ role: "assistant", content: res.content });
       const uses = res.content.filter((b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use");
       if (res.stop_reason !== "tool_use" || !uses.length) {
+        await flush();
         const reply = res.content.filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text").map((b) => b.text).join("\n").trim();
         return Response.json({ reply: reply || "(no answer)", retrieved: hits.map((h) => h.id), toolCalls, model: res.model });
       }

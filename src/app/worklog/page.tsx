@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { gitCommits, graph, worklog } from "@/lib/kg/graph";
+import { gitCommits, graph, worklog, sync } from "@/lib/kg/graph";
 import { NodeLink, St } from "@/components/Status";
 
 export const metadata: Metadata = { title: "Worklog · Moss Piglet Play Pen" };
@@ -9,7 +9,8 @@ const fmt = (iso?: unknown) => (typeof iso === "string" ? new Date(iso).toISOStr
 const pt = (iso?: unknown) =>
   typeof iso === "string" ? new Date(iso).toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour: "numeric", minute: "2-digit" }) + " PT" : "";
 
-export default function WorklogPage() {
+export default async function WorklogPage() {
+  await sync();
   const tasks = [...graph().nodes.values()].filter((n) => n.type === "task");
   const entries = worklog();
   const commits = gitCommits().slice().reverse();

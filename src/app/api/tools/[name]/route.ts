@@ -1,11 +1,15 @@
 import { runTool, toolByName } from "@/lib/kg/tools";
+import { flush, sync } from "@/lib/kg/graph";
 
 export const dynamic = "force-dynamic";
 
 async function call(name: string, input: Record<string, unknown>) {
   if (!toolByName.has(name)) return Response.json({ error: `unknown tool ${name}` }, { status: 404 });
   try {
-    return Response.json({ tool: name, result: runTool(name, input) });
+    await sync();
+    const result = runTool(name, input);
+    await flush();
+    return Response.json({ tool: name, result });
   } catch (e) {
     return Response.json({ tool: name, error: (e as Error).message }, { status: 400 });
   }
