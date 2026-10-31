@@ -228,3 +228,6 @@ out/
 next-env.d.ts
 npm-debug.log*
 .env*.local
+
+# The Python template above ignores every "lib/" folder; the app's code lives in src/lib.
+!src/lib/
