@@ -35,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/agents">Agents</Link>
               <Link href="/worklog">Worklog</Link>
               <Link href="/contributors">Contributors</Link>
+              <Link href="/demo">Demo</Link>
             </nav>
           </div>
         </header>
