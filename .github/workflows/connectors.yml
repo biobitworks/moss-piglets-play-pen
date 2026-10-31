@@ -1,0 +1,41 @@
+name: connectors
+on:
+  pull_request:
+    paths: ["packages/**", "src/**", "data/**", ".github/workflows/connectors.yml"]
+  push:
+    branches: [main]
+    paths: ["packages/**"]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: r-lib/actions/setup-r@v2
+      - name: Install R dependencies
+        run: Rscript -e 'install.packages(c("curl", "jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+      - name: Node connector tests
+        working-directory: packages/cli
+        run: npm test
+      - name: Python connector tests
+        working-directory: packages/python
+        run: pip install -e '.[test]' && pytest -q
+      - name: Start a Play Pen server
+        run: |
+          npm ci
+          PLAYPEN_LOCAL_DISABLED=1 npx next dev -p 3000 > next.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf localhost:3000/api/tools > /dev/null && break; sleep 2; done
+      - name: R package (install + live tests)
+        run: |
+          R CMD build packages/r && R CMD INSTALL playpen_0.1.0.tar.gz
+          cd packages/r && PLAYPEN_TEST_WRITES=1 Rscript -e 'library(testthat); library(playpen); test_dir("tests/testthat", stop_on_failure = TRUE)'
+      - name: Clean installs against the live server
+        run: |
+          python -m venv /tmp/py && /tmp/py/bin/pip install ./packages/python
+          /tmp/py/bin/playpen status && /tmp/py/bin/playpen ask "what still needs building?" --llm search
+          (cd packages/cli && npm pack --pack-destination /tmp) && npm install -g --prefix /tmp/npm /tmp/playpen-connector-0.1.0.tgz
+          /tmp/npm/bin/playpen search synapse detection -k 3
+          printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' | /tmp/npm/bin/playpen-mcp | grep -q rag_ask

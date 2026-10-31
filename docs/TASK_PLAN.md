@@ -28,6 +28,14 @@ T01–T09 all finished by 2:03 PM PT and PR #4 merged at 2:11 PM PT. The next sl
 | 2:30–2:45   | 21:30–21:45 | T11  | Exact Vercel steps and env vars | `docs/DEPLOY.md` covers import, Redis, API key, read-only |
 | 2:45–3:00   | 21:45–22:00 | T12  | Chat switch: frontier (Claude) vs local (Ollama / OpenAI-compatible) vs search only | Picker on `/chat`; each backend answers, and an unavailable one falls back |
 
+Installable connectors (Byron, 3:00 PM PT: "cli, python, R, mcp, rag connector built that people can install"):
+
+| Slot (PT)   | Slot (UTC)  | Task | Deliverable | Done when |
+|-------------|-------------|------|-------------|-----------|
+| 3:00–3:15   | 22:00–22:15 | T30  | Python package: client, `playpen` CLI, `playpen-mcp` (stdio), RAG with a local model | `pip install` in a clean venv, tests pass, works against a live server |
+| 3:15–3:30   | 22:15–22:30 | T31  | Node CLI + MCP server and R package, same commands and RAG | `npm install -g`, `R CMD INSTALL`, tests pass against a live server |
+| 3:30–3:45   | 22:30–22:45 | T32  | Docs (README, `docs/CONNECTORS.md`), CI, test server on magicpro with Ollama | Install from the branch on magicpro answers with a local model |
+
 ## Rules for the slots
 
 - Commit at the end of every slot, even if the task is partial. A partial task is logged as

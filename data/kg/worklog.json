@@ -129,6 +129,26 @@
    "commitAt": "2026-10-31T21:34:00.000Z",
    "subject": "T12: chat backend switch between frontier (Claude), local (Ollama or any OpenAI-compatible server) and search only",
    "summary": "src/lib/llm/{claude,local,common}.ts; GET /api/chat lists backends; picker on /chat; local tool calling with fallback to context-only; tested against an OpenAI-compatible stub and in the browser"
+  },
+  {
+   "kind": "task",
+   "task": "T30",
+   "status": "built",
+   "at": "2026-10-31T22:09:52.878Z",
+   "commit": "bebe00a23fa1f9d9dc56a3d1020afe7e32ec1e44",
+   "commitAt": "2026-10-31T22:09:52.000Z",
+   "subject": "T30: Python connector: client, playpen CLI, playpen-mcp stdio server, RAG with a local model",
+   "summary": "Python package playpen-connector: stdlib-only client, CLI, MCP stdio server and RAG; 10 tests; clean venv install verified against a live server"
+  },
+  {
+   "kind": "task",
+   "task": "T31",
+   "status": "built",
+   "at": "2026-10-31T22:09:53.153Z",
+   "commit": "4dabca25d31e7ca002933cc54f1dfc0511c78ca8",
+   "commitAt": "2026-10-31T22:09:52.000Z",
+   "subject": "T31: Node CLI + MCP server and R package with the same commands and RAG",
+   "summary": "Node playpen-connector (zero deps, playpen + playpen-mcp, 5 tests) and R playpen (curl+jsonlite, 15 tests incl. live); clean installs verified"
   }
  ]
 }
