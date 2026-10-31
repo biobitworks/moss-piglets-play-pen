@@ -1,0 +1,16 @@
+{
+ "note": "Proof of work. Each entry records when a task reached a status and which commit did it. Written by `npm run log`.",
+ "timezone": "UTC (deadline assumed 4:00 PM Pacific = 23:00 UTC)",
+ "entries": [
+  {
+   "kind": "task",
+   "task": "T02",
+   "status": "built",
+   "at": "2026-10-31T20:55:34.470Z",
+   "commit": "1ccdfc265c68d91b651f13162a721e6c5c0221b5",
+   "commitAt": "2026-10-31T20:55:34.000Z",
+   "subject": "T02: FCO vocabulary and seeded FCG with addressable nodes",
+   "summary": "FCO (15 node types, 20 edge types) and FCG seed: 75 nodes, 125 edges, fly tools and tardigrade capabilities"
+  }
+ ]
+}

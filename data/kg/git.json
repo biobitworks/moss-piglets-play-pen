@@ -1,0 +1,90 @@
+{
+ "syncedAt": "2026-10-31T20:54:49.515Z",
+ "commits": [
+  {
+   "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
+   "at": "2026-10-31T19:44:19.000Z",
+   "author": "Byron P. Lee",
+   "isMerge": false,
+   "subject": "Initial commit"
+  },
+  {
+   "sha": "b7478ca4995b310808a8411a8427bb85342752d2",
+   "at": "2026-10-31T19:51:06.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Add README and requirements draft for the Tardimap–Fly Connectome connector"
+  },
+  {
+   "sha": "d1245ff08ffe18a394655476d2ba2a3ff0398b22",
+   "at": "2026-10-31T20:01:59.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Reframe README and requirements around an open, contributor-friendly tardigrade connectome"
+  },
+  {
+   "sha": "5be1b884b1134949a37bbc0537ac020f412640f5",
+   "at": "2026-10-31T20:06:07.000Z",
+   "author": "Aditya  Seshabhatter",
+   "isMerge": true,
+   "subject": "Merge pull request #1 from biobitworks/claude/project-thread-zs906w",
+   "pr": 1
+  },
+  {
+   "sha": "a0004a5c76e7a50a3288101c7d80a565a2e6c9ca",
+   "at": "2026-10-31T20:13:22.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Add MVP web app for Vercel: progress, training, tasks, roadmap, credits"
+  },
+  {
+   "sha": "39a32106a3b30bda162bdc74acd0163b43349d41",
+   "at": "2026-10-31T20:13:39.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Document running the MVP and deploying it on Vercel"
+  },
+  {
+   "sha": "b0ce26528afb983e9c1b3cd2af9e10406fa9a097",
+   "at": "2026-10-31T20:28:55.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Add tech stack review: fly connectome tools, dataset links, and a phased Tardimap stack"
+  },
+  {
+   "sha": "47de1798fdcc95566702fc637c5595dc508862cc",
+   "at": "2026-10-31T20:31:08.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Add Virtual Fly Brain model for linking connectome data to scRNAseq and ontologies"
+  },
+  {
+   "sha": "e87d5eecd0dc976094cd383f0bbfeda29ef67110",
+   "at": "2026-10-31T20:49:34.000Z",
+   "author": "Claude",
+   "isMerge": true,
+   "subject": "Merge remote-tracking branch 'origin/claude/project-thread-he8tr3' into claude/project-thread-qho8m6"
+  },
+  {
+   "sha": "f63fbd56bb4c38ca992f4155a018b0b5e69e769d",
+   "at": "2026-10-31T20:50:54.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Commit src/lib, which the Python .gitignore template was excluding"
+  },
+  {
+   "sha": "36b72744a59fa6fd465ea929fbe8812533b85654",
+   "at": "2026-10-31T20:51:44.000Z",
+   "author": "Claude",
+   "isMerge": true,
+   "subject": "Merge remote-tracking branch 'origin/claude/project-thread-ma9dma' into claude/project-thread-qho8m6"
+  },
+  {
+   "sha": "ebe77fb900dfa3883ab1b34b934092345dd5de22",
+   "at": "2026-10-31T20:52:42.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T01: merge PR #2 and #3, add agent connector roadmap and 15-minute task plan"
+  }
+ ]
+}
