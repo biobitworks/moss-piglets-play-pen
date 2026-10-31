@@ -4,9 +4,9 @@
 **Owner:** Byron
 **Answers:** OQ-4 (CAVE and Neuroglancer for Tardimap?) and OQ-8 (stack and hosting) in [`REQUIREMENTS.md`](REQUIREMENTS.md), as far as they can be answered before we hear back from Tardimap (Step 0).
 
-This review covers the tools on [flyconnecto.me/tools](https://flyconnecto.me/tools/) and in the [adult *Drosophila* connectome ecosystem guide](https://flyconnecto.me/2026/09/04/the-adult-drosophila-connectome-ecosystem/), plus the infrastructure behind them that those pages assume (CAVE, Neuroglancer, neuPrint, Codex). It asks three questions: what each tool does and what data it reads, how the fly datasets connect to one another, and which pieces we should adopt, adapt or skip for a tardigrade connectome of fewer than 600 neurons.
+This review covers the tools on [flyconnecto.me/tools](https://flyconnecto.me/tools/) and in the [adult *Drosophila* connectome ecosystem guide](https://flyconnecto.me/2026/09/04/the-adult-drosophila-connectome-ecosystem/), plus the infrastructure behind them that those pages assume (CAVE, Neuroglancer, neuPrint, Codex), and [Virtual Fly Brain](https://virtualflybrain.org/) as the model for linking connectomes to other data such as scRNAseq (§4b). It asks three questions: what each tool does and what data it reads, how the fly datasets connect to one another, and which pieces we should adopt, adapt or skip for a tardigrade connectome of fewer than 600 neurons.
 
-> **The short version.** Adopt the fly ecosystem's *data contract* now: Neuroglancer precomputed volumes, versioned tables of neurons, synapses and annotations, and navis-readable skeletons. Build the Play Pen on that contract, Codex style, as static versioned releases. Don't stand up a full CAVE deployment until Tardimap tells us what proofreading engine they already use. At under 600 neurons, a lighter engine (CATMAID, or a minimal CAVE) may be the better fit, and the contract keeps either option open.
+> **The short version.** Adopt the fly ecosystem's *data contract* now: Neuroglancer precomputed volumes, versioned tables of neurons, synapses and annotations, and navis-readable skeletons. Build the Play Pen on that contract, Codex style, as static versioned releases. Give every neuron a cell-type ID from a small tardigrade vocabulary, so expression data and fly links can join on it the way Virtual Fly Brain does. Don't stand up a full CAVE deployment until Tardimap tells us what proofreading engine they already use. At under 600 neurons, a lighter engine (CATMAID, or a minimal CAVE) may be the better fit, and the contract keeps either option open.
 
 ---
 
@@ -128,6 +128,40 @@ The fly community links datasets at four levels. Each one tells us something dif
 - Between fly and tardigrade, only **level 4 (a curated link table)** and **coarse level 3 (graph statistics and motifs, C-2)** are honest. That's why REQUIREMENTS says "don't claim homology automatically", and the stack shouldn't pretend otherwise.
 - The cheapest way to make Tardimap a first-class "dataset" next to the six fly ones is a **dataset adapter** for cocoa (Python) and coconat (R) that returns the same connectivity and annotation tables the fly adapters return. Then the same comparison code runs on both animals.
 
+## 4b. Linking connectome data to other data: the Virtual Fly Brain model
+
+Section 4 is about linking one connectome to another. [Virtual Fly Brain](https://virtualflybrain.org/) (VFB) goes a level higher. It links the connectomes to **other kinds of data**, such as single-cell transcriptomics, light-microscopy images and genetic driver lines, by hanging everything on one shared vocabulary of cell types. This is the model for a Tardimap that is more than a wiring diagram.
+
+### How VFB does it
+
+| Piece | What it does | Technology |
+|---|---|---|
+| **The hub: Drosophila Anatomy Ontology (FBbt)** | Every cell type and brain region has a stable ID (for example `FBbt_00003624` for the adult brain), with `is_a` and `part_of` relations. Every dataset maps its items to these IDs. | OWL ontology, maintained with FlyBase. |
+| **Connectomes** | Eight EM datasets (BANC v888, FlyWire v783, male-CNS v1.0, MANC v1.2.1, optic lobe v1.0.1, hemibrain v1.2.1, FAFB and L1 larva via CATMAID) sit in one knowledge graph. Both ends of every edge are classified to FBbt, so "inputs to cell type X" runs across all of them. Overlapping datasets are excluded by default to avoid double counting, and unmapped neurons stay queryable on their own. ([Connectivity](https://virtualflybrain.org/docs/data/connectivity/)) | Neo4j knowledge graph. |
+| **scRNAseq** | 24 published datasets (Fly Cell Atlas, Aging Fly Cell Atlas, Davie 2018, Ozel 2021, Allen 2020 VNC, and others) from embryo to aged adult, with about 15.5k genes. **Each cluster is annotated with an FBbt cell-type term.** VFB doesn't sequence anything; it curates the cluster-to-cell-type link. Genes are kept only where at least 20% of a cluster's cells express them. ([scRNAseq](https://virtualflybrain.org/docs/data/scrnaseq/)) | Data comes via FlyBase from the EBI Single Cell Expression Atlas. There's a machine-readable [TSV](https://github.com/VirtualFlyBrain/VFB_reporting_results/blob/master/scRNAseq_DataSets.tsv). |
+| **Images** | Light-microscopy and EM neurons registered to template brains, shown in a 3D browser. | Template-space registration (as in §4 level 1). |
+| **Reasoning** | Answers questions like "all neurons that are part of the antennal lobe", including every subregion. | [Owlery](https://virtualflybrain.org/docs/apis/owlery/): OWL description-logic queries plus SPARQL. |
+| **Search** | Fast lookup of terms and images. | [Solr](https://virtualflybrain.org/docs/apis/solr/). |
+| **Query orchestration** | One question fans out: Owlery finds the subregions, Neo4j finds the neurons, Solr fetches the images. | [VFBquery](https://virtualflybrain.org/docs/apis/vfbquery/), [PDB](https://virtualflybrain.org/docs/apis/pdb/) and [KB](https://virtualflybrain.org/docs/apis/kb/) APIs. |
+| **Access** | A Term Info page per cell type with "connectivity", "single-cell transcriptomics data for…" and image queries, plus CSV export. The same queries are available from Python and from AI assistants. | [VFB_connect](https://vfb-connect.readthedocs.io/) (Python), [MCP server](https://virtualflybrain.org/docs/apis/mcp/), [CATMAID API](https://virtualflybrain.org/docs/apis/catmaid/). |
+
+**The key idea:** datasets are never joined to each other directly. Each one is joined to a cell-type term, and the term is the join key. That's why a cluster from a 2018 sequencing paper and a neuron from a 2026 connectome land on the same page.
+
+### What this means for Tardimap
+
+| VFB piece | Tardimap equivalent | Verdict |
+|---|---|---|
+| FBbt ontology as the hub | A small **tardigrade cell-type vocabulary** with stable IDs (`TARDI:0000123`), `is_a` and `part_of` relations, and cross-references to [Uberon](https://obophenotype.github.io/uberon/) and the [Cell Ontology](https://obofoundry.org/ontology/cl.html) where they fit. I don't know of an existing tardigrade anatomy ontology, so check with Tardimap and the OBO Foundry before starting one. | **Adopt from day one.** It's cheap at under 600 neurons (likely tens to a couple of hundred types). Every neuron in `neurons.csv` carries a `cell_type_id`. This is the most important thing to borrow from VFB. |
+| Connectome edges classified to types | `connections.csv` plus `cell_type_id` on both ends gives type-to-type connectivity directly. | **Adopt.** It's free once the vocabulary exists. |
+| scRNAseq clusters annotated to types | A `links/expression.csv` table (dataset, cluster_id, cell_type_id, evidence, author), filled as tardigrade single-cell datasets for *H. exemplaris* appear. Use gene IDs from the published genome assembly. | **Design for it now, fill it later.** Ask Tardimap which molecular datasets exist or are planned (TS-5). |
+| Images in a template space | Specimen templates once there's more than one EM or light-microscopy specimen (§4 level 1). | Later. |
+| Cross-species bridge | Map tardigrade terms to fly FBbt terms only through curated `links/fly.csv` rows, with evidence. Uberon and CL cross-references give a neutral middle layer for broad classes such as "motor neuron" or "sensory neuron". | **Adopt, by hand.** This is the honest form of G6. |
+| Neo4j + Owlery + Solr + VFBquery | For 600 neurons, **static release tables + an OWL/OBO file + in-app joins** cover it. A Neo4j or Owlery service is worth it only if Tardimap data is loaded into VFB itself, or the number of linked datasets grows large. | **Skip the servers; keep the shape.** Publish the vocabulary as OBO/OWL so it can be loaded into VFB or Owlery later. |
+| VFB_connect and the MCP server | `tardimap-py` (§7) exposes the same kinds of queries: partners of a type, expression in a type, members of a region. An MCP endpoint over the release files is cheap and helps newcomers ask questions in plain language. | **Adopt the query set.** Add MCP in phase 5. |
+| Term Info page | The Play Pen's neuron and cell-type pages: status, connectivity, expression, fly candidates, discussion, contributors. | **Adopt.** It's the natural centre of the contributor UI. |
+
+**The longer-term option:** rather than building "VFB for tardigrades", ask the VFB team whether Tardimap could be hosted *in* VFB or as a sister instance using their pipeline, once a vocabulary and a release exist. That's the same "don't rebuild, plug in" argument as for Coda (TS-6).
+
 ## 5. Choosing a proofreading engine for under 600 neurons
 
 This depends on Tardimap's answer to OQ-2, so here are the options with a default for each answer.
@@ -149,12 +183,15 @@ This is the piece to agree with Tardimap. It's small, it's built on fly conventi
 release/v{N}/
   manifest.json            version, date, specimen ("Riker"), voxel size, source pipeline, citation, license
   neurons.feather|csv      neuron_id, status (segmented|proofread|synapses|typed|named), class, type, name,
-                           side, region, soma_xyz, proofreader(s)
+                           cell_type_id (ontology term, §4b), side, region, soma_xyz, proofreader(s)
+  ontology/tardi.obo|owl   tardigrade cell-type and region vocabulary with Uberon/CL cross-references (§4b)
   synapses.feather|csv     pre_id, post_id, pre_xyz, post_xyz, confidence
   connections.feather|csv  pre_id, post_id, n_synapses        (Codex-style edge list)
   annotations.feather|csv  neuron_id or point_xyz, table, value, author, timestamp   (CAVE-style)
   contributors.csv         contributor, role, tasks_accepted   (feeds T-5 credit export)
-  links/fly.csv            tardigrade_id, fly_dataset, fly_type, link_type, confidence, evidence, author (C-1)
+  links/fly.csv            tardigrade_id or cell_type_id, fly_dataset, fly_type / FBbt id, link_type,
+                           confidence, evidence, author (C-1)
+  links/expression.csv     dataset, cluster_id, cell_type_id, evidence, author   (VFB-style scRNAseq link)
   precomputed/             Neuroglancer precomputed: em/ (optional), segmentation/, meshes/, skeletons/
   swc/                     one SWC per neuron (navis, nat, everything else)
 ```
@@ -163,6 +200,7 @@ release/v{N}/
 - **Annotations as points** (the CAVE idea) survive re-segmentation.
 - **The precomputed layout** lets one Neuroglancer state file open any neuron.
 - **Numbered releases** give us P-3 and N-4 for free.
+- **The ontology is the join key**, as in VFB: connectome, expression and fly links all join on `cell_type_id`, never on each other.
 - **It's easy to generate from CATMAID, CAVE or WebKnossos**, so it doesn't lock Tardimap into an engine.
 
 ## 7. Recommended stack for the Play Pen
@@ -177,20 +215,22 @@ release/v{N}/
 | Auth | GitHub or ORCID OAuth | ORCID gives scientific credit (T-5) a real identifier. |
 | Proofreading engine | Per §5: none (MVP) → Tardimap's own → CATMAID → CAVE | Decided by Step 0. |
 | Analysis for contributors | **navis notebooks + Coda** | Coda gives no-code analysis once data is in a backend it reads. |
+| Cell-type vocabulary | **OBO/OWL file in the repo**, edited by pull request (and later in ODK/Protégé), cross-referenced to Uberon and CL | The VFB hub idea at tardigrade scale (§4b). |
 | Comparison (later) | **cocoa / coconat adapters** + curated `links/fly.csv` | Reuse the comparative tools rather than reinventing them. |
+| Linking other data (later) | `links/expression.csv` and similar tables joined on `cell_type_id`; VFB_connect-style queries and an MCP endpoint in `tardimap-py` | The VFB model without running Neo4j, Owlery or Solr. |
 | Packages we publish | `tardimap-py` (navis-based) and later `tardimapr` (nat-based) | Mirrors fafbseg / bancr and makes Tardimap a "seventh dataset". |
 
 ## 8. Phases
 
 | Phase | What | Fly pieces used | Depends on | Maps to |
 |---|---|---|---|---|
-| **0. Talk** | Send Tardimap the data contract (§6) and the engine options (§5) along with the Step 0 email. | — | Nothing | D-1, D-3, OQ-2, OQ-4 |
+| **0. Talk** | Send Tardimap the data contract (§6), the engine options (§5) and the cell-type vocabulary idea (§4b) along with the Step 0 email. | — | Nothing | D-1, D-3, OQ-2, OQ-4 |
 | **1. MVP on fly data** | Replace PR #2's mock data with a real FlyWire slice: a Python job (fafbseg-py / CAVEclient, or Codex downloads) writes release files in the §6 format, and tasks open in FlyWire Neuroglancer with known answers. | Codex, CAVEclient, fafbseg-py, navis, Neuroglancer | A free FlyWire / CAVE token | P-1, P-2, T-1 to T-3, E-1 |
 | **2. Contributor state** | Accounts (ORCID), task claiming, submissions, review queue, credit export. | — | Phase 1 | T-4, T-5 |
-| **3. First Tardimap release** | Tardimap's pipeline exports to the contract (we write the exporter: CATMAID → contract, WebKnossos → contract, and so on), precomputed via cloud-volume / igneous, SWC via skeletor or kimimaro. The progress view switches data source. | cloud-volume, igneous, skeletor, navis, Neuroglancer | Tardimap agreement and access | D-2, E-2, E-4, Step 2 |
+| **3. First Tardimap release** | Start the cell-type vocabulary with Tardimap's existing names. Tardimap's pipeline exports to the contract (we write the exporter: CATMAID → contract, WebKnossos → contract, and so on), precomputed via cloud-volume / igneous, SWC via skeletor or kimimaro. The progress view switches data source. | cloud-volume, igneous, skeletor, navis, Neuroglancer | Tardimap agreement and access | D-2, E-2, E-4, Step 2 |
 | **4. Live proofreading** | Tasks write to Tardimap's engine instead of being suggestions: CATMAID through its API, or a minimal CAVE if hosting is sponsored. | CATMAID / pymaid or CAVE | Phase 3 plus an engine decision | T-2 (live) |
-| **5. Seventh dataset** | Publish `tardimap-py`, a cocoa/coconat adapter and a connecto back end. Ask the Coda maintainers about adding Tardimap. | navis, cocoa, coconat, connecto, Coda | Public release | E-3, G3 |
-| **6. Compare** | Curated fly link table, network statistics and motif comparison, a bigclust-style typing view. | cocoa, coconat, bigclust, NBLAST (within tardigrade) | Phase 5 | C-1 to C-3, G6 |
+| **5. Seventh dataset** | Publish `tardimap-py` (with VFB_connect-style queries and an MCP endpoint), a cocoa/coconat adapter and a connecto back end. Ask the Coda and VFB maintainers about adding Tardimap. | navis, cocoa, coconat, connecto, Coda, VFB | Public release + vocabulary | E-3, G3 |
+| **6. Compare and link** | Curated fly link table (to FBbt terms), network statistics and motif comparison, a bigclust-style typing view, and expression links for any tardigrade single-cell data. | cocoa, coconat, bigclust, NBLAST (within tardigrade), VFB model | Phase 5 | C-1 to C-3, G6 |
 
 ## 9. Open points this review adds
 
@@ -198,8 +238,10 @@ release/v{N}/
 - **TS-2.** Is anyone in the fly community (the Cambridge group, Seung lab or Janelia FlyEM) willing to host or advise on a small CAVE or CATMAID instance? This connects to OQ-6.
 - **TS-3.** Static release hosting: the repo is fine for a 600-neuron table, but precomputed meshes and EM need a bucket. Who pays for it? A Google Cloud public-dataset or AWS Open Data application is the usual answer.
 - **TS-4.** Do we want Coda support early? It's the fastest way to give non-programmers real analysis, and it requires serving data through neuPrint, CAVE or CATMAID.
+- **TS-5.** Does Tardimap (or anyone) have, or plan, single-cell or spatial transcriptomics for *H. exemplaris*, and does a tardigrade anatomy vocabulary exist already? This decides whether `links/expression.csv` has anything to hold soon.
+- **TS-6.** Would the Virtual Fly Brain team host Tardimap, or support a sister instance on their pipeline, once a release and a vocabulary exist?
 
 ## 10. Caveats
 
-- The per-tool descriptions come from flyconnecto.me (tools page and dataset guide, read 2026-10-31) and from each project's public documentation as I understand it. The infrastructure rows (CAVE internals, DVID, cloud-volume, igneous, kimimaro) aren't on the tools page and come from those projects' own repos. Check details such as exact APIs against current docs before building on them.
+- The per-tool descriptions come from flyconnecto.me (tools page and dataset guide, read 2026-10-31), and the VFB section from virtualflybrain.org (scRNAseq, connectivity and Owlery API pages, read 2026-10-31), and from each project's public documentation as I understand it. The infrastructure rows (CAVE internals, DVID, cloud-volume, igneous, kimimaro) aren't on the tools page and come from those projects' own repos. Check details such as exact APIs against current docs before building on them.
 - Nothing is known yet about Tardimap's own pipeline. Every "Tardimap verdict" is a recommendation to discuss with the consortium, not a decision.
