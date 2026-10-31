@@ -1,94 +1,76 @@
 # Moss Piglet Play Pen
 
-**A connector between [Tardimap](https://tardimap.org/) (the tardigrade connectome) and the Fly Connectome ([FlyWire](https://codex.flywire.ai/)).**
+**An open on-ramp for finishing the tardigrade connectome, built on what the fly connectome community learned.**
 
-"Moss piglet" is a common name for tardigrades. This app is a play pen where tardigrade neurons and fruit fly neurons can be loaded side by side, linked, and compared.
+"Moss piglet" is a common name for tardigrades. [Tardimap](https://tardimap.org/) is mapping every neuron and synapse in the tardigrade *Hypsibius exemplaris*. The fly connectome ([flyconnecto.me](https://flyconnecto.me/), FlyWire and related datasets) was finished because hundreds of people, from lab scientists to citizen scientists, could step in, proofread neurons, and share annotations through open tools.
 
-> **Status:** idea / requirements stage. There is no application code yet. See [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for what the app needs to do and the open questions that still need answers.
+This project connects the two. It brings the fly connectome's tools, workflows and community model to Tardimap, so that **anyone can step in and help finish the tardigrade connectome**, and it gives people a place to practice and compare against the fly while they do.
 
-## Why connect these two datasets?
+> **Status:** idea and requirements stage. There is no application code yet. See [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals, the proposed next step, and the open questions.
 
-Tardigrades and insects are both panarthropods, so their nervous systems share a deep common ancestry, but they sit at opposite ends of the size scale:
+## Why tardigrades, why now
 
-| | Tardimap | Fly Connectome (FlyWire FAFB) |
+| | Tardimap (tardigrade) | Fly Connectome (*Drosophila*) |
 |---|---|---|
-| Organism | *Hypsibius exemplaris* (tardigrade) | *Drosophila melanogaster* (fruit fly) |
-| Scope | Whole animal (planned) | Whole adult brain (BANC adds the nerve cord) |
-| Neurons | Fewer than ~600 | ~139,000 |
-| Imaging | FIB-SEM / serial-section EM ("Riker" dataset) | Serial-section TEM |
-| Status | Imaging complete, reconstruction in progress | Released; default snapshot v783 |
-| Access | Not yet public (contact@tardimap.org) | Codex downloads (CSV, token required) and the CAVE API |
+| Neurons | Fewer than ~600, whole body | ~140k (FlyWire brain) to ~166k (MaleCNS whole CNS) |
+| Imaging | FIB-SEM / serial-section EM ("Riker" dataset), complete | ssTEM and FIB-SEM, complete |
+| Reconstruction | In progress | Finished and proofread across six public datasets |
+| How it got done | To be decided | Open, community proofreading with shared tools (CAVE, Neuroglancer, Codex, neuPrint) |
+| Public data | Not yet (contact@tardimap.org) | Yes (Codex, neuPrint) |
 
-A connector lets researchers, students and curious people ask questions such as:
+A whole-animal nervous system of under 600 neurons is small enough that a motivated community could finish it. The fly shows that the hard part is less the imaging than the proofreading and annotation, and that open tools plus a low barrier to entry are what let many people help.
 
-- Which fly cell types are candidate counterparts of a given tardigrade neuron?
-- Do small circuit motifs (feed-forward loops, reciprocal pairs) show up at similar rates in both animals?
-- How does a tiny, whole-body nervous system compare with one region of a much larger brain?
+## What the Play Pen will do
 
-## What the app will do
-
-1. **Ingest** connectome data from both sources into one common data model (neurons, synapses/edges, cell types, neurotransmitters, regions).
-2. **Link** tardigrade neurons to fly neurons or cell types through user-made or suggested mappings, each with a confidence level and a note on the evidence.
-3. **Compare** network statistics and motifs across the two graphs.
-4. **Explore** both connectomes side by side in a browser, with search, neighborhood views and 3D morphology where available.
-5. **Export** mappings and comparison results in open formats (CSV, JSON, GraphML) with full citations for both sources.
+1. **Show the state of the tardigrade connectome:** which neurons are reconstructed, proofread, typed and named, and what is left.
+2. **Turn what's left into tasks anyone can pick up:** small, well-defined proofreading and annotation jobs with clear instructions.
+3. **Train newcomers on finished fly data first:** practice tasks with known answers drawn from FlyWire, so people learn before they touch tardigrade data.
+4. **Reuse the fly ecosystem instead of rebuilding it:** CAVE, Neuroglancer, navis and the natverse wherever they fit Tardimap's pipeline.
+5. **Credit every contributor,** the way FlyWire credits proofreaders and annotators.
+6. **Later, compare the two animals:** link tardigrade neurons to candidate fly counterparts and compare circuits, using comparative tools such as cocoa or coconat.
 
 Details, priorities and acceptance criteria are in [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md).
 
-## Data sources
+## The proposed next step
 
-### Tardimap
-- Website: https://tardimap.org/
-- Run by the Tardigrade Connectome Consortium as an open-science project. The site says all data, tools and results will be released openly, but no download, API or file format is published yet.
-- Until Tardimap publishes data, the app will use a small sample or mock tardigrade dataset behind the same interface, so the rest of the app can be built now.
+Tardimap's imaging is done, but its data and reconstruction pipeline aren't public yet. So the first step is to **talk to the Tardimap consortium** and find out:
 
-### Fly Connectome
-- FlyWire Codex: https://codex.flywire.ai/ (bulk downloads at the Codex download portal; an account API token is required).
-- Live, versioned queries: [CAVEclient](https://github.com/seung-lab/CAVEclient).
-- Main tables: `connections_princeton` (synaptic connections) and `consolidated_cell_types`, plus neurotransmitter predictions and SWC skeletons where available.
-- Other fly datasets (the hemibrain or MANC via neuPrint, or BANC) could be added later through the same adapter pattern.
+- what tools they use for segmentation and proofreading, and whether those are CAVE and Neuroglancer compatible;
+- whether they want outside contributors, and on what terms (data access, licensing, credit);
+- which part of the work is the bottleneck today.
 
-## Planned architecture (proposal)
+In parallel, the Play Pen can be built against public fly data: the training tasks, the progress view and the contributor flow. It then plugs into Tardimap once access is agreed. The full plan is in section 7 of the requirements doc.
 
-```
- ┌──────────────┐     ┌──────────────┐
- │  Tardimap    │     │  FlyWire     │
- │  adapter     │     │  adapter     │
- └──────┬───────┘     └──────┬───────┘
-        │  normalize          │  normalize
-        ▼                     ▼
- ┌────────────────────────────────────┐
- │  Common connectome model           │
- │  (neurons, edges, types, versions) │
- └──────────────┬─────────────────────┘
-                │
-   ┌────────────┼──────────────┐
-   ▼            ▼              ▼
- Mapping     Comparison      Web UI / API
- store       engine          (explore, export)
-```
+## Sources and tools
 
-The stack is not decided yet (see the open questions in the requirements doc). A likely default is a Python backend (CAVEclient, pandas, NetworkX) with a TypeScript web front end and Neuroglancer for 3D views.
+**Tardimap**
+- https://tardimap.org/ (Tardigrade Connectome Consortium, open science, *H. exemplaris*, "Riker" dataset)
+
+**Fly Connectome**
+- Drosophila Connectomics Group, Cambridge: https://flyconnecto.me/
+- Dataset guide: [The adult Drosophila connectome ecosystem](https://flyconnecto.me/2026/09/04/the-adult-drosophila-connectome-ecosystem/)
+- Data portals: [FlyWire Codex](https://codex.flywire.ai/) (FAFB, BANC) and [neuPrint](https://neuprint.janelia.org/) (hemibrain, MANC, MaleCNS)
+- Infrastructure: [CAVEclient](https://github.com/seung-lab/CAVEclient) and [Neuroglancer](https://github.com/google/neuroglancer)
+- Analysis: [navis](https://github.com/navis-org/navis), [fafbseg-py](https://github.com/navis-org/fafbseg-py), the [natverse](https://natverse.org/), [cocoa](https://github.com/flyconnectome/cocoa), [coconat](https://natverse.org/coconat/) and [Coda](https://coda.science/). More are listed at https://flyconnecto.me/tools/.
 
 ## Getting started
 
-There is nothing to run yet. Once the stack is chosen, this section will cover:
+There is nothing to run yet. Once the stack is chosen, this section will cover installation, configuring data-access tokens (kept in environment variables and never committed), and running the Play Pen locally.
 
-- prerequisites and installation
-- configuring a FlyWire / Codex API token (kept in environment variables and never committed)
-- loading the sample tardigrade dataset
-- running the app locally
+## Contributing
+
+The point of this project is that anyone can contribute. A `CONTRIBUTING.md` will follow once the first tasks exist. For now, comments on the requirements doc are the most useful contribution.
 
 ## Citing the data
 
-Any use of this app must cite both upstream datasets. FlyWire publishes its citation requirements on the Codex download portal. Tardimap's citation will be added when the consortium publishes it.
+Cite every upstream dataset you use. FlyWire and the other fly datasets publish their citation requirements, and these are linked from the dataset guide above. Tardimap's citation will be added when the consortium publishes it.
 
 ## Links
 
 - Project page: https://app.strangerbuilds.com/p/moss-piglet-play-pen
 - Tardimap: https://tardimap.org/
-- FlyWire Codex: https://codex.flywire.ai/
+- Fly Connectome: https://flyconnecto.me/
 
 ## License
 
-Not chosen yet (see the open questions in the requirements doc). Data from each source stays under that source's own terms.
+Not chosen yet (see the open questions). Data from each source stays under that source's own terms.

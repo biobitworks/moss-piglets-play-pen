@@ -1,154 +1,160 @@
 # Moss Piglet Play Pen: Requirements
 
-**Status:** Draft v0.1 for review (2026-10-31)
+**Status:** Draft v0.2 for review (2026-10-31). Reframed around an open, contributor-friendly tardigrade connectome.
 **Owner:** Byron
-**One line:** A connector between Tardimap (the tardigrade connectome) and the Fly Connectome.
+**Goal in one line:** Find and build the next step toward a tardigrade connectome that anyone can step in and help finish, the way the fly connectome was finished.
 
-This document says what the app must do. It does not decide how. Items marked **(OQ-n)** depend on an open question listed in section 8. Priorities: **Must** = needed for the first usable version (MVP), **Should** = wanted soon after, **Could** = later or nice to have.
+This document says what the Play Pen must do. It does not decide how. Items marked **(OQ-n)** depend on an open question in section 9. Priorities: **Must** = needed for the first usable version (MVP), **Should** = wanted soon after, **Could** = later.
 
 ---
 
-## 1. Goals
+## 1. Background
 
-1. Put the tardigrade connectome (Tardimap) and the fruit fly connectome (FlyWire) into one place with one shared data model.
-2. Let users link tardigrade neurons to fly neurons or cell types, and record why.
-3. Let users compare the two wiring diagrams with numbers (network statistics, motifs) and pictures (side-by-side views).
-4. Keep everything reproducible: every result names the dataset versions it came from, and both sources are cited.
+- **Tardimap** ([tardimap.org](https://tardimap.org/)) is an open-science consortium mapping the whole nervous system of the tardigrade *Hypsibius exemplaris*, which has fewer than ~600 neurons. Whole-body EM imaging (the "Riker" dataset) is complete and reconstruction is in progress. No data, tools, pipeline or contributor process is public yet.
+- **The fly connectome** ([flyconnecto.me](https://flyconnecto.me/) and partners) is now finished across six public datasets: hemibrain, FAFB/FlyWire, FANC, MANC, MaleCNS and BANC. FlyWire in particular was proofread by a large, distributed community of labs and citizen scientists using shared, open infrastructure (CAVE for versioned segmentation and annotation, Neuroglancer for viewing, Codex and neuPrint for browsing and download), with analysis libraries such as navis, fafbseg and the natverse. Contributors were credited in the publications.
 
-## 2. Non-goals (for the MVP)
+**The idea:** apply that recipe to the tardigrade. A connectome of under 600 neurons is small enough for a community to finish, if newcomers can be trained, given small tasks, and credited.
 
-- Doing EM segmentation, proofreading or tracing. Tardimap and FlyWire own that work.
-- Hosting or mirroring the raw EM image volumes.
-- Claiming evolutionary homology automatically. The app records and scores proposed links, and people judge them.
-- Writing data back into FlyWire or Tardimap.
+## 2. Goals
 
-## 3. Users
+1. **G1. Find the next step.** Work out what currently blocks the tardigrade connectome from being finished by an open community, and write down a concrete next step.
+2. **G2. Lower the barrier to contributing.** Make it possible for someone with no connectomics background to learn, pick up a task, and contribute useful proofreading or annotation.
+3. **G3. Reuse the fly ecosystem.** Build on proven fly connectome tools and workflows rather than inventing new ones.
+4. **G4. Make progress visible.** Show how much of the tardigrade connectome is done and what is left.
+5. **G5. Credit contributors.** Every contribution is attributed.
+6. **G6 (later). Compare the two animals.** Once both connectomes exist, link and compare tardigrade and fly circuits.
+
+## 3. Non-goals (for the MVP)
+
+- Re-imaging or hosting raw EM volumes. Tardimap owns the data.
+- Building a new segmentation or proofreading engine. The Play Pen wraps existing tools.
+- Publishing or redistributing Tardimap data without the consortium's agreement.
+- Claiming evolutionary homology automatically.
+
+## 4. Users
 
 | User | What they want |
 |---|---|
-| Comparative neuroscientist | Propose and test tardigrade–fly correspondences and export results for a paper. |
-| Tardimap consortium member | See how new reconstructions relate to known fly cell types while the tardigrade connectome is still being built. |
-| Student or curious member of the public | Explore a whole-animal nervous system of under 600 neurons next to a fly brain. |
-| Developer | Use the app's API or data model to build further tools. |
+| **Newcomer / citizen scientist** | Learn what a connectome is, practice, then help with real tardigrade tasks. |
+| **Student or lab researcher** | Contribute proofreading and cell-typing, and use the data in their own work. |
+| **Tardimap consortium member** | Spread the remaining work across more people with quality control, and track progress. |
+| **Fly connectomics expert** | Bring their experience to a new animal, and later compare circuits. |
+| **Developer** | Extend the tools and connect new data sources. |
 
-(OQ-1: which of these is the primary user for the MVP?)
-
-## 4. Data sources
-
-### 4.1 Tardimap
-- Organism: *Hypsibius exemplaris*. Fewer than ~600 neurons. "Riker" whole-body EM dataset. Imaging is complete and reconstruction is in progress.
-- No public download, API, file format or license is published yet. The site says all data will be released openly. Contact: contact@tardimap.org.
-- Therefore the MVP must work against a **sample or mock dataset** behind a stable adapter interface, and swap in real data once access exists. (OQ-2, OQ-3)
-
-### 4.2 Fly Connectome (FlyWire)
-- FAFB adult brain, default snapshot **v783**. BANC (brain and nerve cord) is also served by Codex.
-- Bulk access: gzipped CSV files from the Codex download portal (API token required). Key tables: `connections_princeton`, `consolidated_cell_types`, neurotransmitter predictions.
-- Live access: CAVEclient (FlyWire/CAVE token required).
-- Morphology: SWC skeletons from cell pages where available. Meshes through MeshParty or Neuroglancer.
-- Citation requirements are listed on the Codex download portal and must be followed. (OQ-4: which fly dataset or datasets are in scope?)
+(OQ-1: which of these comes first?)
 
 ## 5. Functional requirements
 
-### 5.1 Ingestion and data model
+### 5.1 Discovery: the "next step" (G1)
 | ID | Requirement | Priority |
 |---|---|---|
-| F-1 | Provide a source adapter interface with one implementation per source (Tardimap, FlyWire). Adding a source must not change the rest of the app. | Must |
-| F-2 | Normalize both sources into a common model: **Neuron** (id, source, name, cell type, side, region, neurotransmitter and confidence), **Edge** (pre, post, synapse count, region), **CellType**, **Region**, **DatasetVersion**. | Must |
-| F-3 | Load a FlyWire snapshot from the Codex CSV downloads, pinned to a stated version (default v783). | Must |
-| F-4 | Load a tardigrade dataset from a local file (mock or sample now, real Tardimap export later). | Must |
-| F-5 | Record the source, version, and download date for every loaded dataset, and attach that record to every result. | Must |
-| F-6 | Cache downloaded data locally so the app does not re-download on each run, and respect Codex's request to use static downloads rather than heavy live queries. | Must |
-| F-7 | Optionally query live FlyWire data through CAVEclient. | Could |
-| F-8 | Support other fly connectomes (hemibrain or MANC via neuPrint, BANC). | Could |
+| D-1 | Write down Tardimap's current pipeline: segmentation tool, proofreading tool, data format, hosting, and who does the work today. | Must (OQ-2) |
+| D-2 | Map each stage of the fly recipe (imaging, automated segmentation, proofreading, synapse detection, cell typing, release) onto Tardimap's status, and mark the gaps. | Must |
+| D-3 | Agree with the consortium on whether and how outside contributors can take part, including data access, licensing and credit. | Must (OQ-3) |
+| D-4 | Publish the result as a short roadmap in this repo that any newcomer can read. | Must |
 
-### 5.2 Linking (cross-species mapping)
+### 5.2 Progress view (G4)
 | ID | Requirement | Priority |
 |---|---|---|
-| L-1 | A user can create a link from a tardigrade neuron (or group) to a fly neuron, cell type, or group. | Must |
-| L-2 | Each link stores: link type (for example "candidate homolog" or "functional analog"), confidence (low/medium/high), evidence note, author, and timestamp. | Must |
-| L-3 | Links can be edited and deleted, with a history of changes. | Should |
-| L-4 | The app can **suggest** candidate links using features available in both datasets (neurotransmitter, connectivity pattern, position in the body plan, sensory or motor role). Suggestions are clearly marked as machine-generated. | Should (OQ-5) |
-| L-5 | Links can be imported and exported as CSV and JSON. | Must |
-| L-6 | Several users can share and discuss a set of links. | Could (OQ-6) |
+| P-1 | Show every known tardigrade neuron with its status: segmented, proofread, synapses attached, typed, named. | Must |
+| P-2 | Show overall completion by body region and by cell class (sensory, motor, interneuron, and so on). | Must |
+| P-3 | Record the dataset version behind every number shown. | Must |
+| P-4 | Show the same view for a fly dataset as a reference for what "finished" looks like. | Could |
 
-### 5.3 Comparison
+### 5.3 Contributor flow (G2, G5)
 | ID | Requirement | Priority |
 |---|---|---|
-| C-1 | Show summary statistics per graph: neuron count, edge count, degree distributions, neurotransmitter mix, density. | Must |
-| C-2 | Allow comparison of a tardigrade graph against a chosen fly **subgraph** (for example a neuropil, a cell-type set, or the neighborhood of linked neurons), because the full fly brain is about 200 times larger. | Must |
-| C-3 | Count small motifs (2- and 3-node) in both graphs and compare them with each other and with a random-network baseline. | Should |
-| C-4 | For linked neuron pairs, compare their input and output partners: are the partners also linked? | Should |
-| C-5 | Export comparison results as CSV, JSON, and GraphML. | Must |
+| T-1 | Turn remaining work into small tasks (for example "proofread this neuron", "check these synapses", "propose a type for this cell"), each with instructions and an example. | Must |
+| T-2 | Let a contributor sign up, pick or be assigned a task, and open it straight in the proofreading viewer (Neuroglancer or whatever Tardimap uses). | Must (OQ-2) |
+| T-3 | Training tasks on finished fly data (FlyWire) with known answers, plus feedback, before someone can work on tardigrade data. | Must |
+| T-4 | Quality control: experienced reviewers check edits, or several people do the same task and results are compared. | Must (OQ-5) |
+| T-5 | Attribute each contribution and export a contributor list for publications. | Must |
+| T-6 | Discussion on each neuron or task (questions, notes, disagreements). | Should |
+| T-7 | Levels or badges so contributors move from training to simple tasks to harder ones. | Could |
 
-### 5.4 Exploration UI
+### 5.4 Fly ecosystem integration (G3)
 | ID | Requirement | Priority |
 |---|---|---|
-| U-1 | Search neurons by id, name, or cell type in either dataset. | Must |
-| U-2 | Neuron detail page: properties, top partners, links to the other species. | Must |
-| U-3 | Side-by-side network views of a tardigrade neighborhood and a fly neighborhood. | Must |
-| U-4 | 3D morphology for neurons that have skeletons or meshes (for example through Neuroglancer). | Should |
-| U-5 | Deep links out to FlyWire Codex and (when available) Tardimap's viewer for any neuron. | Should |
-| U-6 | Works in current desktop browsers. Mobile is not required. | Must |
+| E-1 | Read public fly data (FlyWire through Codex or CAVE, and optionally neuPrint) for training tasks and reference views. | Must |
+| E-2 | Prefer CAVE-compatible storage and Neuroglancer views for tardigrade data, if Tardimap agrees, so fly tools (CAVEclient, navis, fafbseg-style workflows) work on it. | Should (OQ-4) |
+| E-3 | Provide notebook or library examples using navis or the natverse on tardigrade data. | Should |
+| E-4 | Write source adapters so a new dataset (for example another tardigrade specimen) can be added without changing the rest of the app. | Should |
 
-### 5.5 API
+### 5.5 Comparison (G6, later)
 | ID | Requirement | Priority |
 |---|---|---|
-| A-1 | A read API (REST or similar) for neurons, edges, links, and comparison results. | Should |
-| A-2 | A Python package or notebook examples for researchers. | Could |
+| C-1 | Link a tardigrade neuron or group to a fly neuron or cell type, with link type, confidence, evidence and author. | Could |
+| C-2 | Compare summary network statistics and small motifs between the two connectomes. | Could |
+| C-3 | Use existing comparative connectomics libraries (cocoa, coconat) where possible. | Could |
 
 ## 6. Non-functional requirements
 
 | ID | Requirement |
 |---|---|
-| N-1 | **Reproducibility:** every result records dataset versions and app version. |
-| N-2 | **Attribution:** the UI and every export cite FlyWire per its published requirements, and cite Tardimap once it publishes a citation. |
-| N-3 | **Licensing compliance:** data is used only under each source's terms. No redistribution of Tardimap data before it is public. (OQ-3) |
-| N-4 | **Secrets:** API tokens come from environment variables or a secrets store and are never committed. |
-| N-5 | **Performance:** loading a cached FlyWire snapshot and showing a neuron page takes no more than a few seconds on a normal laptop. Full-brain edge tables (millions of rows) must not be loaded into the browser. |
-| N-6 | **Openness:** code is open source, matching the open-science aims of both projects. (OQ-7) |
-| N-7 | **Testing:** adapters and the comparison engine have automated tests against small fixture datasets. |
+| N-1 | **Openness:** code is open source, and docs are written for non-experts. (OQ-7) |
+| N-2 | **Data terms:** Tardimap data is used only as the consortium allows. Nothing is shown publicly before it is agreed. |
+| N-3 | **Attribution:** every upstream dataset is cited according to its published requirements, and every contributor is credited. |
+| N-4 | **Reproducibility:** every result records dataset and app versions. |
+| N-5 | **Secrets:** tokens come from environment variables or a secrets store and are never committed. |
+| N-6 | **Accessibility:** a newcomer can finish their first training task within 15 minutes of arriving, in a normal desktop browser. |
+| N-7 | **Respect upstream services:** cache data, and use static downloads rather than heavy live queries, as Codex asks. |
 
-## 7. MVP scope (proposed)
+## 7. Proposed next step and MVP
 
-The smallest useful version:
+**Step 0: talk to Tardimap (this week).** Email contact@tardimap.org with a short pitch and the questions from D-1 and D-3. Their answers decide most of the open questions below.
 
-1. FlyWire v783 loaded from Codex CSVs, cached locally (F-1 to F-6).
-2. A mock tardigrade dataset of about 50 to 600 neurons in the same format we expect Tardimap to use (F-4).
-3. Manual linking with import and export (L-1, L-2, L-5).
-4. Summary statistics and subgraph comparison (C-1, C-2, C-5).
-5. A simple web UI with search, neuron pages, and side-by-side neighborhood views (U-1 to U-3).
+**Step 1: MVP, buildable now on public fly data:**
+1. A progress view and task flow that run against a small slice of FlyWire, standing in for tardigrade data (P-1, P-2, T-1, T-2).
+2. Training tasks on FlyWire with known answers (T-3).
+3. Contributor sign-up and attribution (T-5).
+4. A short public roadmap (D-4).
 
-Success: a user can load both datasets, link a handful of tardigrade neurons to fly cell types, and export a comparison table with correct citations and versions.
+**Step 2: point it at Tardimap.** Once access is agreed, switch the data source to Tardimap's segmentation and open real tasks to the first group of contributors, with review (T-4).
 
-## 8. Open questions
+**MVP success:** a newcomer can arrive, complete a training task on fly data, and pick up a real task, and the progress view updates when that task is accepted.
+
+## 8. Risks
+
+| Risk | Mitigation |
+|---|---|
+| Tardimap does not want outside contributors yet, or data stays private. | Keep the Play Pen useful on fly data. Offer it as tooling the consortium can run internally. |
+| Tardimap uses a pipeline that is not compatible with CAVE or Neuroglancer. | Adapter layer (E-4). Choose integration after D-1. |
+| Contributions from newcomers are too low quality. | Training (T-3), review and redundancy (T-4), levels (T-7). |
+| Tardigrade anatomy is unfamiliar even to fly experts. | Ask the consortium for an annotated reference set and a cell-type guide. |
+
+## 9. Open questions
 
 | ID | Question | Why it matters | Proposed default |
 |---|---|---|---|
-| OQ-1 | Who is the primary user for the MVP: researchers, the Tardimap consortium, or the public? | Sets how technical the UI is and whether an API matters early. | Researchers. |
-| OQ-2 | Do we have, or can we get, early access to Tardimap data (the Riker reconstruction)? In what format (Neuroglancer precomputed, CAVE tables, CSV, SWC)? | Decides whether the MVP uses real or mock tardigrade data. | Mock data now; ask contact@tardimap.org. |
-| OQ-3 | What license and embargo terms will Tardimap data have? | Decides what we can show, cache, or export. | Treat as private until published. |
-| OQ-4 | Which fly dataset: FlyWire FAFB (brain only), BANC (brain and nerve cord), hemibrain, or MANC? | A whole-body tardigrade maps more naturally onto brain plus nerve cord. | FAFB v783 first, BANC next. |
-| OQ-5 | How should automatic link suggestions work, and is that in scope for v1? | This is the hardest scientific part. | Manual linking first; suggestions in v2. |
-| OQ-6 | Is this single-user or multi-user (accounts, shared link sets)? | Big effect on architecture and hosting. | Single-user, file-based links. |
+| OQ-1 | Who comes first: citizen scientists, students and labs, or the Tardimap consortium itself? | Sets the tone of the UI and the training depth. | Students and labs first, then the public. |
+| OQ-2 | What does Tardimap use for segmentation and proofreading today, and in what format is its data? | Decides how the Play Pen connects to the real work. | Ask the consortium (Step 0). |
+| OQ-3 | Does Tardimap want outside contributors, and on what terms (access, license, credit, embargo)? | Without this, the Play Pen can only work on fly data. | Ask the consortium. Treat their data as private until then. |
+| OQ-4 | Should we push for a CAVE and Neuroglancer stack for Tardimap, like FlyWire? | It unlocks the whole fly toolchain, but it is a big infrastructure ask. | Propose it, but adapt to whatever they use. |
+| OQ-5 | How is quality control done: expert review, redundancy (several people do the same task), or both? | Decides how trustworthy community edits are. | Expert review for the first group, adding redundancy later. |
+| OQ-6 | Do you, or does anyone on the project, have a contact at Tardimap or in the fly connectome community (for example the Cambridge group at flyconnecto.me)? | A warm introduction makes Step 0 much faster. | Cold email to contact@tardimap.org. |
 | OQ-7 | Which license for the code (MIT, Apache-2.0, GPL)? | Needed before outside contributions. | MIT. |
-| OQ-8 | Tech stack and hosting: web app, desktop app, or notebook-first? Any preference from Stranger Builds? | Shapes all implementation work. | Python backend, TypeScript web UI, static hosting. |
-| OQ-9 | Does "connector" mean an interactive app, a data pipeline or library, or both? | Changes what "done" looks like. | Both: a library core with a thin web UI. |
-| OQ-10 | Is there a timeline or a milestone (for example the Stranger Builds "build_anything" challenge)? | Decides how much of the MVP to cut. | None assumed. |
+| OQ-8 | Tech stack and hosting: web app, notebooks, or both? | Shapes all implementation work. | Python backend (CAVEclient, navis), TypeScript web UI, embedded Neuroglancer. |
+| OQ-9 | Is cross-species comparison (G6) part of this project's first year, or later? | Decides whether to design the data model for it now. | Later, but keep the data model ready for it. |
+| OQ-10 | Is there a deadline, such as the Stranger Builds "build_anything" challenge? | Decides how much of the MVP to cut. | None assumed. |
 
-## 9. Glossary
+## 10. Glossary
 
 - **Connectome:** a complete map of neurons and the synapses between them.
+- **Proofreading:** fixing errors in automated segmentation by merging pieces that belong together and splitting pieces that don't.
+- **Cell typing:** grouping neurons into named types by shape, connectivity and position.
+- **CAVE:** Connectome Annotation Versioning Engine, the backend behind FlyWire's live, versioned segmentation and annotation tables.
+- **Neuroglancer:** a browser-based viewer for EM volumes and segmentations.
+- **Codex / neuPrint:** web portals for browsing and downloading fly connectome data.
 - **Moss piglet / water bear:** common names for tardigrades.
-- **FAFB:** Full Adult Fly Brain, the EM volume behind FlyWire.
-- **CAVE:** Connectome Annotation Versioning Engine, the backend that serves FlyWire's live tables.
-- **Codex:** FlyWire's web portal for browsing and downloading the connectome.
-- **Snapshot / materialization version:** a frozen, numbered release of a connectome (for example FlyWire v783).
-- **Motif:** a small recurring pattern of connections among two or three neurons.
 
-## 10. References
+## 11. References
 
 - Tardimap: https://tardimap.org/
-- FlyWire Codex FAQ: https://codex.flywire.ai/faq
-- About Codex: https://codex.flywire.ai/about_codex
+- Fly Connectome (Cambridge Drosophila Connectomics Group): https://flyconnecto.me/
+- The adult Drosophila connectome ecosystem: https://flyconnecto.me/2026/09/04/the-adult-drosophila-connectome-ecosystem/
+- Fly connectome tools list: https://flyconnecto.me/tools/
+- FlyWire Codex: https://codex.flywire.ai/ and its FAQ: https://codex.flywire.ai/faq
+- neuPrint: https://neuprint.janelia.org/
 - CAVEclient: https://github.com/seung-lab/CAVEclient
-- FlyWire v783 data release (Zenodo): https://zenodo.org/records/10676866
+- Neuroglancer: https://github.com/google/neuroglancer
+- navis: https://github.com/navis-org/navis
