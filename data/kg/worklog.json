@@ -1,0 +1,104 @@
+{
+ "note": "Proof of work. Each entry records when a task reached a status and which commit did it. Written by `npm run log`.",
+ "timezone": "UTC (deadline assumed 4:00 PM Pacific = 23:00 UTC)",
+ "entries": [
+  {
+   "kind": "task",
+   "task": "T02",
+   "status": "built",
+   "at": "2026-10-31T20:55:34.470Z",
+   "commit": "1ccdfc265c68d91b651f13162a721e6c5c0221b5",
+   "commitAt": "2026-10-31T20:55:34.000Z",
+   "subject": "T02: FCO vocabulary and seeded FCG with addressable nodes",
+   "summary": "FCO (15 node types, 20 edge types) and FCG seed: 75 nodes, 125 edges, fly tools and tardigrade capabilities"
+  },
+  {
+   "kind": "task",
+   "task": "T03",
+   "status": "built",
+   "at": "2026-10-31T20:55:34.735Z",
+   "commit": "92a2ba861bd655ae051e0adc84ee8c551796398e",
+   "commitAt": "2026-10-31T20:55:34.000Z",
+   "subject": "T03: R/Python tool nodes, git sync and proof-of-work logger",
+   "summary": "17 tool nodes (Python, R, web, platforms) with install, docs and stage; npm run log and kg:sync"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T20:55:37.117Z",
+   "commit": "fb41fca0178af30149d9780933152ae81e5073de",
+   "branch": "claude/project-thread-qho8m6"
+  },
+  {
+   "kind": "task",
+   "task": "T04",
+   "status": "built",
+   "at": "2026-10-31T20:56:23.613Z",
+   "commit": "2fa0745b33e6ee10894c5de773d19d8bc0f003cc",
+   "commitAt": "2026-10-31T20:56:23.000Z",
+   "subject": "T04: hashed TF-IDF vector search over the graph, /api/kg/search",
+   "summary": "Vector index rebuilt on every graph change; /api/kg/search?q= ranks nodes by cosine"
+  },
+  {
+   "kind": "task",
+   "task": "T05",
+   "status": "built",
+   "at": "2026-10-31T20:58:11.218Z",
+   "commit": "0165650cb2f6924f08a978e222aa6a1536a27e2d",
+   "commitAt": "2026-10-31T20:58:10.000Z",
+   "subject": "T05: shared tool registry served over MCP (/api/mcp) and REST (/api/tools, /api/kg)",
+   "summary": "12 tools; MCP initialize/tools/list/tools/call verified with curl; REST node, status, worklog routes"
+  },
+  {
+   "kind": "task",
+   "task": "T06",
+   "status": "built",
+   "at": "2026-10-31T20:58:21.770Z",
+   "commit": "738791bfc8250c994561608a974e85433530f60c",
+   "commitAt": "2026-10-31T20:58:21.000Z",
+   "subject": "T06: agent connector with one-to-one, one-to-many and many-to-many routing",
+   "summary": "/api/connect and agent_* tools; messages are graph nodes with sentBy/sentTo/postedIn edges; all three modes verified"
+  },
+  {
+   "kind": "task",
+   "task": "T07",
+   "status": "built",
+   "at": "2026-10-31T20:59:56.336Z",
+   "commit": "61a4e1928ca14f4a1931b98f1a8a443e464b17dd",
+   "commitAt": "2026-10-31T20:59:56.000Z",
+   "subject": "T07: chat endpoint on the Claude API with graph retrieval and tool use, /chat page",
+   "summary": "/api/chat: RAG context + tool loop over read-only graph tools (claude-opus-5-5, server-side fallback); offline answer when no API key; /chat UI"
+  },
+  {
+   "kind": "task",
+   "task": "T08",
+   "status": "built",
+   "at": "2026-10-31T21:01:48.349Z",
+   "commit": "d90f8ed7831a1c02f9ffea75a182ef02d59a2479",
+   "commitAt": "2026-10-31T21:01:48.000Z",
+   "subject": "T08: built-vs-needed board, node pages, worklog timeline and agents page",
+   "summary": "/graph board (capabilities, pipeline, tasks, questions, tool table), /node/<type>/<slug>, /worklog plan vs actual with PT/UTC, /agents"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T21:01:50.639Z",
+   "commit": "b43706a4a646f6f346c1791cf7216ed09a17e626",
+   "branch": "claude/project-thread-qho8m6"
+  },
+  {
+   "kind": "task",
+   "task": "T09",
+   "status": "built",
+   "at": "2026-10-31T21:02:53.583Z",
+   "commit": "a53f46444746c3540ab85d83bc4c881e05e59bc3",
+   "commitAt": "2026-10-31T21:02:53.000Z",
+   "subject": "T09: README, deploy notes and roadmap link for the agent connector; production build passes",
+   "summary": "npm run build passes (24 routes); prod server checked; README, DEPLOY env vars, roadmap page updated"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T21:02:55.821Z",
+   "commit": "ada469d0a19ffbb82c556493f5018e5c91e135c8",
+   "branch": "claude/project-thread-qho8m6"
+  }
+ ]
+}

@@ -218,3 +218,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node / Next.js / Vercel
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+.env*.local
+
+# The Python template above ignores every "lib/" folder; the app's code lives in src/lib.
+!src/lib/
+
+# Knowledge graph runtime overlay (local only)
+data/kg/runtime.json

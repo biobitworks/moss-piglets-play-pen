@@ -6,7 +6,7 @@
 
 This project connects the two. It brings the fly connectome's tools, workflows and community model to Tardimap, so that **anyone can step in and help finish the tardigrade connectome**, and it gives people a place to practice and compare against the fly while they do.
 
-> **Status:** idea and requirements stage. There is no application code yet. See [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals, the proposed next step, and the open questions.
+> **Status:** MVP web app on mock data (Next.js, deployed on Vercel), now with an **agent connector**: a knowledge graph of what is built and what is needed, vector search, MCP and REST tools for agents, agent-to-agent messaging and a Claude-backed chat. See [`docs/AGENT_CONNECTOR.md`](docs/AGENT_CONNECTOR.md) for the design and roadmap, [`docs/TASK_PLAN.md`](docs/TASK_PLAN.md) for the build plan, [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals and open questions, and [`docs/DEPLOY.md`](docs/DEPLOY.md) for hosting.
 
 ## Why tardigrades, why now
 
@@ -52,10 +52,41 @@ In parallel, the Play Pen can be built against public fly data: the training tas
 - Data portals: [FlyWire Codex](https://codex.flywire.ai/) (FAFB, BANC) and [neuPrint](https://neuprint.janelia.org/) (hemibrain, MANC, MaleCNS)
 - Infrastructure: [CAVEclient](https://github.com/seung-lab/CAVEclient) and [Neuroglancer](https://github.com/google/neuroglancer)
 - Analysis: [navis](https://github.com/navis-org/navis), [fafbseg-py](https://github.com/navis-org/fafbseg-py), the [natverse](https://natverse.org/), [cocoa](https://github.com/flyconnectome/cocoa), [coconat](https://natverse.org/coconat/) and [Coda](https://coda.science/). More are listed at https://flyconnecto.me/tools/.
+- **Which of these we'd adopt for Tardimap, and in what order:** [`docs/TECH_STACK.md`](docs/TECH_STACK.md).
 
 ## Getting started
 
-There is nothing to run yet. Once the stack is chosen, this section will cover installation, configuring data-access tokens (kept in environment variables and never committed), and running the Play Pen locally.
+The MVP is a Next.js app with five pages: progress dashboard, training, task board, roadmap and contributors. Tardimap data isn't public yet, so it runs on a mock tardigrade dataset behind an adapter (`src/lib/data/`).
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build, the same one Vercel runs
+```
+
+- **Swap the data source:** write an adapter that returns a `Dataset` (see `src/lib/data/types.ts`), register it in `src/lib/data/index.ts`, and set `PLAYPEN_DATA_SOURCE` to its id.
+- **JSON endpoints:** `/api/progress` and `/api/tasks`.
+- **Per-browser state:** the contributor handle, passed training and claimed tasks live in `localStorage` for now.
+- **Deploying:** see [`docs/DEPLOY.md`](docs/DEPLOY.md).
+
+## Agent connector and knowledge graph
+
+The fly connectome is the worked example; the tardigrade is the work in progress. The Play Pen keeps both in one
+knowledge graph, so people and AI agents can see what exists, what has been built and what still needs building.
+
+- **Graph:** `data/kg/fco.json` (vocabulary: node and edge types, statuses) and `data/kg/fcg.json` (the graph:
+  fly datasets and tools, tardigrade pipeline stages, capabilities, tasks, questions). Every node has an address
+  `fcg:<type>/<slug>`, e.g. `fcg:tool/navis`, and a page at `/node/tool/navis`.
+- **Existing R and Python packages** (navis, fafbseg, neuprint-python, CAVEclient, natverse, nat.nblast, …) are
+  tool nodes with install commands, docs and how well they fit tardigrade data.
+- **Pages:** `/graph` (built vs needed), `/chat`, `/agents`, `/worklog` (proof of work).
+- **For agents:** MCP at `/api/mcp` (`claude mcp add --transport http playpen http://localhost:3000/api/mcp`), REST
+  at `/api/tools/<name>`, the graph at `/api/kg`, search at `/api/kg/search?q=`, and messaging at `/api/connect`
+  (one-to-one, one-to-many, or many-to-many by topic).
+- **Chat:** set `ANTHROPIC_API_KEY` to answer with Claude using the graph tools. Without it, the chat returns the
+  graph search results.
+- **Proof of work:** `npm run log -- T05 built "what was done"` records the time and the commit against a task;
+  `npm run kg:sync` pulls commits and merges from git (also runs before every build).
 
 ## Contributing
 
