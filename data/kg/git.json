@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:13:33.638Z",
+ "syncedAt": "2026-10-31T21:34:00.347Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -198,6 +198,42 @@
    "author": "Claude",
    "isMerge": false,
    "subject": "T11: step-by-step Vercel setup for storage, chat key and read-only mode"
+  },
+  {
+   "sha": "7e2c0bddaa224e741135f9e926a8ecd0a9e1df50",
+   "at": "2026-10-31T21:13:33.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T10 and T11 built"
+  },
+  {
+   "sha": "1e4e5e15ce4bdec2aa395ccf7479b0317e014359",
+   "at": "2026-10-31T21:16:03.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Keep in-flight writes visible during sync, and flush chat tool writes after each batch"
+  },
+  {
+   "sha": "7acf88090827d8127ad46c562b01b74394169be7",
+   "at": "2026-10-31T21:29:49.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Record that the 4:00 PM deadline is Pacific"
+  },
+  {
+   "sha": "7e17e623b228675773db4308278c7880d7f12c50",
+   "at": "2026-10-31T21:30:54.000Z",
+   "author": "Byron P. Lee",
+   "isMerge": true,
+   "subject": "Merge pull request #5 from biobitworks/claude/project-thread-qho8m6",
+   "pr": 5
+  },
+  {
+   "sha": "252a7c29dea10e1d261e0ee3a8f6b72a1aa23990",
+   "at": "2026-10-31T21:34:00.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T12: chat backend switch between frontier (Claude), local (Ollama or any OpenAI-compatible server) and search only"
   }
  ]
 }

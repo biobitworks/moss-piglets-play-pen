@@ -615,7 +615,7 @@
    "id": "fcg:pr/4",
    "type": "pr",
    "label": "PR #4: Agent connector MVP",
-   "status": "in_progress",
+   "status": "built",
    "description": "Pull request #4.",
    "props": {
     "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/4"
@@ -783,6 +783,34 @@
    "props": {
     "slotStart": "2026-10-31T21:30:00Z",
     "slotEnd": "2026-10-31T21:45:00Z"
+   }
+  },
+  {
+   "id": "fcg:capability/local-models",
+   "type": "capability",
+   "label": "Local vs frontier chat models",
+   "status": "needed",
+   "description": "Chat backend switch: Claude API (frontier), an OpenAI-compatible local server such as Ollama, or graph search only."
+  },
+  {
+   "id": "fcg:task/T12",
+   "type": "task",
+   "label": "T12: Local vs frontier model switch for the chat",
+   "status": "needed",
+   "description": "15-minute slot 21:45–22:00 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:45:00Z",
+    "slotEnd": "2026-10-31T22:00:00Z"
+   }
+  },
+  {
+   "id": "fcg:pr/5",
+   "type": "pr",
+   "label": "PR #5: Shared storage and Vercel steps",
+   "status": "built",
+   "description": "Pull request #5.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/5"
    }
   }
  ],
@@ -1431,6 +1459,31 @@
    "from": "fcg:task/T11",
    "type": "implements",
    "to": "fcg:capability/deploy"
+  },
+  {
+   "from": "fcg:capability/local-models",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/local-models",
+   "type": "dependsOn",
+   "to": "fcg:capability/chat"
+  },
+  {
+   "from": "fcg:task/T12",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T12",
+   "type": "implements",
+   "to": "fcg:capability/local-models"
+  },
+  {
+   "from": "fcg:capability/persistence",
+   "type": "deliveredIn",
+   "to": "fcg:pr/5"
   }
  ]
 }
