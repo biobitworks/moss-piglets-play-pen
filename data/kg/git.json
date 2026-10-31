@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:57:28.587Z",
+ "syncedAt": "2026-10-31T21:57:57.748Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -256,6 +256,13 @@
    "isMerge": true,
    "subject": "Merge pull request #6 from biobitworks/claude/project-thread-qho8m6",
    "pr": 6
+  },
+  {
+   "sha": "2af33ad0aebb9113adf56308b73b44db5c6bd0e2",
+   "at": "2026-10-31T21:57:57.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T13: No API key needed: chat defaults to a local model, else answers from the graph"
   }
  ]
 }
