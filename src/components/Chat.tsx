@@ -8,7 +8,7 @@ type Msg = {
   content: string;
   meta?: { toolCalls?: { name: string }[]; retrieved?: string[]; model?: string | null; backend?: string; note?: string };
 };
-type Backend = { id: string; label: string; available: boolean; model: string | null; models?: string[]; note?: string };
+type Backend = { id: string; label: string; available: boolean; model: string | null; models?: string[]; note?: string; optional?: boolean };
 
 const EXAMPLES = [
   "What still needs building for the tardigrade?",
@@ -104,6 +104,12 @@ export function Chat() {
           </select>
         )}
       </div>
+      <p className="small muted" style={{ margin: 0 }}>
+        No API key needed.{" "}
+        {backends.find((b) => b.id === "local")?.available
+          ? "A local model is running, so answers come from it plus the graph."
+          : "Answers come straight from the graph. Run Ollama locally (ollama serve, ollama pull llama3.1:8b) to add a local model."}
+      </p>
       {msgs.length === 0 && (
         <div className="btn-row" style={{ marginTop: 0 }}>
           {EXAMPLES.map((e) => (
