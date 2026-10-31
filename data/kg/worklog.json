@@ -11,6 +11,16 @@
    "commitAt": "2026-10-31T20:55:34.000Z",
    "subject": "T02: FCO vocabulary and seeded FCG with addressable nodes",
    "summary": "FCO (15 node types, 20 edge types) and FCG seed: 75 nodes, 125 edges, fly tools and tardigrade capabilities"
+  },
+  {
+   "kind": "task",
+   "task": "T03",
+   "status": "built",
+   "at": "2026-10-31T20:55:34.735Z",
+   "commit": "92a2ba861bd655ae051e0adc84ee8c551796398e",
+   "commitAt": "2026-10-31T20:55:34.000Z",
+   "subject": "T03: R/Python tool nodes, git sync and proof-of-work logger",
+   "summary": "17 tool nodes (Python, R, web, platforms) with install, docs and stage; npm run log and kg:sync"
   }
  ]
 }
