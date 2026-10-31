@@ -83,6 +83,16 @@
    "at": "2026-10-31T21:01:50.639Z",
    "commit": "b43706a4a646f6f346c1791cf7216ed09a17e626",
    "branch": "claude/project-thread-qho8m6"
+  },
+  {
+   "kind": "task",
+   "task": "T09",
+   "status": "built",
+   "at": "2026-10-31T21:02:53.583Z",
+   "commit": "a53f46444746c3540ab85d83bc4c881e05e59bc3",
+   "commitAt": "2026-10-31T21:02:53.000Z",
+   "subject": "T09: README, deploy notes and roadmap link for the agent connector; production build passes",
+   "summary": "npm run build passes (24 routes); prod server checked; README, DEPLOY env vars, roadmap page updated"
   }
  ]
 }

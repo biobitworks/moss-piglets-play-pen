@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:02:14.756Z",
+ "syncedAt": "2026-10-31T21:02:53.649Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -148,6 +148,13 @@
    "author": "Claude",
    "isMerge": false,
    "subject": "worklog: T04 to T08 built"
+  },
+  {
+   "sha": "a53f46444746c3540ab85d83bc4c881e05e59bc3",
+   "at": "2026-10-31T21:02:53.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T09: README, deploy notes and roadmap link for the agent connector; production build passes"
   }
  ]
 }
