@@ -141,10 +141,49 @@ export const TOOLS: ToolDef[] = [
 
 export const toolByName = new Map(TOOLS.map((t) => [t.name, t]));
 
+type Schema = { type?: string; enum?: unknown[]; items?: Schema; anyOf?: Schema[] };
+
+function check(value: unknown, schema: Schema, path: string): string | null {
+  if (schema.anyOf) return schema.anyOf.some((s) => check(value, s, path) === null) ? null : `${path} has the wrong type`;
+  if (schema.enum && !schema.enum.includes(value)) return `${path} must be one of ${schema.enum.join(", ")}`;
+  switch (schema.type) {
+    case "string":
+      return typeof value === "string" ? (value.length > 5000 ? `${path} is too long` : null) : `${path} must be a string`;
+    case "integer":
+      return Number.isInteger(typeof value === "string" ? Number(value) : value) ? null : `${path} must be an integer`;
+    case "array":
+      if (!Array.isArray(value)) return `${path} must be an array`;
+      for (let i = 0; i < value.length; i++) {
+        const e = schema.items && check(value[i], schema.items, `${path}[${i}]`);
+        if (e) return e;
+      }
+      return null;
+    default:
+      return null;
+  }
+}
+
+/** Validates arguments against the tool's JSON schema, so a malformed call can't store bad data. */
+export function validate(t: ToolDef, input: Record<string, unknown>): string | null {
+  if (typeof input !== "object" || input === null || Array.isArray(input)) return "arguments must be an object";
+  for (const r of t.input_schema.required ?? []) if (input[r] === undefined || input[r] === null || input[r] === "") return `${r} is required`;
+  for (const [k, v] of Object.entries(input)) {
+    const s = t.input_schema.properties[k] as Schema | undefined;
+    if (!s) return `unknown argument ${k}`;
+    if (v === undefined) continue;
+    const e = check(v, s, k);
+    if (e) return e;
+  }
+  return null;
+}
+
 /** Writes can be switched off for public deployments with PLAYPEN_READONLY=1. */
 export function runTool(name: string, input: Record<string, unknown> = {}) {
   const t = toolByName.get(name);
   if (!t) throw new Error(`Unknown tool ${name}`);
   if (t.writes && process.env.PLAYPEN_READONLY === "1") throw new Error("This deployment is read-only (PLAYPEN_READONLY=1).");
-  return t.run(input ?? {});
+  const args = input ?? {};
+  const err = validate(t, args);
+  if (err) throw new Error(`Invalid arguments for ${name}: ${err}`);
+  return t.run(args);
 }

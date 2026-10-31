@@ -1,4 +1,4 @@
-import { addEdge, addNode, graph } from "./graph";
+import { addEdge, addNode, graph, slugify } from "./graph";
 
 /**
  * Agent connector. Agents are graph nodes (type "agent"); messages are graph nodes too, linked with
@@ -10,8 +10,9 @@ import { addEdge, addNode, graph } from "./graph";
  */
 export type Mode = "one_to_one" | "one_to_many" | "many_to_many";
 
-const agentId = (s: string) => (s.startsWith("fcg:") ? s : `fcg:agent/${s.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
-const topicId = (s: string) => (s.startsWith("fcg:") ? s : `fcg:topic/${s.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+// Same slug rule as addNode, so the address we compute is the address that gets created.
+const agentId = (s: string) => (s.startsWith("fcg:") ? s : `fcg:agent/${slugify(s)}`);
+const topicId = (s: string) => (s.startsWith("fcg:") ? s : `fcg:topic/${slugify(s)}`);
 
 export function registerAgent(input: { name: string; description?: string; capabilities?: string[]; topics?: string[]; endpoint?: string }) {
   const id = agentId(input.name);

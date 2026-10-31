@@ -1,4 +1,5 @@
-import { agents, messages, send } from "@/lib/kg/bus";
+import { agents, messages } from "@/lib/kg/bus";
+import { runTool } from "@/lib/kg/tools";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   if (process.env.PLAYPEN_READONLY === "1") return Response.json({ error: "read-only deployment" }, { status: 403 });
   try {
-    return Response.json(send(await req.json()));
+    // Same validation as the MCP and REST tools.
+    return Response.json(runTool("agent_send", await req.json()));
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 400 });
   }

@@ -145,11 +145,15 @@ export function gitCommits(): GitCommit[] {
   return (gitData as { commits: GitCommit[] }).commits;
 }
 
-const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "item";
+/** The one canonical slug rule. Labels are lowercased; explicit slugs keep their case so seeded ids like T02 stay addressable. */
+export function slugify(s: string, keepCase = false): string {
+  const base = keepCase ? s : s.toLowerCase();
+  return base.replace(/[^A-Za-z0-9._]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60).replace(/-+$/, "") || "item";
+}
 
 export function addNode(input: { type: string; label: string; status?: Status; description?: string; slug?: string; props?: Record<string, unknown> }): KGNode {
   const type = slugify(input.type);
-  const id = `fcg:${type}/${input.slug ? slugify(input.slug) : slugify(input.label)}`;
+  const id = `fcg:${type}/${input.slug ? slugify(input.slug.replace(/^fcg:[^/]+\//, ""), true) : slugify(input.label)}`;
   const n: KGNode = {
     id,
     type,
