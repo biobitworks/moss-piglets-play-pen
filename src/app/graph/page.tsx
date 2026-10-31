@@ -8,6 +8,8 @@ export const metadata: Metadata = { title: "Built vs needed · Moss Piglet Play 
 export const dynamic = "force-dynamic";
 
 const COLS = ["built", "in_progress", "needed", "blocked"] as const;
+/** Agents can add thousands of nodes; rendering them all made this page take seconds (docs/STRESS_TEST.md). */
+const MAX = 60;
 
 function Board({ nodes }: { nodes: KGNode[] }) {
   return (
@@ -20,11 +22,12 @@ function Board({ nodes }: { nodes: KGNode[] }) {
               <St s={s} /> {items.length}
             </h3>
             <ul>
-              {items.map((n) => (
+              {items.slice(0, MAX).map((n) => (
                 <li key={n.id}>
                   <NodeLink id={n.id} label={n.label} />
                 </li>
               ))}
+              {items.length > MAX && <li className="muted">and {items.length - MAX} more (see /api/kg/status)</li>}
               {!items.length && <li className="muted">Nothing here.</li>}
             </ul>
           </div>

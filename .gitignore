@@ -239,3 +239,7 @@ data/kg/runtime.json
 # start.sh
 data/datasets/.fetched
 .venv-connector/
+# Fetched datasets (npm run data:fetch). C. elegans is small and committed.
+data/datasets/*/
+!data/datasets/celegans-hermaphrodite/
+e2e-screenshots/

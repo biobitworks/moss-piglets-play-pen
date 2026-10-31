@@ -823,6 +823,130 @@
     "slotStart": "2026-10-31T22:00:00Z",
     "slotEnd": "2026-10-31T22:15:00Z"
    }
+  },
+  {
+   "id": "fcg:species/celegans",
+   "type": "species",
+   "label": "Caenorhabditis elegans",
+   "status": "external",
+   "description": "Nematode with a complete published connectome (~300 neurons). The closest public analogue to the tardigrade in nervous system size."
+  },
+  {
+   "id": "fcg:dataset/celegans-hermaphrodite",
+   "type": "dataset",
+   "label": "C. elegans hermaphrodite connectome (Cook 2019)",
+   "status": "built",
+   "description": "Loaded in the Play Pen at /datasets/celegans-hermaphrodite: 448 cells (304 neurons plus muscles and end organs) and 7,379 chemical and electrical connections with weights, from OpenWorm c302. Starter dataset at tardigrade scale for building analyses before Tardimap releases Riker.",
+   "props": {
+    "url": "/datasets/celegans-hermaphrodite",
+    "source": "https://github.com/openworm/c302",
+    "license": "MIT"
+   }
+  },
+  {
+   "id": "fcg:capability/dataset-browser",
+   "type": "capability",
+   "label": "Browse and query real connectome datasets",
+   "status": "needed",
+   "description": "Dataset pages (/datasets), REST (/api/datasets) and agent tools (ds_list, ds_summary, ds_search_neurons, ds_neuron) over normalised dataset files. Neuron-level data lives outside the knowledge graph."
+  },
+  {
+   "id": "fcg:capability/kg-scale",
+   "type": "capability",
+   "label": "Knowledge graph and search that stay fast at 20k+ nodes",
+   "status": "needed",
+   "description": "Sparse inverted vector index updated incrementally, O(1) edge dedupe, writes applied to the cached graph, coalesced disk writes, capped board rendering. Measured by scripts/stress.mjs (docs/STRESS_TEST.md)."
+  },
+  {
+   "id": "fcg:doc/datasets",
+   "type": "doc",
+   "label": "docs/DATASETS.md",
+   "status": "built",
+   "description": "Starter datasets loadable today, the CoDA model for a Tardimap version, and what is missing for the KG, RAG, chat and agent tools to be useful on real data.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/DATASETS.md"
+   }
+  },
+  {
+   "id": "fcg:doc/stress-test",
+   "type": "doc",
+   "label": "docs/STRESS_TEST.md",
+   "status": "built",
+   "description": "Stress test results for the API, MCP, chat and pages under concurrent reads, writes and a 20k-node bulk load, before and after fixes."
+  },
+  {
+   "id": "fcg:tool/coda",
+   "type": "tool",
+   "label": "CoDA (coda.science)",
+   "status": "external",
+   "description": "Browser-based node-graph editor for analysing public connectome data from neuPrint (male CNS, hemibrain), CAVE (FlyWire, BANC, MICrONS) and CATMAID. The model for a Tardimap analysis front end: a Tardimap version needs a CATMAID or CAVE-compatible source, or a static release in the fly data contract.",
+   "props": {
+    "url": "https://coda.science/",
+    "language": "web",
+    "tardigradeFit": "adapter: needs a Tardimap data source (CATMAID/CAVE/neuPrint or static tables)"
+   }
+  },
+  {
+   "id": "fcg:question/tardimap-preview",
+   "type": "question",
+   "label": "Can Tardimap share a preview export (neuron table and edge list) of Riker?",
+   "status": "blocked",
+   "description": "Everything on the dataset pages and agent tools is ready to take a neurons + edges table. Even a partial, versioned export would replace the mock."
+  },
+  {
+   "id": "fcg:task/T20",
+   "type": "task",
+   "label": "T20: Stress test API, MCP, chat and pages at scale",
+   "status": "needed",
+   "description": "15-minute slot 21:30–21:45 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:30:00Z",
+    "slotEnd": "2026-10-31T21:45:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T21",
+   "type": "task",
+   "label": "T21: Fetch starter datasets (C. elegans, FlyWire, hemibrain)",
+   "status": "needed",
+   "description": "15-minute slot 21:45–22:00 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:45:00Z",
+    "slotEnd": "2026-10-31T22:00:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T22",
+   "type": "task",
+   "label": "T22: Dataset browser, REST and agent tools",
+   "status": "needed",
+   "description": "15-minute slot 22:00–22:15 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:00:00Z",
+    "slotEnd": "2026-10-31T22:15:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T23",
+   "type": "task",
+   "label": "T23: Fix scale breakages in graph and vector search",
+   "status": "needed",
+   "description": "15-minute slot 22:15–22:30 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:15:00Z",
+    "slotEnd": "2026-10-31T22:30:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T24",
+   "type": "task",
+   "label": "T24: Docs: STRESS_TEST.md and DATASETS.md, headless browser check, PR",
+   "status": "needed",
+   "description": "15-minute slot 22:30–22:45 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:30:00Z",
+    "slotEnd": "2026-10-31T22:45:00Z"
+   }
   }
  ],
  "edges": [
@@ -1505,6 +1629,106 @@
    "from": "fcg:task/T13",
    "type": "implements",
    "to": "fcg:capability/chat"
+  },
+  {
+   "from": "fcg:dataset/celegans-hermaphrodite",
+   "type": "ofSpecies",
+   "to": "fcg:species/celegans"
+  },
+  {
+   "from": "fcg:species/celegans",
+   "type": "analogOf",
+   "to": "fcg:species/hypsibius"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/kg-scale",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "reads",
+   "to": "fcg:dataset/celegans-hermaphrodite"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "reads",
+   "to": "fcg:dataset/flywire-fafb"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "reads",
+   "to": "fcg:dataset/hemibrain"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "reads",
+   "to": "fcg:dataset/tardimap-riker"
+  },
+  {
+   "from": "fcg:capability/dataset-browser",
+   "type": "documentedIn",
+   "to": "fcg:doc/datasets"
+  },
+  {
+   "from": "fcg:capability/kg-scale",
+   "type": "documentedIn",
+   "to": "fcg:doc/stress-test"
+  },
+  {
+   "from": "fcg:tool/coda",
+   "type": "reads",
+   "to": "fcg:dataset/hemibrain"
+  },
+  {
+   "from": "fcg:tool/coda",
+   "type": "reads",
+   "to": "fcg:dataset/flywire-fafb"
+  },
+  {
+   "from": "fcg:tool/coda",
+   "type": "reads",
+   "to": "fcg:dataset/banc"
+  },
+  {
+   "from": "fcg:tool/coda",
+   "type": "reads",
+   "to": "fcg:dataset/malecns"
+  },
+  {
+   "from": "fcg:question/tardimap-preview",
+   "type": "blocks",
+   "to": "fcg:dataset/tardimap-riker"
+  },
+  {
+   "from": "fcg:task/T20",
+   "type": "implements",
+   "to": "fcg:capability/kg-scale"
+  },
+  {
+   "from": "fcg:task/T23",
+   "type": "implements",
+   "to": "fcg:capability/kg-scale"
+  },
+  {
+   "from": "fcg:task/T21",
+   "type": "implements",
+   "to": "fcg:capability/dataset-browser"
+  },
+  {
+   "from": "fcg:task/T22",
+   "type": "implements",
+   "to": "fcg:capability/dataset-browser"
+  },
+  {
+   "from": "fcg:task/T24",
+   "type": "implements",
+   "to": "fcg:capability/dataset-browser"
   }
  ]
 }

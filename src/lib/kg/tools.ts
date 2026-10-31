@@ -2,6 +2,7 @@ import { agents, messages, registerAgent, send, subscribe } from "./bus";
 import { addEdge, addNode, brief, fco, gitCommits, graph, neighbors, resolveId, status, worklog } from "./graph";
 import { STATUSES, type Status } from "./types";
 import { search } from "./vector";
+import { DATASETS, list as dsList, neuron as dsNeuron, searchNeurons, summary as dsSummary } from "../datasets";
 
 /**
  * One tool registry for every caller: the chat (Claude tool use), the MCP endpoint, and REST
@@ -136,6 +137,40 @@ export const TOOLS: ToolDef[] = [
     description: "List registered agents, their capabilities and topics.",
     input_schema: { type: "object", properties: {} },
     run: () => agents(),
+  },
+  {
+    name: "ds_list",
+    description:
+      "List the connectome datasets loaded on this server (tardigrade mock until Tardimap shares data, C. elegans connectome, FlyWire and hemibrain annotations) with species, size, source and why each is a starter dataset.",
+    input_schema: { type: "object", properties: {} },
+    run: () => dsList().map(({ id, label, species, kind, neurons, edges, loaded, kg, why }) => ({ id, label, species, kind, neurons, edges, loaded, kg, why })),
+  },
+  {
+    name: "ds_summary",
+    description: "Summary of one dataset: counts by super class, class, neurotransmitter, side and pipeline stage, number of cell types, and the most connected neurons.",
+    input_schema: { type: "object", properties: { dataset: str("Dataset id from ds_list.", { enum: DATASETS.map((d) => d.id) }) }, required: ["dataset"] },
+    run: (i) => dsSummary(String(i.dataset)) ?? { error: `dataset ${i.dataset} is not fetched on this server (npm run data:fetch)` },
+  },
+  {
+    name: "ds_search_neurons",
+    description: "Find neurons in a dataset by any annotation (name, cell type, class, super class, neurotransmitter, side, hemilineage, region). All words must match. Returns the total and up to `limit` neurons.",
+    input_schema: {
+      type: "object",
+      properties: { dataset: str("Dataset id from ds_list.", { enum: DATASETS.map((d) => d.id) }), query: str("Words to match, e.g. 'MBON right' or 'AVA'. Empty lists everything."), limit: { type: "integer", description: "Max neurons (default 20, max 500)." }, offset: { type: "integer", description: "Skip this many matches." } },
+      required: ["dataset"],
+    },
+    run: (i) => searchNeurons(String(i.dataset), String(i.query ?? ""), { limit: Number(i.limit ?? 20), offset: Number(i.offset ?? 0) }) ?? { error: `dataset ${i.dataset} is not fetched on this server` },
+  },
+  {
+    name: "ds_neuron",
+    description: "One neuron with all its annotations and, where the dataset has connectivity (C. elegans), its strongest upstream and downstream partners with weights.",
+    input_schema: { type: "object", properties: { dataset: str("Dataset id from ds_list.", { enum: DATASETS.map((d) => d.id) }), id: str("Neuron id, e.g. AVAL or a FlyWire root id.") }, required: ["dataset", "id"] },
+    run: (i) => {
+      const r = dsNeuron(String(i.dataset), String(i.id));
+      if (r === null) throw new Error(`dataset ${i.dataset} is not fetched on this server`);
+      if (r === undefined) throw new Error(`No neuron ${i.id} in ${i.dataset}. Use ds_search_neurons.`);
+      return r;
+    },
   },
 ];
 

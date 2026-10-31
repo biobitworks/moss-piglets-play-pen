@@ -67,6 +67,14 @@ export async function flush() {
     g.__kgInflight = inflight().filter((b) => b !== batch);
   }
 }
+/** Position of each runtime node in the overlay, so replacing one is O(1). Rebuilt when the overlay object changes. */
+const idx = globalThis as unknown as { __kgOverlayIdx?: { of: Overlay; m: Map<string, number> } };
+function overlayIndex() {
+  const o = overlay();
+  if (idx.__kgOverlayIdx?.of !== o) idx.__kgOverlayIdx = { of: o, m: new Map(o.nodes.map((n, i) => [n.id, i])) };
+  return idx.__kgOverlayIdx.m;
+}
+
 function overlay(): Overlay {
   if (!g.__kgOverlay) {
     g.__kgOverlay = { nodes: [], edges: [] };
@@ -80,12 +88,20 @@ function overlay(): Overlay {
   return g.__kgOverlay!;
 }
 
+let saveTimer: ReturnType<typeof setTimeout> | null = null;
+/**
+ * Bump the version and write the overlay to disk. The disk write is coalesced (at most one per 250 ms):
+ * writing the whole overlay synchronously on every call made bulk loads quadratic (see docs/STRESS_TEST.md).
+ */
 function save() {
   g.__kgVersion = (g.__kgVersion ?? 1) + 1;
-  if (!PERSIST) return;
-  try {
-    fs.writeFileSync(RUNTIME_FILE, JSON.stringify(overlay(), null, 1) + "\n");
-  } catch {}
+  if (!PERSIST || saveTimer) return;
+  saveTimer = setTimeout(() => {
+    saveTimer = null;
+    try {
+      fs.writeFileSync(RUNTIME_FILE, JSON.stringify(overlay()) + "\n");
+    } catch {}
+  }, 250);
 }
 
 export function version() {
@@ -98,14 +114,25 @@ export class Graph {
   edges: KGEdge[] = [];
   out = new Map<string, KGEdge[]>();
   in = new Map<string, KGEdge[]>();
+  /** from|type|to of every edge, so duplicate checks are O(1) instead of a scan of all edges. */
+  private keys = new Set<string>();
+  /** Nodes whose text changed since the search index last looked (added, edited, or linked). */
+  dirty = new Set<string>();
+  /** A capability's own status, before task statuses are rolled up into it. */
+  baseStatus = new Map<string, Status>();
 
   add(n: KGNode) {
     const prev = this.nodes.get(n.id);
     this.nodes.set(n.id, prev ? { ...prev, ...n, props: { ...prev.props, ...n.props } } : n);
+    if (n.type === "capability") this.baseStatus.set(n.id, n.status);
+    this.dirty.add(n.id);
   }
   link(e: KGEdge) {
     if (!this.nodes.has(e.from) || !this.nodes.has(e.to)) return;
-    if (this.edges.some((x) => x.from === e.from && x.to === e.to && x.type === e.type)) return;
+    const k = `${e.from}|${e.type}|${e.to}`;
+    if (this.keys.has(k)) return;
+    this.keys.add(k);
+    this.dirty.add(e.from).add(e.to);
     this.edges.push(e);
     (this.out.get(e.from) ?? this.out.set(e.from, []).get(e.from)!).push(e);
     (this.in.get(e.to) ?? this.in.set(e.to, []).get(e.to)!).push(e);
@@ -164,21 +191,44 @@ function build(): Graph {
   for (const n of o.nodes) G.add(n);
   for (const e of o.edges) G.link(e);
 
-  // Roll task status up into the capabilities they implement.
-  for (const [id, n] of G.nodes) {
-    if (n.type !== "capability") continue;
-    const tasks = (G.in.get(id) ?? []).filter((e) => e.type === "implements").map((e) => G.nodes.get(e.from)!);
-    if (!tasks.length) continue;
-    const done = tasks.filter((t) => t.status === "built").length;
-    const status: Status = done === tasks.length ? "built" : done || tasks.some((t) => t.status === "in_progress") ? "in_progress" : n.status;
-    G.add({ ...n, status });
-  }
+  rollup(G);
   return G;
 }
 
+/** Roll task status up into the capabilities they implement. */
+function rollup(G: Graph) {
+  for (const [id, n] of G.nodes) {
+    if (n.type !== "capability") continue;
+    const tasks = (G.in.get(id) ?? []).filter((e) => e.type === "implements").map((e) => G.nodes.get(e.from)!);
+    // Fall back to the capability's own status, not the last rollup, so reopened tasks reopen it.
+    const base = G.baseStatus.get(id) ?? n.status;
+    const done = tasks.filter((t) => t.status === "built").length;
+    const status: Status = !tasks.length ? base : done === tasks.length ? "built" : done || tasks.some((t) => t.status === "in_progress") ? "in_progress" : base;
+    // Set directly, not via add(), so the rolled-up value never becomes the base status.
+    if (status !== n.status) G.nodes.set(id, { ...n, status });
+  }
+}
+
+// The seed files are part of the key so edits show up in dev without a restart.
+const cacheKey = () => version() * 1e6 + (worklogData as { entries: unknown[] }).entries.length * 1e3 + (gitData as { commits: unknown[] }).commits.length + (fcg.nodes as unknown[]).length * 7;
+
+/**
+ * Apply one runtime write to the cached graph instead of rebuilding it from the seed files.
+ * Before this, every write threw the graph and the search index away, so under a write load
+ * every read paid a full rebuild (seconds at 20k nodes).
+ */
+function applyToCache(apply: (G: Graph) => void) {
+  const c = g.__kgCache;
+  const before = c && c.v === cacheKey();
+  save();
+  if (!c || !before) return;
+  apply(c.graph);
+  if (c.graph.dirty.size && [...c.graph.dirty].some((id) => ["task", "capability"].includes(c.graph.nodes.get(id)?.type ?? ""))) rollup(c.graph);
+  c.v = cacheKey();
+}
+
 export function graph(): Graph {
-  // The seed files are part of the key so edits show up in dev without a restart.
-  const v = version() * 1e6 + (worklogData as { entries: unknown[] }).entries.length * 1e3 + (gitData as { commits: unknown[] }).commits.length + (fcg.nodes as unknown[]).length * 7;
+  const v = cacheKey();
   if (g.__kgCache?.v === v) return g.__kgCache.graph;
   const built = build();
   g.__kgCache = { v, graph: built };
@@ -213,9 +263,11 @@ export function addNode(input: { type: string; label: string; status?: Status; d
     updatedAt: new Date().toISOString(),
   };
   const o = overlay();
-  o.nodes = o.nodes.filter((x) => x.id !== id).concat(n);
+  const at = overlayIndex().get(id);
+  if (at !== undefined && o.nodes[at]?.id === id) o.nodes[at] = n;
+  else overlayIndex().set(id, o.nodes.push(n) - 1);
   if (store()) pending().nodes.push(n);
-  save();
+  applyToCache((G) => G.add(n));
   return n;
 }
 
@@ -226,7 +278,7 @@ export function addEdge(e: { from: string; type: string; to: string }): KGEdge {
   const edge: KGEdge = { ...e, at: new Date().toISOString(), origin: "runtime" };
   overlay().edges.push(edge);
   if (store()) pending().edges.push(edge);
-  save();
+  applyToCache((G) => G.link(edge));
   return edge;
 }
 
