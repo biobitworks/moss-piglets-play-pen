@@ -129,7 +129,8 @@ function build(): Graph {
 }
 
 export function graph(): Graph {
-  const v = version();
+  // The seed files are part of the key so edits show up in dev without a restart.
+  const v = version() * 1e6 + (worklogData as { entries: unknown[] }).entries.length * 1e3 + (gitData as { commits: unknown[] }).commits.length + (fcg.nodes as unknown[]).length * 7;
   if (g.__kgCache?.v === v) return g.__kgCache.graph;
   const built = build();
   g.__kgCache = { v, graph: built };

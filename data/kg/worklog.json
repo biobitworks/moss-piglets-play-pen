@@ -57,6 +57,16 @@
    "commitAt": "2026-10-31T20:58:21.000Z",
    "subject": "T06: agent connector with one-to-one, one-to-many and many-to-many routing",
    "summary": "/api/connect and agent_* tools; messages are graph nodes with sentBy/sentTo/postedIn edges; all three modes verified"
+  },
+  {
+   "kind": "task",
+   "task": "T07",
+   "status": "built",
+   "at": "2026-10-31T20:59:56.336Z",
+   "commit": "61a4e1928ca14f4a1931b98f1a8a443e464b17dd",
+   "commitAt": "2026-10-31T20:59:56.000Z",
+   "subject": "T07: chat endpoint on the Claude API with graph retrieval and tool use, /chat page",
+   "summary": "/api/chat: RAG context + tool loop over read-only graph tools (claude-opus-5-5, server-side fallback); offline answer when no API key; /chat UI"
   }
  ]
 }

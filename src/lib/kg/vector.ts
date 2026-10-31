@@ -1,4 +1,4 @@
-import { graph, neighbors, version } from "./graph";
+import { graph, neighbors } from "./graph";
 import type { KGNode } from "./types";
 
 /**
@@ -34,7 +34,8 @@ export function nodeText(n: KGNode): string {
 }
 
 interface Index {
-  v: number;
+  /** The Graph object the index was built from; a new graph means a rebuild. */
+  v: unknown;
   idf: Float32Array;
   vecs: Map<string, Float32Array>;
 }
@@ -62,9 +63,10 @@ function toVec(m: Map<number, number>, idf: Float32Array): Float32Array {
 }
 
 function index(): Index {
-  const v = version();
-  if (g.__kgIndex?.v === v) return g.__kgIndex;
-  const nodes = [...graph().nodes.values()];
+  const G = graph();
+  const v: unknown = G;
+  if (g.__kgIndex && g.__kgIndex.v === v) return g.__kgIndex;
+  const nodes = [...G.nodes.values()];
   const tfs = nodes.map((n) => tf(tokens(nodeText(n))));
   const df = new Float32Array(DIM);
   for (const m of tfs) for (const h of m.keys()) df[h]++;
