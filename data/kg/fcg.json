@@ -1,0 +1,1394 @@
+{
+ "version": "fcg-0.1.0",
+ "generated": "2026-10-31",
+ "nodes": [
+  {
+   "id": "fcg:project/playpen",
+   "type": "project",
+   "label": "Moss Piglet Play Pen",
+   "status": "in_progress",
+   "description": "Open on-ramp and agent connector for finishing the tardigrade connectome, using the fly connectome as the worked example.",
+   "props": {
+    "repo": "https://github.com/biobitworks/moss-piglets-play-pen"
+   }
+  },
+  {
+   "id": "fcg:species/drosophila",
+   "type": "species",
+   "label": "Drosophila melanogaster",
+   "status": "external",
+   "description": "Fruit fly. Reference organism: several complete, proofread connectomes."
+  },
+  {
+   "id": "fcg:species/hypsibius",
+   "type": "species",
+   "label": "Hypsibius exemplaris",
+   "status": "in_progress",
+   "description": "Tardigrade (moss piglet). Fewer than ~600 neurons; Tardimap is mapping it."
+  },
+  {
+   "id": "fcg:dataset/flywire-fafb",
+   "type": "dataset",
+   "label": "FlyWire / FAFB",
+   "status": "external",
+   "description": "Whole adult female brain, ~140k neurons, community proofread.",
+   "props": {
+    "url": "https://codex.flywire.ai/"
+   }
+  },
+  {
+   "id": "fcg:dataset/hemibrain",
+   "type": "dataset",
+   "label": "Hemibrain",
+   "status": "external",
+   "description": "Janelia partial adult brain connectome, served in neuPrint.",
+   "props": {
+    "url": "https://neuprint.janelia.org/"
+   }
+  },
+  {
+   "id": "fcg:dataset/manc",
+   "type": "dataset",
+   "label": "MANC",
+   "status": "external",
+   "description": "Male adult nerve cord connectome.",
+   "props": {
+    "url": "https://neuprint.janelia.org/"
+   }
+  },
+  {
+   "id": "fcg:dataset/fanc",
+   "type": "dataset",
+   "label": "FANC",
+   "status": "external",
+   "description": "Female adult nerve cord, CAVE-based proofreading.",
+   "props": {
+    "url": "https://flyconnecto.me/"
+   }
+  },
+  {
+   "id": "fcg:dataset/malecns",
+   "type": "dataset",
+   "label": "MaleCNS",
+   "status": "external",
+   "description": "Whole male central nervous system.",
+   "props": {
+    "url": "https://flyconnecto.me/"
+   }
+  },
+  {
+   "id": "fcg:dataset/banc",
+   "type": "dataset",
+   "label": "BANC",
+   "status": "external",
+   "description": "Brain and nerve cord connectome.",
+   "props": {
+    "url": "https://flyconnecto.me/"
+   }
+  },
+  {
+   "id": "fcg:dataset/tardimap-riker",
+   "type": "dataset",
+   "label": "Tardimap Riker EM",
+   "status": "in_progress",
+   "description": "Whole-animal EM of Hypsibius exemplaris. Imaging complete; reconstruction in progress; not public yet.",
+   "props": {
+    "url": "https://tardimap.org/"
+   }
+  },
+  {
+   "id": "fcg:stage/imaging",
+   "type": "stage",
+   "label": "EM imaging",
+   "status": "built",
+   "description": "Pipeline stage 1 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 1
+   }
+  },
+  {
+   "id": "fcg:stage/segmentation",
+   "type": "stage",
+   "label": "Automated segmentation",
+   "status": "blocked",
+   "description": "Pipeline stage 2 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 2
+   }
+  },
+  {
+   "id": "fcg:stage/proofreading",
+   "type": "stage",
+   "label": "Proofreading",
+   "status": "needed",
+   "description": "Pipeline stage 3 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 3
+   }
+  },
+  {
+   "id": "fcg:stage/synapses",
+   "type": "stage",
+   "label": "Synapse detection",
+   "status": "blocked",
+   "description": "Pipeline stage 4 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 4
+   }
+  },
+  {
+   "id": "fcg:stage/typing",
+   "type": "stage",
+   "label": "Cell typing and naming",
+   "status": "needed",
+   "description": "Pipeline stage 5 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 5
+   }
+  },
+  {
+   "id": "fcg:stage/release",
+   "type": "stage",
+   "label": "Public release",
+   "status": "needed",
+   "description": "Pipeline stage 6 of 6. Status shown is the tardigrade side; the fly side is complete.",
+   "props": {
+    "order": 6
+   }
+  },
+  {
+   "id": "fcg:tool/navis",
+   "type": "tool",
+   "label": "navis",
+   "status": "external",
+   "description": "Neuron analysis and visualisation: skeletons, meshes, NBLAST, transforms.",
+   "props": {
+    "language": "python",
+    "install": "pip install navis",
+    "url": "https://navis-org.github.io/navis/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/fafbseg-py",
+   "type": "tool",
+   "label": "fafbseg (Python)",
+   "status": "external",
+   "description": "Access to FlyWire/FAFB segmentation, annotations and connectivity.",
+   "props": {
+    "language": "python",
+    "install": "pip install fafbseg",
+    "url": "https://fafbseg-py.readthedocs.io/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/neuprint-python",
+   "type": "tool",
+   "label": "neuprint-python",
+   "status": "external",
+   "description": "Client for neuPrint connectome databases (hemibrain, MANC).",
+   "props": {
+    "language": "python",
+    "install": "pip install neuprint-python",
+    "url": "https://connectome-neuprint.github.io/neuprint-python/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/caveclient",
+   "type": "tool",
+   "label": "CAVEclient",
+   "status": "external",
+   "description": "Client for CAVE: versioned segmentation, proofreading edits and annotation tables.",
+   "props": {
+    "language": "python",
+    "install": "pip install caveclient",
+    "url": "https://caveclient.readthedocs.io/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/cloud-volume",
+   "type": "tool",
+   "label": "CloudVolume",
+   "status": "external",
+   "description": "Read and write Neuroglancer precomputed volumes and meshes.",
+   "props": {
+    "language": "python",
+    "install": "pip install cloud-volume",
+    "url": "https://github.com/seung-lab/cloud-volume",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/pymaid",
+   "type": "tool",
+   "label": "pymaid",
+   "status": "external",
+   "description": "Python client for CATMAID, the likely engine for a <600-neuron animal.",
+   "props": {
+    "language": "python",
+    "install": "pip install python-catmaid",
+    "url": "https://pymaid.readthedocs.io/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/cocoa",
+   "type": "tool",
+   "label": "cocoa",
+   "status": "external",
+   "description": "Comparative connectomics: co-cluster neurons across datasets.",
+   "props": {
+    "language": "python",
+    "install": "pip install cocoa (from github.com/flyconnectome/cocoa)",
+    "url": "https://github.com/flyconnectome/cocoa",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/natverse",
+   "type": "tool",
+   "label": "natverse",
+   "status": "external",
+   "description": "R suite for neuroanatomy: nat, nat.nblast, neuprintr, fafbseg, rcatmaid.",
+   "props": {
+    "language": "r",
+    "install": "natmanager::install('natverse')",
+    "url": "https://natverse.org/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/nat-nblast",
+   "type": "tool",
+   "label": "nat.nblast",
+   "status": "external",
+   "description": "NBLAST morphological similarity, used for cell typing.",
+   "props": {
+    "language": "r",
+    "install": "install.packages('nat.nblast')",
+    "url": "https://natverse.org/nat.nblast/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/fafbseg-r",
+   "type": "tool",
+   "label": "fafbseg (R)",
+   "status": "external",
+   "description": "R access to FlyWire segmentation and annotations.",
+   "props": {
+    "language": "r",
+    "install": "natmanager::install(pkgs='fafbseg')",
+    "url": "https://natverse.org/fafbseg/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/neuprintr",
+   "type": "tool",
+   "label": "neuprintr",
+   "status": "external",
+   "description": "R client for neuPrint.",
+   "props": {
+    "language": "r",
+    "install": "natmanager::install(pkgs='neuprintr')",
+    "url": "https://natverse.org/neuprintr/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/rcatmaid",
+   "type": "tool",
+   "label": "rcatmaid",
+   "status": "external",
+   "description": "R client for CATMAID.",
+   "props": {
+    "language": "r",
+    "install": "natmanager::install(pkgs='rcatmaid')",
+    "url": "https://natverse.org/rcatmaid/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/coconatfly",
+   "type": "tool",
+   "label": "coconatfly",
+   "status": "external",
+   "description": "Cross-dataset connectome comparison for the fly datasets.",
+   "props": {
+    "language": "r",
+    "install": "natmanager::install(pkgs='coconatfly')",
+    "url": "https://natverse.org/coconatfly/",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/neuroglancer",
+   "type": "tool",
+   "label": "Neuroglancer",
+   "status": "external",
+   "description": "Web viewer for EM, segmentation and meshes.",
+   "props": {
+    "language": "web",
+    "install": "pip install neuroglancer (or hosted)",
+    "url": "https://github.com/google/neuroglancer",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/cave",
+   "type": "tool",
+   "label": "CAVE",
+   "status": "external",
+   "description": "Connectome Annotation Versioning Engine behind FlyWire proofreading.",
+   "props": {
+    "language": "platform",
+    "install": "self-hosted (Kubernetes)",
+    "url": "https://github.com/CAVEconnectome",
+    "tardigradeFit": "adapter"
+   }
+  },
+  {
+   "id": "fcg:tool/catmaid",
+   "type": "tool",
+   "label": "CATMAID",
+   "status": "external",
+   "description": "Collaborative tracing and annotation; good fit for small whole animals.",
+   "props": {
+    "language": "platform",
+    "install": "self-hosted (Docker)",
+    "url": "https://catmaid.org/",
+    "tardigradeFit": "direct"
+   }
+  },
+  {
+   "id": "fcg:tool/codex",
+   "type": "tool",
+   "label": "FlyWire Codex",
+   "status": "external",
+   "description": "Browse and download FlyWire data releases.",
+   "props": {
+    "language": "web",
+    "install": "hosted",
+    "url": "https://codex.flywire.ai/",
+    "tardigradeFit": "n/a"
+   }
+  },
+  {
+   "id": "fcg:capability/contributor-onramp",
+   "type": "capability",
+   "label": "Contributor on-ramp (progress, train, tasks, credit)",
+   "status": "built",
+   "description": "Next.js pages on mock data."
+  },
+  {
+   "id": "fcg:capability/stack-review",
+   "type": "capability",
+   "label": "Fly tool review and recommended stack",
+   "status": "built",
+   "description": "docs/TECH_STACK.md."
+  },
+  {
+   "id": "fcg:capability/knowledge-graph",
+   "type": "capability",
+   "label": "FCO/FCG knowledge graph",
+   "status": "in_progress",
+   "description": "Addressable graph of what exists and what is needed."
+  },
+  {
+   "id": "fcg:capability/vector-search",
+   "type": "capability",
+   "label": "Vector search (RAG retrieval)",
+   "status": "needed",
+   "description": "Embeds every node for semantic lookup."
+  },
+  {
+   "id": "fcg:capability/agent-tools",
+   "type": "capability",
+   "label": "Agent tools over MCP and REST",
+   "status": "needed",
+   "description": "One tool registry exposed to agents."
+  },
+  {
+   "id": "fcg:capability/agent-connector",
+   "type": "capability",
+   "label": "Agent connector (1:1, 1:n, n:m)",
+   "status": "needed",
+   "description": "Message bus between registered agents."
+  },
+  {
+   "id": "fcg:capability/chat",
+   "type": "capability",
+   "label": "Chat interface",
+   "status": "needed",
+   "description": "Claude-backed chat that answers from the graph."
+  },
+  {
+   "id": "fcg:capability/status-board",
+   "type": "capability",
+   "label": "Built-vs-needed board and worklog",
+   "status": "needed",
+   "description": "Live view of graph status and proof of work."
+  },
+  {
+   "id": "fcg:capability/deploy",
+   "type": "capability",
+   "label": "Vercel deployment",
+   "status": "needed",
+   "description": "Same app runs locally and on Vercel."
+  },
+  {
+   "id": "fcg:capability/persistence",
+   "type": "capability",
+   "label": "Database persistence for graph and messages",
+   "status": "needed",
+   "description": "Postgres + pgvector or Neo4j. Roadmap phase 2."
+  },
+  {
+   "id": "fcg:capability/github-sync",
+   "type": "capability",
+   "label": "Live GitHub sync (webhooks)",
+   "status": "needed",
+   "description": "Pushes, PRs and merges arrive as they happen. Phase 3."
+  },
+  {
+   "id": "fcg:capability/python-worker",
+   "type": "capability",
+   "label": "Python agent worker (navis, fafbseg)",
+   "status": "needed",
+   "description": "Runs analysis jobs from graph tasks. Phase 4."
+  },
+  {
+   "id": "fcg:capability/tardimap-adapter",
+   "type": "capability",
+   "label": "Tardimap data adapter",
+   "status": "blocked",
+   "description": "Needs access to Tardimap reconstruction. Phase 5."
+  },
+  {
+   "id": "fcg:capability/cross-species",
+   "type": "capability",
+   "label": "Fly ↔ tardigrade cell-type links",
+   "status": "needed",
+   "description": "Shared vocabulary as join key. Phase 6."
+  },
+  {
+   "id": "fcg:capability/celltype-vocab",
+   "type": "capability",
+   "label": "Tardigrade cell-type vocabulary",
+   "status": "needed",
+   "description": "Small OBO/OWL vocabulary, cross-referenced to CL/Uberon."
+  },
+  {
+   "id": "fcg:task/T01",
+   "type": "task",
+   "label": "T01: Merge PR #2/#3, roadmap and task plan",
+   "status": "needed",
+   "description": "15-minute slot 20:45–21:00 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T20:45:00Z",
+    "slotEnd": "2026-10-31T21:00:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T02",
+   "type": "task",
+   "label": "T02: FCO vocabulary and seeded FCG",
+   "status": "needed",
+   "description": "15-minute slot 21:00–21:15 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:00:00Z",
+    "slotEnd": "2026-10-31T21:15:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T03",
+   "type": "task",
+   "label": "T03: Tool nodes and proof-of-work logger",
+   "status": "needed",
+   "description": "15-minute slot 21:15–21:30 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:15:00Z",
+    "slotEnd": "2026-10-31T21:30:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T04",
+   "type": "task",
+   "label": "T04: Vector search over the graph",
+   "status": "needed",
+   "description": "15-minute slot 21:30–21:45 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:30:00Z",
+    "slotEnd": "2026-10-31T21:45:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T05",
+   "type": "task",
+   "label": "T05: Agent tool endpoints (REST + MCP)",
+   "status": "needed",
+   "description": "15-minute slot 21:45–22:00 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:45:00Z",
+    "slotEnd": "2026-10-31T22:00:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T06",
+   "type": "task",
+   "label": "T06: Agent connector 1:1, 1:n, n:m",
+   "status": "needed",
+   "description": "15-minute slot 22:00–22:15 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:00:00Z",
+    "slotEnd": "2026-10-31T22:15:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T07",
+   "type": "task",
+   "label": "T07: Chat endpoint (Claude API)",
+   "status": "needed",
+   "description": "15-minute slot 22:15–22:30 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:15:00Z",
+    "slotEnd": "2026-10-31T22:30:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T08",
+   "type": "task",
+   "label": "T08: Built-vs-needed board and worklog pages",
+   "status": "needed",
+   "description": "15-minute slot 22:30–22:45 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:30:00Z",
+    "slotEnd": "2026-10-31T22:45:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T09",
+   "type": "task",
+   "label": "T09: Build check, README, PR, Vercel",
+   "status": "needed",
+   "description": "15-minute slot 22:45–23:00 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:45:00Z",
+    "slotEnd": "2026-10-31T23:00:00Z"
+   }
+  },
+  {
+   "id": "fcg:pr/1",
+   "type": "pr",
+   "label": "PR #1: README and requirements draft",
+   "status": "built",
+   "description": "Pull request #1.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/1"
+   }
+  },
+  {
+   "id": "fcg:pr/2",
+   "type": "pr",
+   "label": "PR #2: Next.js MVP on Vercel",
+   "status": "in_progress",
+   "description": "Pull request #2.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/2"
+   }
+  },
+  {
+   "id": "fcg:pr/3",
+   "type": "pr",
+   "label": "PR #3: Fly tools review and stack",
+   "status": "in_progress",
+   "description": "Pull request #3.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/3"
+   }
+  },
+  {
+   "id": "fcg:pr/4",
+   "type": "pr",
+   "label": "PR #4: Agent connector MVP",
+   "status": "in_progress",
+   "description": "Pull request #4.",
+   "props": {
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/4"
+   }
+  },
+  {
+   "id": "fcg:doc/readme",
+   "type": "doc",
+   "label": "README.md",
+   "status": "built",
+   "description": "Repository document README.md.",
+   "props": {
+    "path": "README.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/README.md"
+   }
+  },
+  {
+   "id": "fcg:doc/requirements",
+   "type": "doc",
+   "label": "docs/REQUIREMENTS.md",
+   "status": "built",
+   "description": "Repository document docs/REQUIREMENTS.md.",
+   "props": {
+    "path": "docs/REQUIREMENTS.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/REQUIREMENTS.md"
+   }
+  },
+  {
+   "id": "fcg:doc/tech-stack",
+   "type": "doc",
+   "label": "docs/TECH_STACK.md",
+   "status": "built",
+   "description": "Repository document docs/TECH_STACK.md.",
+   "props": {
+    "path": "docs/TECH_STACK.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/TECH_STACK.md"
+   }
+  },
+  {
+   "id": "fcg:doc/deploy",
+   "type": "doc",
+   "label": "docs/DEPLOY.md",
+   "status": "built",
+   "description": "Repository document docs/DEPLOY.md.",
+   "props": {
+    "path": "docs/DEPLOY.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/DEPLOY.md"
+   }
+  },
+  {
+   "id": "fcg:doc/agent-connector",
+   "type": "doc",
+   "label": "docs/AGENT_CONNECTOR.md",
+   "status": "built",
+   "description": "Repository document docs/AGENT_CONNECTOR.md.",
+   "props": {
+    "path": "docs/AGENT_CONNECTOR.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/AGENT_CONNECTOR.md"
+   }
+  },
+  {
+   "id": "fcg:doc/task-plan",
+   "type": "doc",
+   "label": "docs/TASK_PLAN.md",
+   "status": "built",
+   "description": "Repository document docs/TASK_PLAN.md.",
+   "props": {
+    "path": "docs/TASK_PLAN.md",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/TASK_PLAN.md"
+   }
+  },
+  {
+   "id": "fcg:agent/playpen-chat",
+   "type": "agent",
+   "label": "Play Pen chat",
+   "status": "needed",
+   "description": "Claude-backed chat agent with the graph tools.",
+   "props": {
+    "capabilities": [
+     "kg_search",
+     "kg_status",
+     "kg_get_node"
+    ]
+   }
+  },
+  {
+   "id": "fcg:agent/kg-curator",
+   "type": "agent",
+   "label": "Graph curator",
+   "status": "needed",
+   "description": "Agent that proposes new nodes and edges and logs work.",
+   "props": {
+    "capabilities": [
+     "kg_add_node",
+     "kg_add_edge",
+     "worklog_add"
+    ]
+   }
+  },
+  {
+   "id": "fcg:agent/navis-worker",
+   "type": "agent",
+   "label": "navis worker",
+   "status": "needed",
+   "description": "Planned Python agent that runs navis/fafbseg jobs.",
+   "props": {
+    "capabilities": [
+     "run_navis",
+     "run_fafbseg"
+    ]
+   }
+  },
+  {
+   "id": "fcg:person/byron",
+   "type": "person",
+   "label": "Byron",
+   "status": "external",
+   "description": "Project owner (GitHub biobitworks)."
+  },
+  {
+   "id": "fcg:question/tz",
+   "type": "question",
+   "label": "Is the 4:00 PM deadline Pacific time?",
+   "status": "needed",
+   "description": "Assumed Pacific (23:00 UTC)."
+  },
+  {
+   "id": "fcg:question/magic",
+   "type": "question",
+   "label": "What are magicpro and magicstudio?",
+   "status": "needed",
+   "description": "Byron wants task times captured there; until known, times live in the worklog."
+  },
+  {
+   "id": "fcg:question/fco",
+   "type": "question",
+   "label": "Does FCO/FCG mean something specific?",
+   "status": "needed",
+   "description": "Not found on flyconnecto.me or VFB; defined in docs/AGENT_CONNECTOR.md."
+  },
+  {
+   "id": "fcg:question/tardimap-step0",
+   "type": "question",
+   "label": "Step 0: what does Tardimap use and want?",
+   "status": "blocked",
+   "description": "Contact contact@tardimap.org about tools, access and contributors."
+  }
+ ],
+ "edges": [
+  {
+   "from": "fcg:dataset/flywire-fafb",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/hemibrain",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/manc",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/fanc",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/malecns",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/banc",
+   "type": "ofSpecies",
+   "to": "fcg:species/drosophila"
+  },
+  {
+   "from": "fcg:dataset/tardimap-riker",
+   "type": "ofSpecies",
+   "to": "fcg:species/hypsibius"
+  },
+  {
+   "from": "fcg:stage/imaging",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/segmentation",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/segmentation",
+   "type": "dependsOn",
+   "to": "fcg:stage/imaging"
+  },
+  {
+   "from": "fcg:stage/proofreading",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/proofreading",
+   "type": "dependsOn",
+   "to": "fcg:stage/segmentation"
+  },
+  {
+   "from": "fcg:stage/synapses",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/synapses",
+   "type": "dependsOn",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:stage/typing",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/typing",
+   "type": "dependsOn",
+   "to": "fcg:stage/synapses"
+  },
+  {
+   "from": "fcg:stage/release",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:stage/release",
+   "type": "dependsOn",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/navis",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/navis",
+   "type": "serves",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/fafbseg-py",
+   "type": "serves",
+   "to": "fcg:stage/segmentation"
+  },
+  {
+   "from": "fcg:tool/fafbseg-py",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/neuprint-python",
+   "type": "serves",
+   "to": "fcg:stage/release"
+  },
+  {
+   "from": "fcg:tool/caveclient",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/caveclient",
+   "type": "serves",
+   "to": "fcg:stage/synapses"
+  },
+  {
+   "from": "fcg:tool/cloud-volume",
+   "type": "serves",
+   "to": "fcg:stage/imaging"
+  },
+  {
+   "from": "fcg:tool/cloud-volume",
+   "type": "serves",
+   "to": "fcg:stage/segmentation"
+  },
+  {
+   "from": "fcg:tool/pymaid",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/cocoa",
+   "type": "serves",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/natverse",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/natverse",
+   "type": "serves",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/nat-nblast",
+   "type": "serves",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/fafbseg-r",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/neuprintr",
+   "type": "serves",
+   "to": "fcg:stage/release"
+  },
+  {
+   "from": "fcg:tool/rcatmaid",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/coconatfly",
+   "type": "serves",
+   "to": "fcg:stage/typing"
+  },
+  {
+   "from": "fcg:tool/neuroglancer",
+   "type": "serves",
+   "to": "fcg:stage/imaging"
+  },
+  {
+   "from": "fcg:tool/neuroglancer",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/cave",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/cave",
+   "type": "serves",
+   "to": "fcg:stage/synapses"
+  },
+  {
+   "from": "fcg:tool/catmaid",
+   "type": "serves",
+   "to": "fcg:stage/proofreading"
+  },
+  {
+   "from": "fcg:tool/catmaid",
+   "type": "serves",
+   "to": "fcg:stage/synapses"
+  },
+  {
+   "from": "fcg:tool/codex",
+   "type": "serves",
+   "to": "fcg:stage/release"
+  },
+  {
+   "from": "fcg:tool/cave",
+   "type": "hosts",
+   "to": "fcg:dataset/flywire-fafb"
+  },
+  {
+   "from": "fcg:tool/cave",
+   "type": "hosts",
+   "to": "fcg:dataset/fanc"
+  },
+  {
+   "from": "fcg:tool/cave",
+   "type": "hosts",
+   "to": "fcg:dataset/banc"
+  },
+  {
+   "from": "fcg:tool/neuprint-python",
+   "type": "reads",
+   "to": "fcg:dataset/hemibrain"
+  },
+  {
+   "from": "fcg:tool/neuprint-python",
+   "type": "reads",
+   "to": "fcg:dataset/manc"
+  },
+  {
+   "from": "fcg:tool/fafbseg-py",
+   "type": "reads",
+   "to": "fcg:dataset/flywire-fafb"
+  },
+  {
+   "from": "fcg:tool/nat-nblast",
+   "type": "partOf",
+   "to": "fcg:tool/natverse"
+  },
+  {
+   "from": "fcg:tool/fafbseg-r",
+   "type": "partOf",
+   "to": "fcg:tool/natverse"
+  },
+  {
+   "from": "fcg:tool/neuprintr",
+   "type": "partOf",
+   "to": "fcg:tool/natverse"
+  },
+  {
+   "from": "fcg:tool/rcatmaid",
+   "type": "partOf",
+   "to": "fcg:tool/natverse"
+  },
+  {
+   "from": "fcg:capability/contributor-onramp",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/contributor-onramp",
+   "type": "deliveredIn",
+   "to": "fcg:pr/2"
+  },
+  {
+   "from": "fcg:capability/stack-review",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/stack-review",
+   "type": "deliveredIn",
+   "to": "fcg:pr/3"
+  },
+  {
+   "from": "fcg:capability/knowledge-graph",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/knowledge-graph",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T02",
+   "type": "implements",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:task/T03",
+   "type": "implements",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:capability/vector-search",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/vector-search",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T04",
+   "type": "implements",
+   "to": "fcg:capability/vector-search"
+  },
+  {
+   "from": "fcg:capability/agent-tools",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/agent-tools",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T05",
+   "type": "implements",
+   "to": "fcg:capability/agent-tools"
+  },
+  {
+   "from": "fcg:capability/agent-connector",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/agent-connector",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T06",
+   "type": "implements",
+   "to": "fcg:capability/agent-connector"
+  },
+  {
+   "from": "fcg:capability/chat",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/chat",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T07",
+   "type": "implements",
+   "to": "fcg:capability/chat"
+  },
+  {
+   "from": "fcg:capability/status-board",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/status-board",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T08",
+   "type": "implements",
+   "to": "fcg:capability/status-board"
+  },
+  {
+   "from": "fcg:capability/deploy",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/deploy",
+   "type": "deliveredIn",
+   "to": "fcg:pr/4"
+  },
+  {
+   "from": "fcg:task/T09",
+   "type": "implements",
+   "to": "fcg:capability/deploy"
+  },
+  {
+   "from": "fcg:capability/persistence",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/github-sync",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/python-worker",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/tardimap-adapter",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/cross-species",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/celltype-vocab",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/vector-search",
+   "type": "dependsOn",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:capability/agent-tools",
+   "type": "dependsOn",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:capability/agent-tools",
+   "type": "dependsOn",
+   "to": "fcg:capability/vector-search"
+  },
+  {
+   "from": "fcg:capability/agent-connector",
+   "type": "dependsOn",
+   "to": "fcg:capability/agent-tools"
+  },
+  {
+   "from": "fcg:capability/chat",
+   "type": "dependsOn",
+   "to": "fcg:capability/agent-tools"
+  },
+  {
+   "from": "fcg:capability/status-board",
+   "type": "dependsOn",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:capability/deploy",
+   "type": "dependsOn",
+   "to": "fcg:capability/chat"
+  },
+  {
+   "from": "fcg:capability/persistence",
+   "type": "dependsOn",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:capability/github-sync",
+   "type": "dependsOn",
+   "to": "fcg:capability/persistence"
+  },
+  {
+   "from": "fcg:capability/python-worker",
+   "type": "dependsOn",
+   "to": "fcg:capability/agent-connector"
+  },
+  {
+   "from": "fcg:capability/tardimap-adapter",
+   "type": "dependsOn",
+   "to": "fcg:capability/contributor-onramp"
+  },
+  {
+   "from": "fcg:capability/cross-species",
+   "type": "dependsOn",
+   "to": "fcg:capability/celltype-vocab"
+  },
+  {
+   "from": "fcg:capability/cross-species",
+   "type": "dependsOn",
+   "to": "fcg:capability/tardimap-adapter"
+  },
+  {
+   "from": "fcg:capability/python-worker",
+   "type": "uses",
+   "to": "fcg:tool/navis"
+  },
+  {
+   "from": "fcg:capability/python-worker",
+   "type": "uses",
+   "to": "fcg:tool/fafbseg-py"
+  },
+  {
+   "from": "fcg:capability/tardimap-adapter",
+   "type": "reads",
+   "to": "fcg:dataset/tardimap-riker"
+  },
+  {
+   "from": "fcg:capability/contributor-onramp",
+   "type": "analogOf",
+   "to": "fcg:dataset/flywire-fafb"
+  },
+  {
+   "from": "fcg:stage/proofreading",
+   "type": "needs",
+   "to": "fcg:capability/tardimap-adapter"
+  },
+  {
+   "from": "fcg:stage/typing",
+   "type": "needs",
+   "to": "fcg:capability/celltype-vocab"
+  },
+  {
+   "from": "fcg:task/T01",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T02",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T03",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T04",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T05",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T06",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T07",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T08",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T09",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:capability/stack-review",
+   "type": "documentedIn",
+   "to": "fcg:doc/tech-stack"
+  },
+  {
+   "from": "fcg:capability/knowledge-graph",
+   "type": "documentedIn",
+   "to": "fcg:doc/agent-connector"
+  },
+  {
+   "from": "fcg:project/playpen",
+   "type": "documentedIn",
+   "to": "fcg:doc/task-plan"
+  },
+  {
+   "from": "fcg:project/playpen",
+   "type": "ownedBy",
+   "to": "fcg:person/byron"
+  },
+  {
+   "from": "fcg:question/tz",
+   "type": "blocks",
+   "to": "fcg:task/T09"
+  },
+  {
+   "from": "fcg:question/tz",
+   "type": "askedOf",
+   "to": "fcg:person/byron"
+  },
+  {
+   "from": "fcg:question/magic",
+   "type": "blocks",
+   "to": "fcg:capability/status-board"
+  },
+  {
+   "from": "fcg:question/magic",
+   "type": "askedOf",
+   "to": "fcg:person/byron"
+  },
+  {
+   "from": "fcg:question/fco",
+   "type": "blocks",
+   "to": "fcg:capability/knowledge-graph"
+  },
+  {
+   "from": "fcg:question/fco",
+   "type": "askedOf",
+   "to": "fcg:person/byron"
+  },
+  {
+   "from": "fcg:question/tardimap-step0",
+   "type": "blocks",
+   "to": "fcg:capability/tardimap-adapter"
+  },
+  {
+   "from": "fcg:question/tardimap-step0",
+   "type": "askedOf",
+   "to": "fcg:dataset/tardimap-riker"
+  }
+ ]
+}

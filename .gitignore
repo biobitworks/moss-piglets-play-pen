@@ -231,3 +231,6 @@ npm-debug.log*
 
 # The Python template above ignores every "lib/" folder; the app's code lives in src/lib.
 !src/lib/
+
+# Knowledge graph runtime overlay (local only)
+data/kg/runtime.json

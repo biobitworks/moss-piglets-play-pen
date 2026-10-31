@@ -1,0 +1,51 @@
+{
+  "name": "FCO: FlyConnectome Ontology (Play Pen working definition)",
+  "version": "fco-0.1.0",
+  "note": "Working definition, not a published ontology. See docs/AGENT_CONNECTOR.md. Addresses are fcg:<type>/<slug>.",
+  "statuses": {
+    "built": "Exists and works in this project.",
+    "in_progress": "Being built now.",
+    "needed": "Not built yet; nothing is blocking it.",
+    "blocked": "Cannot start until something outside the project happens.",
+    "external": "Already built elsewhere (for example by the fly community) and reused, not rebuilt."
+  },
+  "nodeTypes": {
+    "project": "The Play Pen itself.",
+    "species": "An organism with (or getting) a connectome.",
+    "dataset": "A connectome or imaging dataset.",
+    "stage": "A step of the connectome pipeline (imaging to public release).",
+    "tool": "An existing software package, platform or viewer (R, Python, web).",
+    "capability": "Something the project needs to be able to do; built or still needed.",
+    "task": "A unit of planned work with a time slot; completion is proof of work.",
+    "commit": "A git commit; carries its timestamp.",
+    "pr": "A GitHub pull request.",
+    "doc": "A document in the repository.",
+    "agent": "A software agent (chat, curator, worker) that can send and receive messages.",
+    "person": "A human participant.",
+    "question": "An open question; may block other nodes.",
+    "message": "A message sent between agents through the connector.",
+    "topic": "A many-to-many channel agents subscribe to."
+  },
+  "edgeTypes": {
+    "partOf": "Belongs to a larger whole.",
+    "dependsOn": "Cannot be finished before the target.",
+    "serves": "A tool is used at a pipeline stage.",
+    "reads": "Reads data from a dataset.",
+    "hosts": "A platform hosts a dataset.",
+    "ofSpecies": "A dataset is of a species.",
+    "implements": "A task builds a capability.",
+    "completedBy": "A task was finished by a commit (has an 'at' timestamp).",
+    "deliveredIn": "A capability ships in a pull request.",
+    "documentedIn": "Described in a document.",
+    "uses": "Uses a tool.",
+    "needs": "A stage needs a capability to move forward.",
+    "analogOf": "The tardigrade-side counterpart of a fly-side thing.",
+    "blocks": "A question blocks a node until it is answered.",
+    "askedOf": "Who can answer a question.",
+    "ownedBy": "Who owns a node.",
+    "sentBy": "A message was sent by an agent.",
+    "sentTo": "A message was delivered to an agent.",
+    "postedIn": "A message was posted to a topic.",
+    "subscribes": "An agent listens to a topic."
+  }
+}
