@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:13:06.099Z",
+ "syncedAt": "2026-10-31T21:13:33.638Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -184,6 +184,20 @@
    "isMerge": true,
    "subject": "Merge pull request #4 from biobitworks/claude/project-thread-qho8m6",
    "pr": 4
+  },
+  {
+   "sha": "4fae49ac413c8259d7e87fc0d792c2629a6c1611",
+   "at": "2026-10-31T21:13:06.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T10: shared persistence for runtime graph additions and agent messages via Upstash Redis"
+  },
+  {
+   "sha": "e300d8b850b4e85168250c244f7269da66d52f0e",
+   "at": "2026-10-31T21:13:33.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T11: step-by-step Vercel setup for storage, chat key and read-only mode"
   }
  ]
 }
