@@ -85,7 +85,12 @@ function build(): Graph {
     });
     G.link({ from: commitId(c.sha), type: "partOf", to: "fcg:project/playpen", at: c.at, origin: "git" });
     const task = /^(T\d+):/.exec(c.subject)?.[1];
-    if (task) G.link({ from: `fcg:task/${task}`, type: "completedBy", to: commitId(c.sha), at: c.at, origin: "git" });
+    if (task) {
+      // A commit whose subject starts with "Tnn:" finishes that task, unless the worklog says otherwise later.
+      const t = G.nodes.get(`fcg:task/${task}`);
+      if (t) G.add({ ...t, status: "built", updatedAt: c.at, props: { ...t.props, completedAt: t.props?.completedAt ?? c.at, commit: t.props?.commit ?? c.sha } });
+      G.link({ from: `fcg:task/${task}`, type: "completedBy", to: commitId(c.sha), at: c.at, origin: "git" });
+    }
     if (c.pr) {
       const pr = G.nodes.get(`fcg:pr/${c.pr}`);
       if (pr) G.add({ ...pr, status: "built", props: { ...pr.props, mergedAt: c.at, mergeCommit: c.sha } });
