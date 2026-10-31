@@ -93,6 +93,12 @@
    "commitAt": "2026-10-31T21:02:53.000Z",
    "subject": "T09: README, deploy notes and roadmap link for the agent connector; production build passes",
    "summary": "npm run build passes (24 routes); prod server checked; README, DEPLOY env vars, roadmap page updated"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T21:02:55.821Z",
+   "commit": "ada469d0a19ffbb82c556493f5018e5c91e135c8",
+   "branch": "claude/project-thread-qho8m6"
   }
  ]
 }
