@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:57:57.748Z",
+ "syncedAt": "2026-10-31T22:33:25.949Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -258,11 +258,201 @@
    "pr": 6
   },
   {
+   "sha": "883c88e170886b3ae4c3e2fa83bbccaad96dc43c",
+   "at": "2026-10-31T21:45:47.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T22: dataset browser, REST endpoints and agent tools over the starter datasets"
+  },
+  {
+   "sha": "974a31c7d4a4ef8fb0a058c044e11d404768b871",
+   "at": "2026-10-31T21:45:47.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T21 built"
+  },
+  {
+   "sha": "7ee3a9666eea2fc52eb1ddbafac26f30bd310671",
+   "at": "2026-10-31T21:45:47.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T21: fetch and normalise starter datasets (C. elegans connectome, FlyWire and hemibrain annotations)"
+  },
+  {
+   "sha": "b58a5a60fed6443f7bf90c2e97eb8fd6df875784",
+   "at": "2026-10-31T21:45:47.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T20 built"
+  },
+  {
+   "sha": "d6a8ae8ce532a4c55211bf2dda77c65661253806",
+   "at": "2026-10-31T21:45:47.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T20: dependency-free stress test for the API, MCP, chat and pages"
+  },
+  {
+   "sha": "07facc5f5de090406a64ad479cdee617d3e38b57",
+   "at": "2026-10-31T21:45:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T24 built"
+  },
+  {
+   "sha": "16fd3a8de8d400c06b4f9983692201f141abedf7",
+   "at": "2026-10-31T21:45:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T24: stress test report, starter datasets and CoDA notes, headless browser check"
+  },
+  {
+   "sha": "0a3b55866ccc97082a341ec7ab46b04de3e338a0",
+   "at": "2026-10-31T21:45:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T23 built"
+  },
+  {
+   "sha": "0f74a1469ad257af8cbe59e1308be9dbb9e41f91",
+   "at": "2026-10-31T21:45:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T23: keep graph search fast and relevant at 20k+ nodes"
+  },
+  {
+   "sha": "f05d4fcd111fb3b0b1180f712c9e4daa79e2e64d",
+   "at": "2026-10-31T21:45:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T22 built"
+  },
+  {
+   "sha": "4ef2941fea5b989324f81ec3b9ef12cfcd755a19",
+   "at": "2026-10-31T21:46:10.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "README and task plan: datasets, stress test and e2e commands; T20-T24 rows"
+  },
+  {
+   "sha": "aa17398ef8f1add98d688cf7ab50c0f88784cfa2",
+   "at": "2026-10-31T21:46:12.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: push recorded"
+  },
+  {
+   "sha": "75b645c41219d9a31cf651b20b0cbb5c95d08e65",
+   "at": "2026-10-31T21:49:23.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Reopened tasks reopen their capability in the cached graph; page through exact neuron id matches"
+  },
+  {
    "sha": "2af33ad0aebb9113adf56308b73b44db5c6bd0e2",
    "at": "2026-10-31T21:57:57.000Z",
    "author": "Claude",
    "isMerge": false,
    "subject": "T13: No API key needed: chat defaults to a local model, else answers from the graph"
+  },
+  {
+   "sha": "aebee46eff0b55311c45a612878390a76685e94a",
+   "at": "2026-10-31T21:57:57.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Log T13 proof of work"
+  },
+  {
+   "sha": "9fe42d45e5f515c94640086731c2c1fa3563b881",
+   "at": "2026-10-31T22:00:13.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Timeline answers read task completion from the graph, including Tnn: commits"
+  },
+  {
+   "sha": "4dabca25d31e7ca002933cc54f1dfc0511c78ca8",
+   "at": "2026-10-31T22:09:52.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T31: Node CLI + MCP server and R package with the same commands and RAG"
+  },
+  {
+   "sha": "bebe00a23fa1f9d9dc56a3d1020afe7e32ec1e44",
+   "at": "2026-10-31T22:09:52.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T30: Python connector: client, playpen CLI, playpen-mcp stdio server, RAG with a local model"
+  },
+  {
+   "sha": "05abf434ca99fd3684bf2f243d1e01a74307eba9",
+   "at": "2026-10-31T22:09:53.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T32: Connector install docs, CI for all three packages, task plan"
+  },
+  {
+   "sha": "6f075dead4de29ee21be4dd9b4c079b6cf295e29",
+   "at": "2026-10-31T22:15:41.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Track packages/cli/lib (was hidden by the Python lib/ ignore rule)"
+  },
+  {
+   "sha": "10e767510342a95b76307028e3a15e03fa17a892",
+   "at": "2026-10-31T22:16:33.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Python client: make the tool name positional-only so agent_register's name argument reaches the server"
+  },
+  {
+   "sha": "cb809f28b8ac2c28e97815275a59d8810177f6b6",
+   "at": "2026-10-31T22:16:41.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Unignore packages/cli/lib"
+  },
+  {
+   "sha": "c15bd783b61d050c7289d923b467273c3c9010d0",
+   "at": "2026-10-31T22:18:09.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "CI: install R dependencies as binaries from Posit Package Manager and fail loudly if one is missing"
+  },
+  {
+   "sha": "08db5fe6902c32e6eb87f22889ec7ebf633c1f47",
+   "at": "2026-10-31T22:30:22.000Z",
+   "author": "Byron P. Lee",
+   "isMerge": true,
+   "subject": "Merge pull request #8 from biobitworks/claude/project-thread-qho8m6",
+   "pr": 8
+  },
+  {
+   "sha": "a99ca935affd57a55bd6b51d856bed8ce06ed10b",
+   "at": "2026-10-31T22:31:05.000Z",
+   "author": "Claude",
+   "isMerge": true,
+   "subject": "Merge main (PR #8) into connectors"
+  },
+  {
+   "sha": "b57a271030163479d9ec27786c0a386aae672b04",
+   "at": "2026-10-31T22:32:24.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T33 built"
+  },
+  {
+   "sha": "e00436433916f41a7d9edaabb2a991262c29f179",
+   "at": "2026-10-31T22:32:24.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "start.sh: one-command launch (deps, datasets, local model detection, graph-only fallback, no keys)"
+  },
+  {
+   "sha": "04b458bc5de062673dfb45bb8066465f267b6fbe",
+   "at": "2026-10-31T22:32:58.000Z",
+   "author": "Claude",
+   "isMerge": true,
+   "subject": "Merge PR #7 (datasets, stress-test fixes) with main and the connectors"
   }
  ]
 }
