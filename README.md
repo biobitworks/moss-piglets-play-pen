@@ -59,10 +59,14 @@ In parallel, the Play Pen can be built against public fly data: the training tas
 The MVP is a Next.js app with five pages: progress dashboard, training, task board, roadmap and contributors. Tardimap data isn't public yet, so it runs on a mock tardigrade dataset behind an adapter (`src/lib/data/`).
 
 ```bash
-npm install
-npm run dev        # http://localhost:3000
-npm run build      # production build, the same one Vercel runs
+git clone https://github.com/biobitworks/moss-piglets-play-pen && cd moss-piglets-play-pen
+./start.sh         # installs dependencies, finds a local model if one is running, opens http://localhost:3000
 ```
+
+`./start.sh` needs only Node.js 20.9+ and no API keys. If Ollama is running it picks a chat model
+(`--model` to choose one); otherwise chat answers from the knowledge graph. Options: `--prod` (production
+build), `--lan` (reachable from your network), `--port 3100`, `--connectors` (also installs the Python
+CLI, MCP server and RAG connector). The manual route is `npm install && npm run dev`.
 
 - **Swap the data source:** write an adapter that returns a `Dataset` (see `src/lib/data/types.ts`), register it in `src/lib/data/index.ts`, and set `PLAYPEN_DATA_SOURCE` to its id.
 - **JSON endpoints:** `/api/progress` and `/api/tasks`.
