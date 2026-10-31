@@ -83,8 +83,14 @@ knowledge graph, so people and AI agents can see what exists, what has been buil
 - **For agents:** MCP at `/api/mcp` (`claude mcp add --transport http playpen http://localhost:3000/api/mcp`), REST
   at `/api/tools/<name>`, the graph at `/api/kg`, search at `/api/kg/search?q=`, and messaging at `/api/connect`
   (one-to-one, one-to-many, or many-to-many by topic).
-- **Chat:** set `ANTHROPIC_API_KEY` to answer with Claude using the graph tools. Without it, the chat returns the
-  graph search results.
+- **Chat, frontier or local:** the chat page has a model picker.
+  - *Frontier:* set `ANTHROPIC_API_KEY` to answer with Claude (`claude-opus-5-5`) using the graph tools.
+  - *Local:* run any OpenAI-compatible server, e.g. [Ollama](https://ollama.com): `ollama pull llama3.1:8b && ollama serve`.
+    The Play Pen finds it at `http://localhost:11434/v1` by default (`PLAYPEN_LOCAL_URL`, `PLAYPEN_LOCAL_MODEL`,
+    `PLAYPEN_LOCAL_API_KEY` for LM Studio, llama.cpp or vLLM). Models that support tool calling use the graph tools;
+    others answer from the retrieved graph context.
+  - *Neither:* the chat returns the graph search results. `PLAYPEN_CHAT_BACKEND` sets the default; `GET /api/chat`
+    lists which backends are available.
 - **Proof of work:** `npm run log -- T05 built "what was done"` records the time and the commit against a task;
   `npm run kg:sync` pulls commits and merges from git (also runs before every build).
 
