@@ -25,19 +25,26 @@ const g = globalThis as unknown as {
   __kgCache?: { v: number; graph: Graph };
   /** Writes not yet sent to the shared store. */
   __kgPending?: Overlay;
+  /** Writes being sent right now; kept visible until the store has them. */
+  __kgInflight?: Overlay[];
 };
 const pending = () => (g.__kgPending ??= { nodes: [], edges: [] });
+const inflight = () => (g.__kgInflight ??= []);
 
 /** Pull runtime additions from the shared store, if one is configured. Call at the start of a request. */
 export async function sync() {
   const remote = await loadRemote();
   if (!remote) return;
   const o = overlay();
-  const p = pending();
-  // Keep local writes that haven't been flushed yet on top of what the store has.
+  // Keep local writes the store may not have yet (in flight or not yet flushed) on top of what it returned.
+  const local = [...inflight(), pending()];
   const nodes = new Map(remote.nodes.map((n) => [n.id, n]));
-  for (const n of p.nodes) nodes.set(n.id, n);
-  const next = { nodes: [...nodes.values()], edges: [...remote.edges, ...p.edges] };
+  for (const b of local) for (const n of b.nodes) nodes.set(n.id, n);
+  const key = (e: KGEdge) => `${e.from}|${e.type}|${e.to}|${e.at ?? ""}`;
+  const seen = new Set(remote.edges.map(key));
+  const edges = [...remote.edges];
+  for (const b of local) for (const e of b.edges) if (!seen.has(key(e))) (seen.add(key(e)), edges.push(e));
+  const next = { nodes: [...nodes.values()], edges };
   if (next.nodes.length !== o.nodes.length || next.edges.length !== o.edges.length || JSON.stringify(next) !== JSON.stringify(o)) {
     g.__kgOverlay = next;
     g.__kgVersion = (g.__kgVersion ?? 1) + 1;
@@ -49,12 +56,15 @@ export async function flush() {
   const p = pending();
   if (!p.nodes.length && !p.edges.length) return;
   const batch = { nodes: p.nodes.splice(0), edges: p.edges.splice(0) };
+  inflight().push(batch);
   try {
     await writeRemote(batch.nodes, batch.edges);
   } catch (e) {
     p.nodes.unshift(...batch.nodes);
     p.edges.unshift(...batch.edges);
     throw e;
+  } finally {
+    g.__kgInflight = inflight().filter((b) => b !== batch);
   }
 }
 function overlay(): Overlay {

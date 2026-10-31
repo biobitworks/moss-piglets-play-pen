@@ -89,7 +89,6 @@ export async function POST(req: Request) {
       messages.push({ role: "assistant", content: res.content });
       const uses = res.content.filter((b): b is Anthropic.Beta.BetaToolUseBlock => b.type === "tool_use");
       if (res.stop_reason !== "tool_use" || !uses.length) {
-        await flush();
         const reply = res.content.filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text").map((b) => b.text).join("\n").trim();
         return Response.json({ reply: reply || "(no answer)", retrieved: hits.map((h) => h.id), toolCalls, model: res.model });
       }
@@ -103,6 +102,8 @@ export async function POST(req: Request) {
           return { type: "tool_result", tool_use_id: u.id, content: (e as Error).message, is_error: true };
         }
       });
+      // Persist this batch's writes now, so they survive even if a later model call fails.
+      await flush();
       messages.push({ role: "user", content: results });
     }
     return Response.json({ reply: "That took too many steps; try a narrower question.", retrieved: hits.map((h) => h.id), toolCalls, model: MODEL });
