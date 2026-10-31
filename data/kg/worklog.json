@@ -37,6 +37,16 @@
    "commitAt": "2026-10-31T20:56:23.000Z",
    "subject": "T04: hashed TF-IDF vector search over the graph, /api/kg/search",
    "summary": "Vector index rebuilt on every graph change; /api/kg/search?q= ranks nodes by cosine"
+  },
+  {
+   "kind": "task",
+   "task": "T05",
+   "status": "built",
+   "at": "2026-10-31T20:58:11.218Z",
+   "commit": "0165650cb2f6924f08a978e222aa6a1536a27e2d",
+   "commitAt": "2026-10-31T20:58:10.000Z",
+   "subject": "T05: shared tool registry served over MCP (/api/mcp) and REST (/api/tools, /api/kg)",
+   "summary": "12 tools; MCP initialize/tools/list/tools/call verified with curl; REST node, status, worklog routes"
   }
  ]
 }
