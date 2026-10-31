@@ -46,11 +46,13 @@ class PlayPen:
         """Tool definitions (name, description, input_schema, writes)."""
         return self._get("/api/tools")["tools"]
 
-    def call(self, name: str, **args: Any) -> Any:
-        """Call any graph or agent tool by name and return its result."""
+    def call(self, tool: str, /, **args: Any) -> Any:
+        """Call any graph or agent tool by name and return its result.
+
+        ``tool`` is positional-only so tool arguments called ``name`` or ``tool`` pass through."""
         args = {k: v for k, v in args.items() if v is not None}
         try:
-            out = self._post(f"/api/tools/{name}", args)
+            out = self._post(f"/api/tools/{tool}", args)
         except HTTPError as e:
             raise PlayPenError(e.body.get("error") if isinstance(e.body, dict) else str(e)) from None
         if isinstance(out, dict) and "error" in out:

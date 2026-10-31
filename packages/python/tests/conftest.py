@@ -34,6 +34,8 @@ def tool(name, args):
         return NODES[nid]
     if name == "kg_status":
         return {"counts": {"built": 1, "needed": 1}, "needed": [NODES["fcg:stage/tracing"]]}
+    if name == "agent_register":
+        return {"id": "fcg:agent/" + args["name"]}
     if name == "agent_send":
         return {"id": "fcg:message/1", "delivered": [args.get("to")] if isinstance(args.get("to"), str) else args.get("to")}
     raise KeyError(f"unknown tool {name}")

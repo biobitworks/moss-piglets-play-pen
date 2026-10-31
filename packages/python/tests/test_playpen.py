@@ -98,3 +98,10 @@ def test_cli(server, capsys):
     assert json.loads(capsys.readouterr().out)["backend"] == "search"
     assert run(["--url", server, "chat", "hello"]) == 0
     assert "from server: hello" in capsys.readouterr().out
+
+
+def test_register_agent_name_reaches_server(server):
+    PlayPen(server).register_agent("my-agent", capabilities=["tracing"])
+    post = [c for c in State.calls if c[0] == "POST"][-1]
+    assert post[1] == "/api/tools/agent_register"
+    assert post[2] == {"name": "my-agent", "capabilities": ["tracing"], "topics": []}
