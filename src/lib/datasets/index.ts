@@ -197,15 +197,16 @@ export function searchNeurons(id: string, q = "", opts: { limit?: number; offset
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
   const hits: Neuron[] = [];
   let total = 0;
+  // The exact id match is position 0 of the ordering, so offset and limit page through it like any other hit.
   const exact = L.byId.get(q.trim());
-  if (exact) hits.push(exact), total++;
+  const take = (n: Neuron) => {
+    if (total >= offset && hits.length < limit) hits.push(n);
+    total++;
+  };
+  if (exact) take(exact);
   for (let i = 0; i < L.neurons.length; i++) {
     if (L.neurons[i] === exact) continue;
-    const t = L.text[i];
-    if (words.every((w) => t.includes(w))) {
-      if (total >= offset && hits.length < limit) hits.push(L.neurons[i]);
-      total++;
-    }
+    if (words.every((w) => L.text[i].includes(w))) take(L.neurons[i]);
   }
   return { dataset: id, q, total, offset, limit, neurons: hits };
 }

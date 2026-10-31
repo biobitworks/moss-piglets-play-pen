@@ -118,10 +118,13 @@ export class Graph {
   private keys = new Set<string>();
   /** Nodes whose text changed since the search index last looked (added, edited, or linked). */
   dirty = new Set<string>();
+  /** A capability's own status, before task statuses are rolled up into it. */
+  baseStatus = new Map<string, Status>();
 
   add(n: KGNode) {
     const prev = this.nodes.get(n.id);
     this.nodes.set(n.id, prev ? { ...prev, ...n, props: { ...prev.props, ...n.props } } : n);
+    if (n.type === "capability") this.baseStatus.set(n.id, n.status);
     this.dirty.add(n.id);
   }
   link(e: KGEdge) {
@@ -197,10 +200,12 @@ function rollup(G: Graph) {
   for (const [id, n] of G.nodes) {
     if (n.type !== "capability") continue;
     const tasks = (G.in.get(id) ?? []).filter((e) => e.type === "implements").map((e) => G.nodes.get(e.from)!);
-    if (!tasks.length) continue;
+    // Fall back to the capability's own status, not the last rollup, so reopened tasks reopen it.
+    const base = G.baseStatus.get(id) ?? n.status;
     const done = tasks.filter((t) => t.status === "built").length;
-    const status: Status = done === tasks.length ? "built" : done || tasks.some((t) => t.status === "in_progress") ? "in_progress" : n.status;
-    if (status !== n.status) G.add({ ...n, status });
+    const status: Status = !tasks.length ? base : done === tasks.length ? "built" : done || tasks.some((t) => t.status === "in_progress") ? "in_progress" : base;
+    // Set directly, not via add(), so the rolled-up value never becomes the base status.
+    if (status !== n.status) G.nodes.set(id, { ...n, status });
   }
 }
 
@@ -218,7 +223,7 @@ function applyToCache(apply: (G: Graph) => void) {
   save();
   if (!c || !before) return;
   apply(c.graph);
-  if (c.graph.dirty.size && [...c.graph.dirty].some((id) => c.graph.nodes.get(id)?.type === "task")) rollup(c.graph);
+  if (c.graph.dirty.size && [...c.graph.dirty].some((id) => ["task", "capability"].includes(c.graph.nodes.get(id)?.type ?? ""))) rollup(c.graph);
   c.v = cacheKey();
 }
 
