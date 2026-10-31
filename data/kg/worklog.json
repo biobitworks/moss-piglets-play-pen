@@ -159,6 +159,16 @@
    "commitAt": "2026-10-31T22:09:52.000Z",
    "subject": "T31: Node CLI + MCP server and R package with the same commands and RAG",
    "summary": "Node playpen-connector (zero deps, playpen + playpen-mcp, 5 tests) and R playpen (curl+jsonlite, 15 tests incl. live); clean installs verified"
+  },
+  {
+   "kind": "task",
+   "task": "T33",
+   "status": "built",
+   "at": "2026-10-31T22:32:24.510Z",
+   "commit": "e00436433916f41a7d9edaabb2a991262c29f179",
+   "commitAt": "2026-10-31T22:32:24.000Z",
+   "subject": "start.sh: one-command launch (deps, datasets, local model detection, graph-only fallback, no keys)",
+   "summary": "start.sh launches the site with no keys; local model auto-detected, graph-only fallback"
   }
  ]
 }
