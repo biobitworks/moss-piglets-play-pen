@@ -59,10 +59,14 @@ In parallel, the Play Pen can be built against public fly data: the training tas
 The MVP is a Next.js app with five pages: progress dashboard, training, task board, roadmap and contributors. Tardimap data isn't public yet, so it runs on a mock tardigrade dataset behind an adapter (`src/lib/data/`).
 
 ```bash
-npm install
-npm run dev        # http://localhost:3000
-npm run build      # production build, the same one Vercel runs
+git clone https://github.com/biobitworks/moss-piglets-play-pen && cd moss-piglets-play-pen
+./start.sh         # installs dependencies, finds a local model if one is running, opens http://localhost:3000
 ```
+
+`./start.sh` needs only Node.js 20.9+ and no API keys. If Ollama is running it picks a chat model
+(`--model` to choose one); otherwise chat answers from the knowledge graph. Options: `--prod` (production
+build), `--lan` (reachable from your network), `--port 3100`, `--connectors` (also installs the Python
+CLI, MCP server and RAG connector). The manual route is `npm install && npm run dev`.
 
 - **Swap the data source:** write an adapter that returns a `Dataset` (see `src/lib/data/types.ts`), register it in `src/lib/data/index.ts`, and set `PLAYPEN_DATA_SOURCE` to its id.
 - **JSON endpoints:** `/api/progress` and `/api/tasks`.
@@ -95,6 +99,22 @@ knowledge graph, so people and AI agents can see what exists, what has been buil
   - `PLAYPEN_CHAT_BACKEND` sets the default; `GET /api/chat` lists which backends are available.
 - **Proof of work:** `npm run log -- T05 built "what was done"` records the time and the commit against a task;
   `npm run kg:sync` pulls commits and merges from git (also runs before every build).
+
+## Install the connectors (CLI, Python, R, MCP, RAG)
+
+Everything below talks to a running Play Pen (`npm run dev`, or any deployed copy) at `PLAYPEN_URL`
+(default `http://localhost:3000`). None of it needs an API key: `ask` retrieves from the graph and answers with
+a local model through Ollama (`PLAYPEN_LOCAL_URL`, `PLAYPEN_LOCAL_MODEL`), and answers from the graph alone if no
+model is running. A frontier model plugs in later (`--llm anthropic` or `--llm openai` with a key). Full guide:
+[docs/CONNECTORS.md](docs/CONNECTORS.md).
+
+| What | Install | Try it |
+|------|---------|--------|
+| Python package + `playpen` CLI + `playpen-mcp` | `pip install "git+https://github.com/biobitworks/moss-piglets-play-pen#subdirectory=packages/python"` | `playpen status`, `playpen ask "what still needs building?"` |
+| Node CLI + `playpen-mcp` (no dependencies) | `git clone` this repo, then `npm install -g ./packages/cli` | `playpen search synapse detection` |
+| R package | `remotes::install_github("biobitworks/moss-piglets-play-pen", subdir = "packages/r")` | `library(playpen); pp_search("navis")` |
+| MCP server for Claude Code, Claude Desktop, Cursor | either package above | `claude mcp add playpen -- playpen-mcp --model qwen2.5-coder:7b` |
+| RAG connector | in all three: `playpen ask`, `playpen.RAG`, `pp_ask()`, MCP tool `rag_ask` | `playpen ask "which tool reads FlyWire?" --model qwen2.5-coder:7b` |
 
 ## Contributing
 

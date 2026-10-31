@@ -1,0 +1,14 @@
+Package: playpen
+Type: Package
+Title: Connector for the Moss Piglets Play Pen Knowledge Graph
+Version: 0.1.0
+Authors@R: person("Byron", "Biobitworks", role = c("aut", "cre"), email = "biobitworks@gmail.com")
+Description: Search and update the Play Pen knowledge graph (fly connectome tools and data, and what is
+    built or still needed for the tardigrade connectome), message other agents, and ask questions with
+    retrieval-augmented generation using a local model (Ollama by default, no API key).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: curl, jsonlite
+Suggests: testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://github.com/biobitworks/moss-piglets-play-pen

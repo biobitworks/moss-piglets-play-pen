@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "playpen-connector"
+version = "0.1.0"
+description = "Python client, CLI, MCP server and RAG connector for the Moss Piglets Play Pen knowledge graph (fly connectome to tardigrade connectome)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+playpen = "playpen.cli:main"
+playpen-mcp = "playpen.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/biobitworks/moss-piglets-play-pen"
+
+[tool.setuptools.packages.find]
+where = ["src"]
