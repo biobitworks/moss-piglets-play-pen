@@ -27,6 +27,16 @@
    "at": "2026-10-31T20:55:37.117Z",
    "commit": "fb41fca0178af30149d9780933152ae81e5073de",
    "branch": "claude/project-thread-qho8m6"
+  },
+  {
+   "kind": "task",
+   "task": "T04",
+   "status": "built",
+   "at": "2026-10-31T20:56:23.613Z",
+   "commit": "2fa0745b33e6ee10894c5de773d19d8bc0f003cc",
+   "commitAt": "2026-10-31T20:56:23.000Z",
+   "subject": "T04: hashed TF-IDF vector search over the graph, /api/kg/search",
+   "summary": "Vector index rebuilt on every graph change; /api/kg/search?q= ranks nodes by cosine"
   }
  ]
 }

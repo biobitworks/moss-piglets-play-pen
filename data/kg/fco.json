@@ -46,6 +46,7 @@
     "sentBy": "A message was sent by an agent.",
     "sentTo": "A message was delivered to an agent.",
     "postedIn": "A message was posted to a topic.",
-    "subscribes": "An agent listens to a topic."
+    "subscribes": "An agent listens to a topic.",
+    "about": "A message refers to a node."
   }
 }
