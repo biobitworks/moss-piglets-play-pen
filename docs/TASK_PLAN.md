@@ -1,7 +1,7 @@
 # Task plan: agent connector MVP by 4:00 PM
 
 Target: a working local server (chat + agent tools + built-vs-needed view) that deploys to Vercel, by
-**4:00 PM Pacific (23:00 UTC), 31 Oct 2026**. Timezone is assumed until Byron confirms it.
+**4:00 PM Pacific (23:00 UTC), 31 Oct 2026** (Pacific confirmed by Byron).
 
 Work runs in 15-minute slots. Each task has an id (`T01`…). When a task is finished, its completion
 time and commit are written to the knowledge graph (`data/kg/worklog.json`) with
@@ -38,7 +38,7 @@ T01–T09 all finished by 2:03 PM PT and PR #4 merged at 2:11 PM PT. The next sl
 
 ## Open questions
 
-- **Q-TZ:** Is 4:00 PM Pacific? (Assumed.)
+- **Q-TZ:** Is 4:00 PM Pacific? Yes, confirmed by Byron.
 - **Q-MAGIC:** What are "magicpro" and "magicstudio"? Until we know, the time record lives in the repo
   and the graph, which any tool can read from `/api/kg/worklog`.
 - **Q-FCO:** "FCO/FCG" is not a published name we could find on flyconnecto.me or Virtual Fly Brain.

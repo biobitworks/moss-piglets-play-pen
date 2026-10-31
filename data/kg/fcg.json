@@ -739,8 +739,8 @@
    "id": "fcg:question/tz",
    "type": "question",
    "label": "Is the 4:00 PM deadline Pacific time?",
-   "status": "needed",
-   "description": "Assumed Pacific (23:00 UTC)."
+   "status": "built",
+   "description": "Answered by Byron on 2026-10-31: yes, Pacific (4:00 PM PT = 23:00 UTC)."
   },
   {
    "id": "fcg:question/magic",
