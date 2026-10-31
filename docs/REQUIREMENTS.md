@@ -129,11 +129,11 @@ This document says what the Play Pen must do. It does not decide how. Items mark
 | OQ-1 | Who comes first: citizen scientists, students and labs, or the Tardimap consortium itself? | Sets the tone of the UI and the training depth. | Students and labs first, then the public. |
 | OQ-2 | What does Tardimap use for segmentation and proofreading today, and in what format is its data? | Decides how the Play Pen connects to the real work. | Ask the consortium (Step 0). |
 | OQ-3 | Does Tardimap want outside contributors, and on what terms (access, license, credit, embargo)? | Without this, the Play Pen can only work on fly data. | Ask the consortium. Treat their data as private until then. |
-| OQ-4 | Should we push for a CAVE and Neuroglancer stack for Tardimap, like FlyWire? | It unlocks the whole fly toolchain, but it is a big infrastructure ask. | Propose it, but adapt to whatever they use. |
+| OQ-4 | Should we push for a CAVE and Neuroglancer stack for Tardimap, like FlyWire? | It unlocks the whole fly toolchain, but it is a big infrastructure ask. | Propose it, but adapt to whatever they use. See [`TECH_STACK.md`](TECH_STACK.md) §5. |
 | OQ-5 | How is quality control done: expert review, redundancy (several people do the same task), or both? | Decides how trustworthy community edits are. | Expert review for the first group, adding redundancy later. |
 | OQ-6 | Do you, or does anyone on the project, have a contact at Tardimap or in the fly connectome community (for example the Cambridge group at flyconnecto.me)? | A warm introduction makes Step 0 much faster. | Cold email to contact@tardimap.org. |
 | OQ-7 | Which license for the code (MIT, Apache-2.0, GPL)? | Needed before outside contributions. | MIT. |
-| OQ-8 | Tech stack and hosting: web app, notebooks, or both? | Shapes all implementation work. | Python backend (CAVEclient, navis), TypeScript web UI, embedded Neuroglancer. |
+| OQ-8 | Tech stack and hosting: web app, notebooks, or both? | Shapes all implementation work. | Python backend (CAVEclient, navis), TypeScript web UI, embedded Neuroglancer. Detailed in [`TECH_STACK.md`](TECH_STACK.md) §7. |
 | OQ-9 | Is cross-species comparison (G6) part of this project's first year, or later? | Decides whether to design the data model for it now. | Later, but keep the data model ready for it. |
 | OQ-10 | Is there a deadline, such as the Stranger Builds "build_anything" challenge? | Decides how much of the MVP to cut. | None assumed. |
 
