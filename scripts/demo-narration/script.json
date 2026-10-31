@@ -1,0 +1,12 @@
+[
+["title","This is the Moss Piglet Play Pen: an open workbench for building the tardigrade connectome, the same way the fly connectome was built."],
+["home","The home page lays out the whole recipe, from imaging, to segmentation, to naming every neuron."],
+["progress","Progress shows exactly what's done, and what's still needed."],
+["datasets","Tardigrade data isn't public yet, so we load real stand-ins."],
+["celegans","Here's the real C. elegans connectome: four hundred forty-eight cells, and more than seven thousand connections, all searchable."],
+["graph","Every step lives in a knowledge graph, marked built or needed, each with its own address."],
+["chat","Ask the chat what's next. No API key needed. It answers straight from the graph."],
+["worklog","The worklog keeps timestamped proof of every task."],
+["install","And any agent can plug in, through a command line tool, Python, R, or an MCP server."],
+["end","It's open source, and built so anyone can step in and help finish it. Try it at moss piglets play pen dot vercel dot app."]
+]

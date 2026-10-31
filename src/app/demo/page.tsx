@@ -19,6 +19,7 @@ export default function Demo() {
         <video src="/demo-60s.mp4" controls playsInline preload="metadata" style={{ width: "100%", borderRadius: 8 }} />
         <p className="muted">
           <a href="/demo-60s.mp4" download>Download the MP4</a> ·{" "}
+          <a href="https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/media/demo-60s-transcript.md">Transcript</a> ·{" "}
           <a href="https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/media/demo-60s.gif">GIF on GitHub</a>
         </p>
       </section>
