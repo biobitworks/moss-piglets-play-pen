@@ -62,7 +62,16 @@ export default function RoadmapPage() {
           tools like cocoa and coconat.
         </li>
       </ol>
+      <h2>Now: the agent connector</h2>
+      <p>
+        A knowledge graph of what the fly community has already built and what the tardigrade still needs, with chat
+        and agent tools on top. See what is built vs needed on the <a href="/graph">live board</a>, ask the{" "}
+        <a href="/chat">chat</a>, or connect an agent from the <a href="/agents">agents page</a>. Today&rsquo;s build,
+        with timestamps for every task, is on the <a href="/worklog">worklog</a>.
+      </p>
       <p className="muted small">
+        Design and roadmap:{" "}
+        <a href="https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/AGENT_CONNECTOR.md">docs/AGENT_CONNECTOR.md</a>.
         Full requirements and open questions:{" "}
         <a href="https://github.com/biobitworks/moss-piglets-play-pen/blob/main/docs/REQUIREMENTS.md">docs/REQUIREMENTS.md</a>.
       </p>

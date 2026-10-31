@@ -77,6 +77,12 @@
    "commitAt": "2026-10-31T21:01:48.000Z",
    "subject": "T08: built-vs-needed board, node pages, worklog timeline and agents page",
    "summary": "/graph board (capabilities, pipeline, tasks, questions, tool table), /node/<type>/<slug>, /worklog plan vs actual with PT/UTC, /agents"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T21:01:50.639Z",
+   "commit": "b43706a4a646f6f346c1791cf7216ed09a17e626",
+   "branch": "claude/project-thread-qho8m6"
   }
  ]
 }

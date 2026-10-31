@@ -20,4 +20,15 @@ If the name `moss-piglets-play-pen` is already taken on Vercel, it picks a varia
 
 ## Environment variables
 
-None are needed for the MVP. `PLAYPEN_DATA_SOURCE` selects the data adapter and defaults to `mock-tardigrade`. Data-access tokens added later (CAVE, Codex) go in Project → Settings → Environment Variables and are never committed.
+| Variable | Needed? | What it does |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | For the chat | Lets `/api/chat` answer with Claude (`claude-opus-5-5`) using the graph tools. Without it, the chat shows graph search results only. |
+| `PLAYPEN_CHAT_MODEL` | No | Override the chat model. |
+| `PLAYPEN_CHAT_WRITES` | No | `1` lets the chat add nodes and send agent messages. Off by default. |
+| `PLAYPEN_READONLY` | Recommended on public deployments | `1` turns off every tool that writes (graph edits, agent messages). |
+
+Graph edits and agent messages made at runtime are kept in server memory on Vercel, so they can reset between
+requests until a database is added (roadmap phase 2 in `docs/AGENT_CONNECTOR.md`). Locally they are saved to
+`data/kg/runtime.json`.
+
+`PLAYPEN_DATA_SOURCE` selects the data adapter and defaults to `mock-tardigrade`. Data-access tokens added later (CAVE, Codex) go in Project → Settings → Environment Variables and are never committed.
