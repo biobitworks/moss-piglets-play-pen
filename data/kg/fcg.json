@@ -812,6 +812,17 @@
    "props": {
     "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/5"
    }
+  },
+  {
+   "id": "fcg:task/T13",
+   "type": "task",
+   "label": "T13: No API key needed: local model or graph-only chat by default",
+   "status": "needed",
+   "description": "15-minute slot 22:00–22:15 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T22:00:00Z",
+    "slotEnd": "2026-10-31T22:15:00Z"
+   }
   }
  ],
  "edges": [
@@ -1484,6 +1495,16 @@
    "from": "fcg:capability/persistence",
    "type": "deliveredIn",
    "to": "fcg:pr/5"
+  },
+  {
+   "from": "fcg:task/T13",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T13",
+   "type": "implements",
+   "to": "fcg:capability/chat"
   }
  ]
 }
