@@ -149,6 +149,16 @@
    "commitAt": "2026-10-31T21:45:47.000Z",
    "subject": "T21: fetch and normalise starter datasets (C. elegans connectome, FlyWire and hemibrain annotations)",
    "summary": "C. elegans 448 cells / 7,379 edges committed; FlyWire 139,248 and hemibrain 25,397 neurons via npm run data:fetch"
+  },
+  {
+   "kind": "task",
+   "task": "T22",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.114Z",
+   "commit": "883c88e170886b3ae4c3e2fa83bbccaad96dc43c",
+   "commitAt": "2026-10-31T21:45:47.000Z",
+   "subject": "T22: dataset browser, REST endpoints and agent tools over the starter datasets",
+   "summary": "/datasets pages, /api/datasets REST, ds_list/ds_summary/ds_search_neurons/ds_neuron tools over MCP and chat; dataset nodes in the graph"
   }
  ]
 }
