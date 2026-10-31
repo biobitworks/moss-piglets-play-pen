@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "prebuild": "node scripts/kg-sync.mjs",
     "kg:sync": "node scripts/kg-sync.mjs",
-    "log": "node scripts/log-task.mjs"
+    "log": "node scripts/log-task.mjs",
+    "data:fetch": "node scripts/fetch-datasets.mjs",
+    "stress": "node scripts/stress.mjs"
   },
   "engines": {
     "node": ">=20.9"
