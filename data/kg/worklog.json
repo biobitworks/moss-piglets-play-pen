@@ -132,6 +132,62 @@
   },
   {
    "kind": "task",
+   "task": "T20",
+   "status": "built",
+   "at": "2026-10-31T21:45:47.407Z",
+   "commit": "d6a8ae8ce532a4c55211bf2dda77c65661253806",
+   "commitAt": "2026-10-31T21:45:47.000Z",
+   "subject": "T20: dependency-free stress test for the API, MCP, chat and pages",
+   "summary": "scripts/stress.mjs: read, read+write, 20k-node bulk load via MCP; baseline showed reads 15x slower at 22k nodes"
+  },
+  {
+   "kind": "task",
+   "task": "T21",
+   "status": "built",
+   "at": "2026-10-31T21:45:47.756Z",
+   "commit": "7ee3a9666eea2fc52eb1ddbafac26f30bd310671",
+   "commitAt": "2026-10-31T21:45:47.000Z",
+   "subject": "T21: fetch and normalise starter datasets (C. elegans connectome, FlyWire and hemibrain annotations)",
+   "summary": "C. elegans 448 cells / 7,379 edges committed; FlyWire 139,248 and hemibrain 25,397 neurons via npm run data:fetch"
+  },
+  {
+   "kind": "task",
+   "task": "T22",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.114Z",
+   "commit": "883c88e170886b3ae4c3e2fa83bbccaad96dc43c",
+   "commitAt": "2026-10-31T21:45:47.000Z",
+   "subject": "T22: dataset browser, REST endpoints and agent tools over the starter datasets",
+   "summary": "/datasets pages, /api/datasets REST, ds_list/ds_summary/ds_search_neurons/ds_neuron tools over MCP and chat; dataset nodes in the graph"
+  },
+  {
+   "kind": "task",
+   "task": "T23",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.480Z",
+   "commit": "0f74a1469ad257af8cbe59e1308be9dbb9e41f91",
+   "commitAt": "2026-10-31T21:45:48.000Z",
+   "subject": "T23: keep graph search fast and relevant at 20k+ nodes",
+   "summary": "sparse inverted index, incremental graph and index updates, O(1) dedupe, coalesced disk writes, capped boards, no hash collisions; reads at 20k nodes ~10x faster"
+  },
+  {
+   "kind": "task",
+   "task": "T24",
+   "status": "built",
+   "at": "2026-10-31T21:45:48.889Z",
+   "commit": "16fd3a8de8d400c06b4f9983692201f141abedf7",
+   "commitAt": "2026-10-31T21:45:48.000Z",
+   "subject": "T24: stress test report, starter datasets and CoDA notes, headless browser check",
+   "summary": "docs/STRESS_TEST.md and docs/DATASETS.md; scripts/e2e.cjs headless browser walk-through passes 9/9"
+  },
+  {
+   "kind": "push",
+   "at": "2026-10-31T21:46:12.411Z",
+   "commit": "4ef2941fea5b989324f81ec3b9ef12cfcd755a19",
+   "branch": "claude/project-thread-gqxev6"
+  },
+  {
+   "kind": "task",
    "task": "T13",
    "status": "built",
    "at": "2026-10-31T21:57:57.538Z",

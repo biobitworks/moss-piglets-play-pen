@@ -37,6 +37,16 @@ Installable connectors (Byron, 3:00 PM PT: "cli, python, R, mcp, rag connector b
 | 3:15–3:30   | 22:15–22:30 | T31  | Node CLI + MCP server and R package, same commands and RAG | `npm install -g`, `R CMD INSTALL`, tests pass against a live server |
 | 3:30–3:45   | 22:30–22:45 | T32  | Docs (README, `docs/CONNECTORS.md`), CI, test server on magicpro with Ollama | Install from the branch on magicpro answers with a local model |
 
+Run in parallel in the stress-test thread (all logged built at 2:45 PM PT; see `docs/STRESS_TEST.md` and `docs/DATASETS.md`):
+
+| Task | Deliverable | Done when |
+|------|-------------|-----------|
+| T20  | Stress test for API, MCP, chat and pages (`npm run stress`) | Reads, writes and a 20k-node bulk load measured |
+| T21  | Starter datasets (`npm run data:fetch`) | C. elegans committed; FlyWire and hemibrain fetched |
+| T22  | `/datasets` pages, `/api/datasets`, `ds_*` agent tools | Browse, search, open a neuron, follow partners |
+| T23  | Graph and search fixes at scale | Reads at 20k nodes ~10x faster, relevant top hits |
+| T24  | Reports and headless browser check (`scripts/e2e.cjs`) | 9/9 steps pass, no console errors |
+
 ## Rules for the slots
 
 - Commit at the end of every slot, even if the task is partial. A partial task is logged as

@@ -106,6 +106,12 @@ function buildDataset(): Dataset {
 
 let cached: Dataset | null = null;
 
+/** Synchronous access for callers that can't await (agent tools). */
+export function mockDataset(): Dataset {
+  if (!cached) cached = buildDataset();
+  return cached;
+}
+
 export const mockTardigradeAdapter: DataAdapter = {
   id: "mock-tardigrade",
   async getDataset() {
