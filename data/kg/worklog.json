@@ -67,6 +67,16 @@
    "commitAt": "2026-10-31T20:59:56.000Z",
    "subject": "T07: chat endpoint on the Claude API with graph retrieval and tool use, /chat page",
    "summary": "/api/chat: RAG context + tool loop over read-only graph tools (claude-opus-5-5, server-side fallback); offline answer when no API key; /chat UI"
+  },
+  {
+   "kind": "task",
+   "task": "T08",
+   "status": "built",
+   "at": "2026-10-31T21:01:48.349Z",
+   "commit": "d90f8ed7831a1c02f9ffea75a182ef02d59a2479",
+   "commitAt": "2026-10-31T21:01:48.000Z",
+   "subject": "T08: built-vs-needed board, node pages, worklog timeline and agents page",
+   "summary": "/graph board (capabilities, pipeline, tasks, questions, tool table), /node/<type>/<slug>, /worklog plan vs actual with PT/UTC, /agents"
   }
  ]
 }

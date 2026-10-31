@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T20:55:34.816Z",
+ "syncedAt": "2026-10-31T21:01:48.421Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -99,6 +99,48 @@
    "author": "Claude",
    "isMerge": false,
    "subject": "T02: FCO vocabulary and seeded FCG with addressable nodes"
+  },
+  {
+   "sha": "fb41fca0178af30149d9780933152ae81e5073de",
+   "at": "2026-10-31T20:55:34.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T02 and T03 built"
+  },
+  {
+   "sha": "2fa0745b33e6ee10894c5de773d19d8bc0f003cc",
+   "at": "2026-10-31T20:56:23.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T04: hashed TF-IDF vector search over the graph, /api/kg/search"
+  },
+  {
+   "sha": "0165650cb2f6924f08a978e222aa6a1536a27e2d",
+   "at": "2026-10-31T20:58:10.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T05: shared tool registry served over MCP (/api/mcp) and REST (/api/tools, /api/kg)"
+  },
+  {
+   "sha": "738791bfc8250c994561608a974e85433530f60c",
+   "at": "2026-10-31T20:58:21.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T06: agent connector with one-to-one, one-to-many and many-to-many routing"
+  },
+  {
+   "sha": "61a4e1928ca14f4a1931b98f1a8a443e464b17dd",
+   "at": "2026-10-31T20:59:56.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T07: chat endpoint on the Claude API with graph retrieval and tool use, /chat page"
+  },
+  {
+   "sha": "d90f8ed7831a1c02f9ffea75a182ef02d59a2479",
+   "at": "2026-10-31T21:01:48.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T08: built-vs-needed board, node pages, worklog timeline and agents page"
   }
  ]
 }
