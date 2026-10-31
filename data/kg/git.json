@@ -1,5 +1,5 @@
 {
- "syncedAt": "2026-10-31T21:34:00.347Z",
+ "syncedAt": "2026-10-31T21:57:57.748Z",
  "commits": [
   {
    "sha": "e413689143fc202076a0c85c30feb4cc5e866403",
@@ -234,6 +234,35 @@
    "author": "Claude",
    "isMerge": false,
    "subject": "T12: chat backend switch between frontier (Claude), local (Ollama or any OpenAI-compatible server) and search only"
+  },
+  {
+   "sha": "653689d75a1fd303cefd9dd2d2fefa9cf49e7a01",
+   "at": "2026-10-31T21:34:00.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "worklog: T12 built"
+  },
+  {
+   "sha": "e6627136c963edd782cb69d42de532ce5947e683",
+   "at": "2026-10-31T21:35:38.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "Never reroute an explicitly chosen chat backend to another model; fall back to search instead"
+  },
+  {
+   "sha": "4d4b5e97aad07fe4f37d0edac13a70fd367867a6",
+   "at": "2026-10-31T21:35:53.000Z",
+   "author": "Byron P. Lee",
+   "isMerge": true,
+   "subject": "Merge pull request #6 from biobitworks/claude/project-thread-qho8m6",
+   "pr": 6
+  },
+  {
+   "sha": "2af33ad0aebb9113adf56308b73b44db5c6bd0e2",
+   "at": "2026-10-31T21:57:57.000Z",
+   "author": "Claude",
+   "isMerge": false,
+   "subject": "T13: No API key needed: chat defaults to a local model, else answers from the graph"
   }
  ]
 }

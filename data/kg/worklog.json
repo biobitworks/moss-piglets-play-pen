@@ -129,6 +129,16 @@
    "commitAt": "2026-10-31T21:34:00.000Z",
    "subject": "T12: chat backend switch between frontier (Claude), local (Ollama or any OpenAI-compatible server) and search only",
    "summary": "src/lib/llm/{claude,local,common}.ts; GET /api/chat lists backends; picker on /chat; local tool calling with fallback to context-only; tested against an OpenAI-compatible stub and in the browser"
+  },
+  {
+   "kind": "task",
+   "task": "T13",
+   "status": "built",
+   "at": "2026-10-31T21:57:57.538Z",
+   "commit": "2af33ad0aebb9113adf56308b73b44db5c6bd0e2",
+   "commitAt": "2026-10-31T21:57:57.000Z",
+   "subject": "T13: No API key needed: chat defaults to a local model, else answers from the graph",
+   "summary": "No-key chat: local model if running, else graph-only answers (ready/waiting/blockers/packages/timeline); frontier hidden without key; verified in browser with no env vars"
   }
  ]
 }

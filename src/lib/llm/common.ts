@@ -1,6 +1,7 @@
-import { flush, status } from "@/lib/kg/graph";
+import { flush } from "@/lib/kg/graph";
 import { runTool, TOOLS } from "@/lib/kg/tools";
 import { search, type SearchHit } from "@/lib/kg/vector";
+import { graphAnswer } from "./answer";
 
 /** One chat turn's text history, as the browser sends it. */
 export type ChatMsg = { role: "user" | "assistant"; content: string };
@@ -54,15 +55,5 @@ export function execTool(name: string, input: unknown, log: ChatResult["toolCall
 /** Persist writes from a tool batch before the next model call. */
 export const afterToolBatch = () => flush();
 
-export function searchOnlyAnswer(q: string, why: string) {
-  const hits = retrieve(q);
-  const s = status();
-  const lines = hits.map((h) => `- \`${h.id}\` (${h.status}): ${h.label}. ${h.description}`);
-  return [
-    `${why} Here is what the graph search found:`,
-    "",
-    ...(lines.length ? lines : ["- Nothing matched."]),
-    "",
-    `Overall: ${s.counts.built ?? 0} built, ${s.counts.in_progress ?? 0} in progress, ${s.counts.needed ?? 0} needed, ${s.counts.blocked ?? 0} blocked.`,
-  ].join("\n");
-}
+/** Key-free answer built from the graph structure; see answer.ts. */
+export const searchOnlyAnswer = (q: string, why?: string) => graphAnswer(q, why).text;
