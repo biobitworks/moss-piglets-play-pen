@@ -47,6 +47,16 @@
    "commitAt": "2026-10-31T20:58:10.000Z",
    "subject": "T05: shared tool registry served over MCP (/api/mcp) and REST (/api/tools, /api/kg)",
    "summary": "12 tools; MCP initialize/tools/list/tools/call verified with curl; REST node, status, worklog routes"
+  },
+  {
+   "kind": "task",
+   "task": "T06",
+   "status": "built",
+   "at": "2026-10-31T20:58:21.770Z",
+   "commit": "738791bfc8250c994561608a974e85433530f60c",
+   "commitAt": "2026-10-31T20:58:21.000Z",
+   "subject": "T06: agent connector with one-to-one, one-to-many and many-to-many routing",
+   "summary": "/api/connect and agent_* tools; messages are graph nodes with sentBy/sentTo/postedIn edges; all three modes verified"
   }
  ]
 }

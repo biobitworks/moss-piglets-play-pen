@@ -9,6 +9,7 @@ import type { KGNode } from "./types";
  * embedding model and this Map for a vector database without changing callers.
  */
 const DIM = 2048;
+const HISTORY = new Set(["commit", "pr", "message"]);
 const STOP = new Set("a an and are as at be by for from has have in is it its of on or that the this to was what which with how do does i we you".split(" "));
 
 function tokens(text: string): string[] {
@@ -94,6 +95,8 @@ export function search(query: string, opts: { k?: number; type?: string; status?
     if (!n || (opts.type && n.type !== opts.type) || (opts.status && n.status !== opts.status)) continue;
     let s = 0;
     for (let i = 0; i < DIM; i++) s += q[i] * v[i];
+    // History nodes (commits, PRs, messages) are many and noisy; rank them below the things they describe.
+    if (!opts.type && HISTORY.has(n.type)) s *= 0.6;
     if (s > 0.02) hits.push({ id, type: n.type, label: n.label, status: n.status, score: Math.round(s * 1000) / 1000, description: n.description });
   }
   return hits.sort((a, b) => b.score - a.score).slice(0, opts.k ?? 8);
