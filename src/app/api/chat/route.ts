@@ -44,7 +44,9 @@ export async function POST(req: Request) {
 
   await sync();
   const { default: def, backends: list } = await backends();
-  const pick = (list.find((b) => b.id === wanted && b.available)?.id ?? def) as BackendId;
+  // An explicit choice is never silently sent to a different model (e.g. local -> Claude); it falls back to search.
+  const requested = list.find((b) => b.id === wanted);
+  const pick = (requested ? (requested.available ? requested.id : "search") : def) as BackendId;
   const fallbackNote = wanted && wanted !== pick ? `The ${wanted} backend isn't available, so this used ${pick}. ` : "";
 
   const searchOnly = (why: string, error?: string): ChatResult => ({
