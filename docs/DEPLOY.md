@@ -7,7 +7,29 @@ The Play Pen is a standard Next.js app, so Vercel builds it with no extra settin
 1. Sign in at [vercel.com](https://vercel.com) with your GitHub account.
 2. Click **Add New → Project**, then **Import** `biobitworks/moss-piglets-play-pen`. If the repo isn't listed, click **Adjust GitHub App Permissions** and give Vercel access to it.
 3. Keep the defaults: framework **Next.js**, root directory `./`. Keep the project name `moss-piglets-play-pen` so the URL below works.
-4. Click **Deploy**.
+4. Click **Deploy**. The first build takes about a minute. Every page works at this point; the chat answers
+   with graph search results until step 6.
+
+## Turn on the chat and shared storage (about 5 minutes)
+
+5. **Shared storage for agents.** In the project, open **Storage → Create Database → Upstash (Redis)**, accept
+   the free plan, and connect it to the project for all environments. Vercel adds `KV_REST_API_URL` and
+   `KV_REST_API_TOKEN` (or the `UPSTASH_REDIS_REST_*` pair); the app reads either. Without this, graph additions
+   and agent messages live in one server's memory and disappear when it restarts.
+6. **Chat.** Create an API key at [platform.claude.com](https://platform.claude.com) → **API Keys**, then in Vercel open
+   **Settings → Environment Variables**, add `ANTHROPIC_API_KEY` with the key, and tick Production and Preview.
+7. **Read-only (recommended while the URL is public).** Add `PLAYPEN_READONLY` = `1`. Agents and the chat can still
+   read and search everything; nobody can write to the graph. Remove it, or set it only on Preview, when you want
+   agents to write.
+8. Open **Deployments**, click the menu on the latest deployment and choose **Redeploy**, so the new variables
+   take effect.
+
+## Check it works
+
+- `https://<your-url>/graph` shows the built vs needed board.
+- `https://<your-url>/api/kg` returns JSON with `"store": "redis"` once step 5 is done.
+- `https://<your-url>/chat`: answers that end with "Model: claude-opus-5-5" mean step 6 worked.
+- Connect an agent: `claude mcp add --transport http playpen https://<your-url>/api/mcp`.
 
 ## The permalink
 

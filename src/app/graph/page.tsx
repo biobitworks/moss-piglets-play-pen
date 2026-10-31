@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { graph } from "@/lib/kg/graph";
+import { graph, sync } from "@/lib/kg/graph";
 import type { KGNode } from "@/lib/kg/types";
 import { NodeLink, St } from "@/components/Status";
 
@@ -34,7 +34,8 @@ function Board({ nodes }: { nodes: KGNode[] }) {
   );
 }
 
-export default function GraphPage() {
+export default async function GraphPage() {
+  await sync();
   const G = graph();
   const all = [...G.nodes.values()];
   const of = (t: string) => all.filter((n) => n.type === t);

@@ -1,12 +1,15 @@
+import { sync } from "@/lib/kg/graph";
 import type { Metadata } from "next";
 import { agents, messages } from "@/lib/kg/bus";
 import { TOOLS } from "@/lib/kg/tools";
+import { storeName } from "@/lib/kg/store";
 import { NodeLink, St } from "@/components/Status";
 
 export const metadata: Metadata = { title: "Agents · Moss Piglet Play Pen" };
 export const dynamic = "force-dynamic";
 
-export default function AgentsPage() {
+export default async function AgentsPage() {
+  await sync();
   const list = agents();
   const recent = messages({ limit: 30 }).reverse();
   return (
@@ -63,8 +66,7 @@ export default function AgentsPage() {
         <p className="muted">No messages yet on this server.</p>
       )}
       <p className="small muted">
-        On Vercel, messages live in server memory until a database is added (roadmap phase 2), so they can reset between
-        requests. Locally they are saved to <code>data/kg/runtime.json</code>.
+        Messages and graph additions are stored in {storeName() === "redis" ? "Upstash Redis, shared by every server instance" : storeName() === "file" ? <>this machine&rsquo;s <code>data/kg/runtime.json</code></> : "server memory only (add Upstash Redis to keep them)"}.
       </p>
     </>
   );

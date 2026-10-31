@@ -99,6 +99,26 @@
    "at": "2026-10-31T21:02:55.821Z",
    "commit": "ada469d0a19ffbb82c556493f5018e5c91e135c8",
    "branch": "claude/project-thread-qho8m6"
+  },
+  {
+   "kind": "task",
+   "task": "T10",
+   "status": "built",
+   "at": "2026-10-31T21:13:06.395Z",
+   "commit": "4fae49ac413c8259d7e87fc0d792c2629a6c1611",
+   "commitAt": "2026-10-31T21:13:06.000Z",
+   "subject": "T10: shared persistence for runtime graph additions and agent messages via Upstash Redis",
+   "summary": "Upstash Redis store (nodes hash + edges list); sync() before reads, flush() after writes; verified a message and node written on one server instance are read on another"
+  },
+  {
+   "kind": "task",
+   "task": "T11",
+   "status": "built",
+   "at": "2026-10-31T21:13:33.572Z",
+   "commit": "e300d8b850b4e85168250c244f7269da66d52f0e",
+   "commitAt": "2026-10-31T21:13:33.000Z",
+   "subject": "T11: step-by-step Vercel setup for storage, chat key and read-only mode",
+   "summary": "docs/DEPLOY.md: import, Upstash Redis, ANTHROPIC_API_KEY, PLAYPEN_READONLY, redeploy, checks"
   }
  ]
 }

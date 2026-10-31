@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { graph, neighbors, resolveId } from "@/lib/kg/graph";
+import { graph, neighbors, resolveId, sync } from "@/lib/kg/graph";
 import { fco } from "@/lib/kg/graph";
 import { NodeLink, St } from "@/components/Status";
 
@@ -14,6 +14,7 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
 }
 
 export default async function NodePage({ params }: P) {
+  await sync();
   const id = resolveId((await params).id.join("/"));
   const n = graph().nodes.get(id);
   if (!n) notFound();

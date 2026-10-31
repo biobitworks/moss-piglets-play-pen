@@ -1,5 +1,5 @@
 {
- "version": "fcg-0.1.0",
+ "version": "fcg-0.2.0",
  "generated": "2026-10-31",
  "nodes": [
   {
@@ -445,7 +445,7 @@
    "type": "capability",
    "label": "Database persistence for graph and messages",
    "status": "needed",
-   "description": "Postgres + pgvector or Neo4j. Roadmap phase 2."
+   "description": "Upstash Redis via the Vercel Marketplace for runtime graph nodes, edges and agent messages. Postgres + pgvector or Neo4j later if the graph grows."
   },
   {
    "id": "fcg:capability/github-sync",
@@ -595,7 +595,7 @@
    "id": "fcg:pr/2",
    "type": "pr",
    "label": "PR #2: Next.js MVP on Vercel",
-   "status": "in_progress",
+   "status": "built",
    "description": "Pull request #2.",
    "props": {
     "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/2"
@@ -605,7 +605,7 @@
    "id": "fcg:pr/3",
    "type": "pr",
    "label": "PR #3: Fly tools review and stack",
-   "status": "in_progress",
+   "status": "built",
    "description": "Pull request #3.",
    "props": {
     "url": "https://github.com/biobitworks/moss-piglets-play-pen/pull/3"
@@ -739,8 +739,8 @@
    "id": "fcg:question/tz",
    "type": "question",
    "label": "Is the 4:00 PM deadline Pacific time?",
-   "status": "needed",
-   "description": "Assumed Pacific (23:00 UTC)."
+   "status": "built",
+   "description": "Answered by Byron on 2026-10-31: yes, Pacific (4:00 PM PT = 23:00 UTC)."
   },
   {
    "id": "fcg:question/magic",
@@ -762,6 +762,28 @@
    "label": "Step 0: what does Tardimap use and want?",
    "status": "blocked",
    "description": "Contact contact@tardimap.org about tools, access and contributors."
+  },
+  {
+   "id": "fcg:task/T10",
+   "type": "task",
+   "label": "T10: Shared persistence for graph and messages (Upstash Redis)",
+   "status": "needed",
+   "description": "15-minute slot 21:15–21:30 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:15:00Z",
+    "slotEnd": "2026-10-31T21:30:00Z"
+   }
+  },
+  {
+   "id": "fcg:task/T11",
+   "type": "task",
+   "label": "T11: Vercel deploy steps and env vars",
+   "status": "needed",
+   "description": "15-minute slot 21:30–21:45 UTC on 2026-10-31.",
+   "props": {
+    "slotStart": "2026-10-31T21:30:00Z",
+    "slotEnd": "2026-10-31T21:45:00Z"
+   }
   }
  ],
  "edges": [
@@ -1389,6 +1411,26 @@
    "from": "fcg:question/tardimap-step0",
    "type": "askedOf",
    "to": "fcg:dataset/tardimap-riker"
+  },
+  {
+   "from": "fcg:task/T10",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T10",
+   "type": "implements",
+   "to": "fcg:capability/persistence"
+  },
+  {
+   "from": "fcg:task/T11",
+   "type": "partOf",
+   "to": "fcg:project/playpen"
+  },
+  {
+   "from": "fcg:task/T11",
+   "type": "implements",
+   "to": "fcg:capability/deploy"
   }
  ]
 }

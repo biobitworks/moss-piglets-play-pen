@@ -1,5 +1,6 @@
 import pkg from "../../../../package.json";
 import { runTool, TOOLS } from "@/lib/kg/tools";
+import { flush, sync } from "@/lib/kg/graph";
 
 /**
  * Minimal MCP server over Streamable HTTP (stateless, JSON responses).
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 type Rpc = { jsonrpc: "2.0"; id?: string | number | null; method: string; params?: Record<string, unknown> };
 const PROTOCOL = "2025-06-18";
 
-function handle(msg: Rpc) {
+async function handle(msg: Rpc) {
   const ok = (result: unknown) => ({ jsonrpc: "2.0", id: msg.id ?? null, result });
   const err = (code: number, message: string) => ({ jsonrpc: "2.0", id: msg.id ?? null, error: { code, message } });
   switch (msg.method) {
@@ -31,6 +32,7 @@ function handle(msg: Rpc) {
       const name = String(msg.params?.name ?? "");
       try {
         const result = runTool(name, (msg.params?.arguments as Record<string, unknown>) ?? {});
+        await flush();
         return ok({ content: [{ type: "text", text: JSON.stringify(result, null, 1) }], isError: false });
       } catch (e) {
         return ok({ content: [{ type: "text", text: (e as Error).message }], isError: true });
@@ -49,7 +51,12 @@ export async function POST(req: Request) {
   } catch {
     return Response.json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, { status: 400 });
   }
-  const replies = (Array.isArray(body) ? body : [body]).map(handle).filter(Boolean);
+  await sync();
+  const replies = [];
+  for (const m of Array.isArray(body) ? body : [body]) {
+    const r = await handle(m);
+    if (r) replies.push(r);
+  }
   if (!replies.length) return new Response(null, { status: 202 });
   return Response.json(Array.isArray(body) ? replies : replies[0]);
 }

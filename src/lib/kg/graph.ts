@@ -4,13 +4,14 @@ import fcg from "../../../data/kg/fcg.json";
 import fco from "../../../data/kg/fco.json";
 import gitData from "../../../data/kg/git.json";
 import worklogData from "../../../data/kg/worklog.json";
+import { loadRemote, store, writeRemote } from "./store";
 import type { GitCommit, KGEdge, KGNode, Status, WorklogEntry } from "./types";
 
 export { fco };
 
 const RUNTIME_FILE = path.join(process.cwd(), "data", "kg", "runtime.json");
 /** Persist runtime additions to disk only when running locally (Vercel's filesystem is read-only). */
-const PERSIST = !process.env.VERCEL && process.env.PLAYPEN_KG_PERSIST !== "0";
+const PERSIST = !process.env.VERCEL && process.env.PLAYPEN_KG_PERSIST !== "0" && !store();
 
 interface Overlay {
   nodes: KGNode[];
@@ -18,7 +19,54 @@ interface Overlay {
 }
 
 // Keep the overlay on globalThis so Next.js dev reloads and separate route modules share it.
-const g = globalThis as unknown as { __kgOverlay?: Overlay; __kgVersion?: number; __kgCache?: { v: number; graph: Graph } };
+const g = globalThis as unknown as {
+  __kgOverlay?: Overlay;
+  __kgVersion?: number;
+  __kgCache?: { v: number; graph: Graph };
+  /** Writes not yet sent to the shared store. */
+  __kgPending?: Overlay;
+  /** Writes being sent right now; kept visible until the store has them. */
+  __kgInflight?: Overlay[];
+};
+const pending = () => (g.__kgPending ??= { nodes: [], edges: [] });
+const inflight = () => (g.__kgInflight ??= []);
+
+/** Pull runtime additions from the shared store, if one is configured. Call at the start of a request. */
+export async function sync() {
+  const remote = await loadRemote();
+  if (!remote) return;
+  const o = overlay();
+  // Keep local writes the store may not have yet (in flight or not yet flushed) on top of what it returned.
+  const local = [...inflight(), pending()];
+  const nodes = new Map(remote.nodes.map((n) => [n.id, n]));
+  for (const b of local) for (const n of b.nodes) nodes.set(n.id, n);
+  const key = (e: KGEdge) => `${e.from}|${e.type}|${e.to}|${e.at ?? ""}`;
+  const seen = new Set(remote.edges.map(key));
+  const edges = [...remote.edges];
+  for (const b of local) for (const e of b.edges) if (!seen.has(key(e))) (seen.add(key(e)), edges.push(e));
+  const next = { nodes: [...nodes.values()], edges };
+  if (next.nodes.length !== o.nodes.length || next.edges.length !== o.edges.length || JSON.stringify(next) !== JSON.stringify(o)) {
+    g.__kgOverlay = next;
+    g.__kgVersion = (g.__kgVersion ?? 1) + 1;
+  }
+}
+
+/** Send this request's writes to the shared store. Call after a tool that writes. */
+export async function flush() {
+  const p = pending();
+  if (!p.nodes.length && !p.edges.length) return;
+  const batch = { nodes: p.nodes.splice(0), edges: p.edges.splice(0) };
+  inflight().push(batch);
+  try {
+    await writeRemote(batch.nodes, batch.edges);
+  } catch (e) {
+    p.nodes.unshift(...batch.nodes);
+    p.edges.unshift(...batch.edges);
+    throw e;
+  } finally {
+    g.__kgInflight = inflight().filter((b) => b !== batch);
+  }
+}
 function overlay(): Overlay {
   if (!g.__kgOverlay) {
     g.__kgOverlay = { nodes: [], edges: [] };
@@ -166,6 +214,7 @@ export function addNode(input: { type: string; label: string; status?: Status; d
   };
   const o = overlay();
   o.nodes = o.nodes.filter((x) => x.id !== id).concat(n);
+  if (store()) pending().nodes.push(n);
   save();
   return n;
 }
@@ -176,6 +225,7 @@ export function addEdge(e: { from: string; type: string; to: string }): KGEdge {
   if (!G.nodes.has(e.to)) throw new Error(`unknown node ${e.to}`);
   const edge: KGEdge = { ...e, at: new Date().toISOString(), origin: "runtime" };
   overlay().edges.push(edge);
+  if (store()) pending().edges.push(edge);
   save();
   return edge;
 }

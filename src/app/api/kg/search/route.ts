@@ -1,8 +1,10 @@
+import { sync } from "@/lib/kg/graph";
 import { search } from "@/lib/kg/vector";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
+  await sync();
   const u = new URL(req.url);
   const q = u.searchParams.get("q") ?? "";
   if (!q.trim()) return Response.json({ error: "add ?q=your question" }, { status: 400 });

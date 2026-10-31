@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { status } from "@/lib/kg/graph";
 import { runTool, TOOLS } from "@/lib/kg/tools";
 import { search } from "@/lib/kg/vector";
+import { flush, sync } from "@/lib/kg/graph";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
   const last = history.at(-1);
   if (!last || last.role !== "user") return Response.json({ error: "send { messages: [{ role: 'user', content }] }" }, { status: 400 });
 
+  await sync();
   const hits = retrieve(last.content);
   if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN) {
     return Response.json({ reply: offlineAnswer(last.content), retrieved: hits.map((h) => h.id), toolCalls: [], model: null });
@@ -100,6 +102,8 @@ export async function POST(req: Request) {
           return { type: "tool_result", tool_use_id: u.id, content: (e as Error).message, is_error: true };
         }
       });
+      // Persist this batch's writes now, so they survive even if a later model call fails.
+      await flush();
       messages.push({ role: "user", content: results });
     }
     return Response.json({ reply: "That took too many steps; try a narrower question.", retrieved: hits.map((h) => h.id), toolCalls, model: MODEL });

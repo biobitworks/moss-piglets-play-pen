@@ -1,8 +1,9 @@
-import { gitCommits, graph, worklog } from "@/lib/kg/graph";
+import { gitCommits, graph, worklog, sync } from "@/lib/kg/graph";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  await sync();
   const tasks = [...graph().nodes.values()].filter((n) => n.type === "task");
   return Response.json({
     timezone: "UTC",
