@@ -69,6 +69,21 @@ npm run build      # production build, the same one Vercel runs
 - **Per-browser state:** the contributor handle, passed training and claimed tasks live in `localStorage` for now.
 - **Deploying:** see [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
+### Real datasets and stress test
+
+```bash
+npm run data:fetch   # FlyWire (139k neurons) and hemibrain (25k) annotations; C. elegans is already in the repo
+npm run build && npm start
+open http://localhost:3000/datasets
+npm run stress       # load test against the running server
+node scripts/e2e.cjs # headless browser walk-through (needs Playwright + Chromium)
+```
+
+Datasets are browsable at `/datasets`, queryable at `/api/datasets/<id>/neurons?q=` and
+`/api/datasets/<id>/neurons/<neuron>`, and available to agents as `ds_list`, `ds_summary`,
+`ds_search_neurons` and `ds_neuron`. What each dataset is and what is still missing:
+[`docs/DATASETS.md`](docs/DATASETS.md). Load test results: [`docs/STRESS_TEST.md`](docs/STRESS_TEST.md).
+
 ## Agent connector and knowledge graph
 
 The fly connectome is the worked example; the tardigrade is the work in progress. The Play Pen keeps both in one

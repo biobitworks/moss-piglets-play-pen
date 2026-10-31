@@ -28,6 +28,16 @@ T01–T09 all finished by 2:03 PM PT and PR #4 merged at 2:11 PM PT. The next sl
 | 2:30–2:45   | 21:30–21:45 | T11  | Exact Vercel steps and env vars | `docs/DEPLOY.md` covers import, Redis, API key, read-only |
 | 2:45–3:00   | 21:45–22:00 | T12  | Chat switch: frontier (Claude) vs local (Ollama / OpenAI-compatible) vs search only | Picker on `/chat`; each backend answers, and an unavailable one falls back |
 
+Run in parallel in the stress-test thread (all logged built at 2:45 PM PT; see `docs/STRESS_TEST.md` and `docs/DATASETS.md`):
+
+| Task | Deliverable | Done when |
+|------|-------------|-----------|
+| T20  | Stress test for API, MCP, chat and pages (`npm run stress`) | Reads, writes and a 20k-node bulk load measured |
+| T21  | Starter datasets (`npm run data:fetch`) | C. elegans committed; FlyWire and hemibrain fetched |
+| T22  | `/datasets` pages, `/api/datasets`, `ds_*` agent tools | Browse, search, open a neuron, follow partners |
+| T23  | Graph and search fixes at scale | Reads at 20k nodes ~10x faster, relevant top hits |
+| T24  | Reports and headless browser check (`scripts/e2e.cjs`) | 9/9 steps pass, no console errors |
+
 ## Rules for the slots
 
 - Commit at the end of every slot, even if the task is partial. A partial task is logged as
