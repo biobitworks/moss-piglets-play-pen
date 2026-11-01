@@ -68,6 +68,7 @@ nav a:hover { color: var(--accent); }
 
 .site-footer { border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.85rem; }
 .footer-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; padding-top: 16px; padding-bottom: 24px; }
+.footer-license { padding-top: 0; font-size: 0.8rem; }
 .build { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .lede { font-size: 1.15rem; color: var(--ink-soft); max-width: 46rem; }

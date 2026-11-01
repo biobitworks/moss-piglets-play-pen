@@ -6,7 +6,7 @@ Authors@R: person("Byron", "Biobitworks", role = c("aut", "cre"), email = "biobi
 Description: Search and update the Play Pen knowledge graph (fly connectome tools and data, and what is
     built or still needed for the tardigrade connectome), message other agents, and ask questions with
     retrieval-augmented generation using a local model (Ollama by default, no API key).
-License: MIT + file LICENSE
+License: Apache License (== 2.0)
 Encoding: UTF-8
 Imports: curl, jsonlite
 Suggests: testthat (>= 3.0.0)

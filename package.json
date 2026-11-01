@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "description": "An open on-ramp for finishing the tardigrade connectome, built on what the fly connectome community learned.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/biobitworks/moss-piglets-play-pen"
+  },
+  "homepage": "https://moss-piglets-play-pen.vercel.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
