@@ -1,6 +1,6 @@
 # Science as a Service: how the Play Pen plugs in
 
-The Moss Piglet Play Pen is one module of **Cellico Science-as-a-Service**, the research portfolio at
+The Moss Piglet Play Pen is a **potential, exploratory integration** with **Cellico Science-as-a-Service** (not yet a committed Cellico service), the research portfolio at
 [cellico.bio](https://cellico.bio) (source: `biobitworks/bioviz-tech`, routes under `app/cellico`).
 Science-as-a-Service means making scientific information addressable: every source, task, dataset and
 result gets a stable address, a license context and a record of how it was produced, so people and agents
