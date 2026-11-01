@@ -6,7 +6,7 @@
 
 This project connects the two. It brings the fly connectome's tools, workflows and community model to Tardimap, so that **anyone can step in and help finish the tardigrade connectome**, and it gives people a place to practice and compare against the fly while they do.
 
-> **Status:** MVP web app on mock data (Next.js, deployed on Vercel), now with an **agent connector**: a knowledge graph of what is built and what is needed, vector search, MCP and REST tools for agents, agent-to-agent messaging and a Claude-backed chat. See [`docs/AGENT_CONNECTOR.md`](docs/AGENT_CONNECTOR.md) for the design and roadmap, [`docs/TASK_PLAN.md`](docs/TASK_PLAN.md) for the build plan, [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals and open questions, and [`docs/DEPLOY.md`](docs/DEPLOY.md) for hosting.
+> **Status:** MVP web app on mock data (Next.js, deployed on Vercel), now with an **agent connector**: a knowledge graph of what is built and what is needed, vector search, MCP and REST tools for agents, agent-to-agent messaging and a Claude-backed chat. See [`docs/AGENT_CONNECTOR.md`](docs/AGENT_CONNECTOR.md) for the design and roadmap, [`docs/TASK_PLAN.md`](docs/TASK_PLAN.md) for the build plan, [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) for the goals and open questions, and [`docs/DEPLOY.md`](docs/DEPLOY.md) for hosting. The Play Pen is also being explored as a potential Cellico Science-as-a-Service integration; see [`docs/SCIENCE_AS_A_SERVICE.md`](docs/SCIENCE_AS_A_SERVICE.md).
 
 ## Why tardigrades, why now
 
