@@ -131,6 +131,22 @@ model is running. A frontier model plugs in later (`--llm anthropic` or `--llm o
 | MCP server for Claude Code, Claude Desktop, Cursor | either package above | `claude mcp add playpen -- playpen-mcp --model qwen2.5-coder:7b` |
 | RAG connector | in all three: `playpen ask`, `playpen.RAG`, `pp_ask()`, MCP tool `rag_ask` | `playpen ask "which tool reads FlyWire?" --model qwen2.5-coder:7b` |
 
+## Science as a Service
+
+The Play Pen is run as **science as a service**: the connectome work is offered as an open service that
+people and agents call, not only as code to clone.
+
+| Service | Where | Who it is for |
+|---|---|---|
+| Live app | https://moss-piglets-play-pen.vercel.app | Anyone: progress, training, tasks, datasets, chat |
+| REST tools | `/api/tools/<name>`, `/api/datasets/...`, `/api/progress`, `/api/tasks` | Scripts and pipelines |
+| MCP server | `/api/mcp` (HTTP) or `playpen-mcp` (stdio) | Agents in Claude Code, Claude Desktop, Cursor |
+| Connectors | Python, Node CLI and R packages (below) | Scientists in their own notebooks |
+| Knowledge graph | `data/kg/` and `/graph` | What is built and what is still needed, addressable by id |
+
+Everything works without an API key. The code is open source (Apache 2.0), so anyone can run their own
+copy; the content is CC BY-NC-ND 4.0; and every dataset it serves keeps its upstream citation.
+
 ## Contributing
 
 The point of this project is that anyone can contribute. A `CONTRIBUTING.md` will follow once the first tasks exist. For now, comments on the requirements doc are the most useful contribution.
@@ -145,6 +161,20 @@ Cite every upstream dataset you use. FlyWire and the other fly datasets publish 
 - Tardimap: https://tardimap.org/
 - Fly Connectome: https://flyconnecto.me/
 
+## Acknowledgements
+
+Thanks to Tardimap, FlyWire and the Fly Connectome group, Janelia FlyEM (hemibrain), OpenWorm and the
+*C. elegans* connectome authors, and the open-source tools this is built on (Next.js, Ollama, Kokoro TTS,
+Playwright, CAVE, Neuroglancer, navis). Full list with citations: [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md),
+and `/credits` in the app.
+
 ## License
 
-Not chosen yet (see the open questions). Data from each source stays under that source's own terms.
+Dual licensed by context:
+
+| What | License | File |
+|---|---|---|
+| **Code**: the web app (`src/`), the Python, Node and R packages, MCP and RAG connectors (`packages/`), `scripts/`, config | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) | [LICENSE](LICENSE), [NOTICE](NOTICE) |
+| **Content**: README and `docs/`, knowledge graph content (`data/kg/`), datasets we publish, the demo video, narration, transcripts and other media | [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) (share unchanged, non-commercial, with credit) | [LICENSE-CONTENT](LICENSE-CONTENT) |
+
+- **Third-party data** stays under each source's own terms and citation requirements (see [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md)).

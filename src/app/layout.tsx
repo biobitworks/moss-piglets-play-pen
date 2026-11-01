@@ -36,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/worklog">Worklog</Link>
               <Link href="/contributors">Contributors</Link>
               <Link href="/demo">Demo</Link>
+              <Link href="/credits">Credits</Link>
             </nav>
           </div>
         </header>
@@ -43,12 +44,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="site-footer">
           <div className="wrap footer-row">
             <span>
-              Open source on{" "}
+              <strong>Science as a Service</strong>: open app, REST and MCP tools for people and agents. Source on{" "}
               <a href="https://github.com/biobitworks/moss-piglets-play-pen">GitHub</a>. Data:{" "}
               <a href="https://tardimap.org/">Tardimap</a> (mock until shared) ·{" "}
-              <a href="https://flyconnecto.me/">Fly Connectome</a>.
+              <a href="https://flyconnecto.me/">FlyWire / Fly Connectome</a> · Janelia hemibrain · OpenWorm{" "}
+              <i>C. elegans</i>. <Link href="/credits">Acknowledgements</Link>
             </span>
             <span className="build">{buildLabel()}</span>
+          </div>
+          <div className="wrap footer-row footer-license">
+            <span>
+              © 2026 biobitworks and contributors. Code:{" "}
+              <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Docs, data and media:{" "}
+              <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>. Third-party data keeps its
+              own terms.
+            </span>
           </div>
         </footer>
       </body>
