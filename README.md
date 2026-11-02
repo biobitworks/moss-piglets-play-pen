@@ -41,6 +41,14 @@ Tardimap's imaging is done, but its data and reconstruction pipeline aren't publ
 
 In parallel, the Play Pen can be built against public fly data: the training tasks, the progress view and the contributor flow. It then plugs into Tardimap once access is agreed. The full plan is in section 7 of the requirements doc.
 
+## Next actions
+
+The MVP is shipped (PRs #1 to #16). These are the open items, in order:
+
+1. **Send the Tardimap email.** The draft is in [`docs/OUTREACH_TARDIMAP.md`](docs/OUTREACH_TARDIMAP.md). Its answers decide how the Play Pen plugs into Tardimap's pipeline.
+2. **Turn on auto-deploy.** Install the [Vercel GitHub app](https://github.com/apps/vercel/installations/new) on this repo and connect the existing project under Settings, Git. Until then the live site at https://moss-piglets-play-pen.vercel.app only updates when someone runs `vercel --prod` from a checkout of `main`.
+3. **Build against public fly data in parallel:** real FlyWire training examples, a shared task queue and Neuroglancer links (see [`/roadmap`](https://moss-piglets-play-pen.vercel.app/roadmap)).
+
 ## Sources and tools
 
 **Tardimap**
